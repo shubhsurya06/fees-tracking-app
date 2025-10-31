@@ -1,1 +1,28 @@
+/* src/styles.css */
+
+/* 🌞 Light Theme */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --background-color: #ffffff;
+    --text-color: #212529;
+    --button-text-color: #ffffff;
+}
+
+/* 🌚 Dark Theme (optional) */
+body.dark-theme {
+    --primary-color: #6610f2;
+    --secondary-color: #adb5bd;
+    --background-color: #121212;
+    --text-color: #f8f9fa;
+    --button-text-color: #ffffff;
+}
+
+/* Apply theme globally */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+}
+
 /* You can add global styles to this file, and also import other style files */
