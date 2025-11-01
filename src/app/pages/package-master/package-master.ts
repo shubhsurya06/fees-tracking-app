@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Header } from '../../../../pages/header/header';
+import { Header } from '../header/header';
 
 @Component({
   selector: 'app-package-master',
@@ -8,5 +8,5 @@ import { Header } from '../../../../pages/header/header';
   styleUrl: './package-master.scss'
 })
 export class PackageMaster {
-  title = signal('Package Master Page Title');
+  title = signal('Pacakge Master Page Title');
 }
