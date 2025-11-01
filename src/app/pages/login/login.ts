@@ -48,7 +48,7 @@ export class Login implements OnInit {
 
     this.authService.login(obj).subscribe({
       next: (res: any) => {
-        this.resetOnLogin();
+        this.resetOnLogin(true);
         console.log(res.message);
         let token = (res as any).token;
         this.authService.saveToken(token);
@@ -61,14 +61,14 @@ export class Login implements OnInit {
         } else {
           alert('Error while login. Please try again!')
         }
-        this.resetOnLogin();
+        this.resetOnLogin(false);
       }
     })
   }
 
   // reset loginForm, loader, submitted values after login clicked
-  resetOnLogin() {
-    this.loginForm.reset();
+  resetOnLogin(isformReset: boolean) {
+    isformReset && this.loginForm.reset();
     this.loginLoader.set(false);
     this.submitted.set(false);
   }
