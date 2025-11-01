@@ -1,0 +1,41 @@
+/* Admin Navbar Theme */
+
+/* Round logo */
+.navbar-brand img {
+    border-radius: 50%;
+}
+
+/* Nav links beside logo */
+.navbar-nav.flex-row .nav-item {
+    margin-right: 1rem;
+}
+
+/* Nav link styles */
+.nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #e7e9eb !important;
+    /* Lighter blue hover */
+}
+
+.nav-link.active {
+    font-weight: 600;
+    border-bottom: 1px solid #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .navbar-nav.flex-row {
+        flex-direction: column;
+        align-items: start;
+        margin-top: 0.5rem;
+    }
+
+    .navbar-nav.flex-row .nav-item {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}
