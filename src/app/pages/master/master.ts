@@ -91,16 +91,12 @@ export class Master implements OnInit {
       return;
     }
 
-    if (this.isEditMode() && this.editMasterId() > 0) {
-      this.updateMaster();
-      return;
-    }
-
     this.addMasterLoader.set(true);
-    let req: IMaster = {
-      masterId: 0,
-      masterFor: this.masterForm.value.masterFor,
-      masterValue: this.masterForm.value.masterValue,
+    let req: IMaster = this.masterForm.value;
+
+    if (this.isEditMode() && this.editMasterId() > 0) {
+      this.updateMaster(req);
+      return;
     }
 
     this.masterService.createMaster(req).subscribe({
@@ -155,15 +151,8 @@ export class Master implements OnInit {
   /**
    * Update Master
    */
-  updateMaster() {
-    this.addMasterLoader.set(true);
-    let req: IMaster = {
-      masterId: this.editMasterId(),
-      masterFor: this.masterForm.value.masterFor,
-      masterValue: this.masterForm.value.masterValue,
-    }
-
-    this.masterService.updateMaster(req).subscribe({
+  updateMaster(master: IMaster) {
+    this.masterService.updateMaster(master).subscribe({
       next: (res: any) => {
         alert(res.message);
         this.onMasterAddUpdate();
@@ -180,6 +169,12 @@ export class Master implements OnInit {
    * @param master 
    */
   deleteMaster(id: number) {
+    let isDelete = confirm('Are you sure you want to delete this master?');
+    console.log('Delete confirmation result:', isDelete);
+
+    if (!isDelete) {
+      return;
+    }
     this.masterService.deleteMaster(id).subscribe({
       next: (res: any) => {
         alert(res.message);

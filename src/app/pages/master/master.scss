@@ -1,0 +1,9 @@
+.package-card {
+    border-left: 6px solid #1e60d4;
+    transition: 0.3s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-3px);
+    background: #f8f9fa;
+}

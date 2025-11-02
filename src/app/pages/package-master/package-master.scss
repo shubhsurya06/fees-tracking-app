@@ -1,0 +1,24 @@
+.page-title {
+    // font-weight: 700;
+    // text-decoration: underline;
+    // color: #1e60d4;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.package-card {
+    border-left: 6px solid #1e60d4;
+    transition: 0.3s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-3px);
+    background: #f8f9fa;
+}
+
+.package-list-section {
+    max-height: 80vh;
+    overflow-y: auto;
+}

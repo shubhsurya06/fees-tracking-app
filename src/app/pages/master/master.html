@@ -16,7 +16,7 @@
     <div class="col-lg-4">
       <div class="card shadow-sm">
         <div class="card-header bg-dark text-white text-center">
-          <strong>Master CRUD</strong>
+          <h5>Add / Update Master</h5>
         </div>
         <div class="card-body">
 
@@ -80,7 +80,7 @@
       @if (masterList().length) {
       <div class="card shadow-sm border-0">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-          <strong>Master List</strong>
+          <h5>Master List</h5>
           <select class="form-select form-select-sm w-auto" [(ngModel)]="selectedFilter"
             (change)="onTrackByChange($event)">
             <option value="">All</option>
@@ -95,7 +95,7 @@
           <div class="row g-3">
             @for (master of masterList(); track master.masterId) {
             <div class="col-md-6 col-xl-4">
-              <div class="card h-100 shadow-sm">
+              <div class="card package-card h-100 shadow-sm">
                 <div class="card-body">
                   <p class="mb-2">
                     <strong>{{ master.masterFor }}</strong><br>
