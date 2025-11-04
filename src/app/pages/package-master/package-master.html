@@ -109,37 +109,39 @@
                     </div>
                     }
 
-                    <div class="row g-3">
-
-                        @for (pkg of packageList(); track pkg.packageId) {
-                        <div class="col-md-4">
-                            <div class="card package-card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="fw-bold">{{pkg.packageName}}</h5>
-                                    <p class="mb-1"><strong>One Time Cost:</strong> ₹{{pkg.oneTimeTotalCost}}</p>
-                                    <p class="mb-1"><strong>EMI Amount:</strong> ₹{{pkg.emiTotalCost}}</p>
-                                    <p class="mb-1"><strong>Branches:</strong> {{pkg.maxBranches}}</p>
-                                    <p class="mb-1"><strong>Students:</strong> {{pkg.maxStudents}}</p>
-                                    <p class="mb-1">
-                                        <strong>SMS Alert:</strong>
-
-                                        <span [class.text-success]="pkg.isSmsAlert"
-                                            [class.text-danger]="!pkg.isSmsAlert">
-                                            {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
-                                        </span>
-                                    </p>
-
-                                    <div class="d-flex justify-content-between mt-3">
-                                        <button class="btn btn-warning btn-sm" (click)="editPackage(pkg)">
-                                            <i class="bi bi-pencil-square"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm" (click)="deletePackage(pkg.packageId)">
-                                            <i class="bi bi-trash-fill"></i> Delete</button>
+                    @if (!packageLoader()) {
+                        <div class="row g-3">
+    
+                            @for (pkg of packageList(); track pkg.packageId) {
+                            <div class="col-md-4">
+                                <div class="card package-card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">{{pkg.packageName}}</h5>
+                                        <p class="mb-1"><strong>One Time Cost:</strong> ₹{{pkg.oneTimeTotalCost}}</p>
+                                        <p class="mb-1"><strong>EMI Amount:</strong> ₹{{pkg.emiTotalCost}}</p>
+                                        <p class="mb-1"><strong>Branches:</strong> {{pkg.maxBranches}}</p>
+                                        <p class="mb-1"><strong>Students:</strong> {{pkg.maxStudents}}</p>
+                                        <p class="mb-1">
+                                            <strong>SMS Alert:</strong>
+    
+                                            <span [class.text-success]="pkg.isSmsAlert"
+                                                [class.text-danger]="!pkg.isSmsAlert">
+                                                {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
+                                            </span>
+                                        </p>
+    
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button class="btn btn-warning btn-sm" (click)="editPackage(pkg)">
+                                                <i class="bi bi-pencil-square"></i> Edit</button>
+                                            <button class="btn btn-danger btn-sm" (click)="deletePackage(pkg.packageId)">
+                                                <i class="bi bi-trash-fill"></i> Delete</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            }
                         </div>
-                        }
-                    </div>
+                    }
                 </div>
             </div>
         </div>
