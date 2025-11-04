@@ -4,6 +4,7 @@ export const ApiConstant = {
         USER: 'User',
         PACKAGE_MASTER: 'PackageMaster'
     },
+    SLASH_CONST: '/',
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
         CREATE_MASTER: '/create-master',

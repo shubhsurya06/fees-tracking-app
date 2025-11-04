@@ -42,7 +42,7 @@ export class PackageMasterService {
     * @returns 
   */
   updatePackage(packageData: PackageMasterModel) {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.UPDATE_PACKAGE}/${packageData.packageId}`;
+    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.UPDATE_PACKAGE}${ApiConstant.SLASH_CONST}${packageData.packageId}`;
     return this.http.put(url, packageData).pipe(
       delay(1000)
     );
@@ -54,7 +54,7 @@ export class PackageMasterService {
    * @returns 
    */
   deletePackage(packageId: number) {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.DELETE_PACKAGE}/${packageId}`;
+    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.DELETE_PACKAGE}${ApiConstant.SLASH_CONST}${packageId}`;
     return this.http.delete(url);
   }
   
