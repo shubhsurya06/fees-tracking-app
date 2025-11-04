@@ -24,8 +24,12 @@
 
             <div class="mb-3">
               <label for="MasterFor" class="form-label fw-semibold">Master For:</label>
-              <input type="text" id="MasterFor" class="form-control" formControlName="masterFor"
-                placeholder="Enter master name">
+              <select name="masterFOr" class="form-control" id="masterFor" formControlName="masterFor">
+                <option value="">Select...</option>
+                @for (trackBy of trackByList; track $index) {
+                <option [value]="trackBy">{{ trackBy | titlecase }}</option>
+                }
+              </select>
             </div>
 
             <div class="mb-3">

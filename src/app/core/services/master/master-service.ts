@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ApiConstant } from '../../constant/constant';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { IMaster } from '../../model/master-model';
 
 @Injectable({
@@ -20,7 +20,9 @@ export class MasterService {
   */
   getAllMasters() {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_ALL_MASTER;
-    return this.http.get(url);
+    return this.http.get(url).pipe(
+      delay(2000)
+    );
   }
   
   /**
@@ -30,7 +32,9 @@ export class MasterService {
    */
   createMaster(req: IMaster) {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.CREATE_MASTER;
-    return this.http.post(url, req);
+    return this.http.post(url, req).pipe(
+      delay(2000)
+    );
   }
 
   /**
@@ -40,7 +44,9 @@ export class MasterService {
    */
   updateMaster(req: IMaster) {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.UPDATE_MASTER;
-    return this.http.put(url + '/' + req.masterId, req);
+    return this.http.put(url + '/' + req.masterId, req).pipe(
+      delay(2000)
+    );
   }
 
   /**
@@ -60,6 +66,8 @@ export class MasterService {
   */
   getMasterByType(masterFor: string): Observable<IMaster[]> {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_MASTER_BY_TYPE;
-    return this.http.get<IMaster[]>(url + '/' + masterFor);
+    return this.http.get<IMaster[]>(url + '/' + masterFor).pipe(
+      delay(2000)
+    );
   }
 }

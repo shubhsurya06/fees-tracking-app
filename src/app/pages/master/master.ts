@@ -20,9 +20,8 @@ export class Master implements OnInit {
   masterList = signal<IMaster[]>([]);
   masterForm!: FormGroup;
   isEditMode = signal<boolean>(false);
-  editMasterId = signal<number>(0);
 
-  trackByList: string[] = ['Payment Mode', 'reference By'];
+  trackByList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
 
   constructor(private fb: FormBuilder) {
@@ -94,7 +93,7 @@ export class Master implements OnInit {
     this.addMasterLoader.set(true);
     let req: IMaster = this.masterForm.value;
 
-    if (this.isEditMode() && this.editMasterId() > 0) {
+    if (this.isEditMode()) {
       this.updateMaster(req);
       return;
     }
@@ -119,9 +118,8 @@ export class Master implements OnInit {
     this.getAllMasters();
     this.masterForm.reset();
 
-    if (this.isEditMode() && this.editMasterId() > 0) {
+    if (this.isEditMode()) {
       this.isEditMode.set(false);
-      this.editMasterId.set(0)
     }
   }
 
@@ -131,7 +129,6 @@ export class Master implements OnInit {
    */
   editMaster(master: IMaster) {
     this.isEditMode.set(true);
-    this.editMasterId.set(master.masterId);
     this.masterForm.patchValue({
       masterId: master.masterId,
       masterFor: master.masterFor,
@@ -145,7 +142,6 @@ export class Master implements OnInit {
   cancelEdit() {
     this.masterForm.reset();
     this.isEditMode.set(false);
-    this.editMasterId.set(0)
   }
 
   /**

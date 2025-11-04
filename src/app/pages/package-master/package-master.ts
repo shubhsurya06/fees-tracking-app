@@ -20,7 +20,6 @@ export class PackageMaster implements OnInit {
   addPackageLoader = signal<boolean>(false);
   packageForm!: FormGroup;
   isEditMode = signal<boolean>(false);
-  editPackageId = signal<number>(0);
   addPackageMasterLoader = signal<boolean>(false);
   fb = inject(FormBuilder);
 
@@ -65,9 +64,8 @@ export class PackageMaster implements OnInit {
     this.packageForm.reset();
     this.getAllPackages();
 
-    if (this.editPackageId() > 0 && this.isEditMode()) {
+    if (this.isEditMode()) {
       this.isEditMode.set(false);
-      this.editPackageId.set(0);
     }
   }
 
@@ -79,7 +77,7 @@ export class PackageMaster implements OnInit {
       this.addPackageLoader.set(true);
       const packageData: PackageMasterModel = this.packageForm.value;
 
-      if (this.isEditMode() && this.editPackageId() > 0) {
+      if (this.isEditMode()) {
         this.updatePackageMaster(packageData);
         return;
       }
@@ -124,7 +122,6 @@ export class PackageMaster implements OnInit {
    */
   editPackage(packageMaster: PackageMasterModel) {
     this.isEditMode.set(true);
-    this.editPackageId.set(packageMaster.packageId || 0);
     this.packageForm.patchValue({
       packageId: packageMaster.packageId,
       packageName: packageMaster.packageName,
@@ -166,7 +163,6 @@ export class PackageMaster implements OnInit {
   cancelEdit() {
     this.packageForm.reset();
     this.isEditMode.set(false);
-    this.editPackageId.set(0)
   }
 
 }
