@@ -21,7 +21,7 @@ export class MasterService {
   getAllMasters() {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_ALL_MASTER;
     return this.http.get(url).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
   
@@ -33,7 +33,7 @@ export class MasterService {
   createMaster(req: IMaster) {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.CREATE_MASTER;
     return this.http.post(url, req).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 
@@ -45,7 +45,7 @@ export class MasterService {
   updateMaster(req: IMaster) {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.UPDATE_MASTER;
     return this.http.put(url + '/' + req.masterId, req).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 
@@ -67,7 +67,7 @@ export class MasterService {
   getMasterByType(masterFor: string): Observable<IMaster[]> {
     let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_MASTER_BY_TYPE;
     return this.http.get<IMaster[]>(url + '/' + masterFor).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 }

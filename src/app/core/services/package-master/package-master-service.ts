@@ -20,7 +20,7 @@ export class PackageMasterService {
   getAllPackages() {
     let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.GET_ALL_PACKAGES}`;
     return this.http.get(url).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 
@@ -32,7 +32,7 @@ export class PackageMasterService {
   createPackage(packageData: PackageMasterModel) {
     let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.CREATE_PACKAGE}`;
     return this.http.post(url, packageData).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 
@@ -44,7 +44,7 @@ export class PackageMasterService {
   updatePackage(packageData: PackageMasterModel) {
     let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.UPDATE_PACKAGE}/${packageData.packageId}`;
     return this.http.put(url, packageData).pipe(
-      delay(2000)
+      delay(1000)
     );
   }
 

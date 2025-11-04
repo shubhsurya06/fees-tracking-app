@@ -69,11 +69,14 @@
                         <div class="d-flex justify-content-between mt-3">
                             <button class="btn btn-sm"
                                 [ngClass]="{ 'btn-success': !isEditMode(), 'btn-warning': isEditMode() }" type="submit">
+                                <i class="bi"
+                                    [ngClass]="{ 'bi-plus-circle-fill': !isEditMode(), 'bi-pencil-square': isEditMode() }"></i>
                                 {{ isEditMode() ? 'Update Package' : 'Add Package' }}
                             </button>
 
                             @if (isEditMode()) {
-                            <button class="btn btn-light btn-sm" type="button" (click)="cancelEdit()">Cancel</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="cancelEdit()">
+                                <i class="bi bi-x-circle-fill"></i> Cancel</button>
                             }
                         </div>
                         }
@@ -89,11 +92,11 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Package List</h5>
-                    <select class="form-select w-auto">
+                    <!-- <select class="form-select w-auto">
                         <option value="all">All</option>
                         <option value="sms">SMS Enabled</option>
                         <option value="nosms">SMS Disabled</option>
-                    </select>
+                    </select> -->
                 </div>
 
                 <div class="card-body package-list-section">
@@ -127,9 +130,10 @@
                                     </p>
 
                                     <div class="d-flex justify-content-between mt-3">
-                                        <button class="btn btn-warning btn-sm" (click)="editPackage(pkg)">Edit</button>
-                                        <button class="btn btn-danger btn-sm"
-                                            (click)="deletePackage(pkg.packageId)">Delete</button>
+                                        <button class="btn btn-warning btn-sm" (click)="editPackage(pkg)">
+                                            <i class="bi bi-pencil-square"></i> Edit</button>
+                                        <button class="btn btn-danger btn-sm" (click)="deletePackage(pkg.packageId)">
+                                            <i class="bi bi-trash-fill"></i> Delete</button>
                                     </div>
                                 </div>
                             </div>
