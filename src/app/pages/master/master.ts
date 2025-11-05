@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { Header } from '../header/header';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
@@ -23,7 +23,7 @@ export class Master implements OnInit {
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.masterForm = this.fb.group({
       masterId: [0],
       masterFor: ['', Validators.required],
@@ -121,14 +121,13 @@ export class Master implements OnInit {
    */
   onMasterAddUpdate(res: IMaster) {
     this.isAddUpdateLoader.set(false);
-    let list = this.masterList();
-    let index = list.findIndex((item: IMaster) => item.masterId === res.masterId);
+    let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.masterId);
     if (index === -1) {
-      list.push(res);
+      this.masterList().push(res);
     } else {
-      list[index] = res;
+      this.masterList()[index] = res;
     }
-    this.masterList.set(list);
+    // this.masterList.set(list);
     this.masterForm.reset();
   }
 

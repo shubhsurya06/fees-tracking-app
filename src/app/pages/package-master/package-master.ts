@@ -66,10 +66,16 @@ export class PackageMaster implements OnInit {
   /**
    * After Add/Update package operations
    */
-  onPackageAddUpdate() {
+  onPackageAddUpdate(pkg: PackageMasterModel) {
     this.isAddUpdatePkgLoader.set(false);
     this.packageForm.reset();
-    this.getAllPackages();
+
+    let index = this.packageList().findIndex((item: PackageMasterModel) => item.packageId === pkg.packageId);
+    if (index === -1) {
+      this.packageList().push(pkg);
+    } else {
+      this.packageList()[index] = pkg;
+    }
   }
 
   /**
@@ -90,9 +96,7 @@ export class PackageMaster implements OnInit {
 
       this.packageMasterService.createPackage(packageData).subscribe({
         next: (res: any) => {
-          this.isAddUpdatePkgLoader.set(false);
-          this.packageForm.reset();
-          this.getAllPackages();
+          this.onPackageAddUpdate(res.data);
         },
         error: (err: any) => {
           console.error('Error creating package:', err.message);
@@ -112,7 +116,7 @@ export class PackageMaster implements OnInit {
     this.packageMasterService.updatePackage(packageData).subscribe({
       next: (res: any) => {
         console.log('Package updated successfully:', res);
-        this.onPackageAddUpdate();
+        this.onPackageAddUpdate(res.data);
       },
       error: (err: any) => {
         console.error('Error updating package:', err.message);
@@ -153,7 +157,8 @@ export class PackageMaster implements OnInit {
     this.packageMasterService.deletePackage(id).subscribe({
       next: (res: any) => {
         console.log('Package deleted successfully:', res);
-        this.getAllPackages();
+        let updatedList: PackageMasterModel[] = this.packageList().filter(pkg => pkg.packageId !== id);
+        this.packageList.set(updatedList);
       },
       error: (err: any) => {
         console.error('Error deleting package:', err.message);

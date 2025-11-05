@@ -1,0 +1,13 @@
+.card {
+    border-left: 6px solid #1e60d4;
+    transition: 0.3s ease;
+}
+
+.card:hover:first-child {
+    transform: none;
+}
+
+.card:hover {
+    transform: translateY(-3px) !important;
+    background: #f8f9fa;
+}

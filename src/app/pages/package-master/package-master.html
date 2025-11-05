@@ -91,11 +91,6 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Package List</h5>
-                    <!-- <select class="form-select w-auto">
-                        <option value="all">All</option>
-                        <option value="sms">SMS Enabled</option>
-                        <option value="nosms">SMS Disabled</option>
-                    </select> -->
                 </div>
 
                 <div class="card-body package-list-section">
@@ -115,12 +110,14 @@
                             <div class="col-md-4">
                                 <div class="card package-card shadow-sm">
                                     <div class="card-body">
-                                        <h5 class="fw-bold">{{pkg.packageName}}</h5>
+                                        <h5 class="card-title text-primary fw-bold">
+                                            {{pkg.packageName}}
+                                        </h5>
                                         <p class="mb-1"><strong>One Time Cost:</strong> ₹{{pkg.oneTimeTotalCost}}</p>
                                         <p class="mb-1"><strong>EMI Amount:</strong> ₹{{pkg.emiTotalCost}}</p>
                                         <p class="mb-1"><strong>Branches:</strong> {{pkg.maxBranches}}</p>
                                         <p class="mb-1"><strong>Students:</strong> {{pkg.maxStudents}}</p>
-                                        <p class="mb-1">
+                                        <p class="mb-4">
                                             <strong>SMS Alert:</strong>
     
                                             <span [class.text-success]="pkg.isSmsAlert"

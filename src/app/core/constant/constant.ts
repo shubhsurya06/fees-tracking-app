@@ -2,7 +2,8 @@ export const ApiConstant = {
     CONTROLLER_TYPES: {
         MASTER: 'Master',
         USER: 'User',
-        PACKAGE_MASTER: 'PackageMaster'
+        PACKAGE_MASTER: 'PackageMaster',
+        INSTITUTE: 'InstituteMaster'
     },
     SLASH_CONST: '/',
     MASTER_APIS: {
@@ -18,6 +19,13 @@ export const ApiConstant = {
         DELETE_PACKAGE: '/delete-package',
         UPDATE_PACKAGE: '/update-package',
         GET_SINGLE_PACKAGE: '/get-package-by-id'
+    },
+    INSTITUTE_APIS: {
+        GET_ALL_INSTITUTES: '/get-all-institutes',
+        CREATE_INSTITUTE: '/create-institute',
+        UPDATE_INSTITUTE: '/update-institute',
+        DELETE_INSTITUTE: '/delete-institute',
+        GET_SINGLE_INSTITUTE: '/get-institute-by-id'
     },
     USER_APIS: {
         LOGIN: '/login',

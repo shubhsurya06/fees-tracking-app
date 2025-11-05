@@ -46,21 +46,6 @@
             </div>
             }
 
-            <!-- @if (!isAddUpdateLoader()) {
-            <div class="d-flex justify-content-between mt-3">
-              <button class="btn btn-sm" [ngClass]="{ 'btn-success': !isEditMode(), 'btn-warning': isEditMode() }"
-                type="submit">
-                <i class="bi" [ngClass]="{ 'bi-plus-circle-fill': !isEditMode(), 'bi-pencil-square': isEditMode() }"></i>
-                {{ isEditMode() ? 'Update Master' : 'Add Master' }}
-              </button>
-
-              @if (isEditMode()) {
-              <button class="btn btn-primary btn-sm" type="button" (click)="cancelEdit()">
-                <i class="bi bi-x-circle-fill"></i> Cancel</button>
-              }
-            </div>
-            } -->
-
             @if (!isAddUpdateLoader()) {
             <div class="d-flex justify-content-between mt-3">
               <button class="btn btn-sm"
@@ -107,23 +92,23 @@
         }
 
         @if (!isMasterListLoading()) {
-          @if (masterList().length == 0) {
-          <p class="text-muted mt-3">No masters available. Please add one.</p>
-          }
+        @if (masterList().length == 0) {
+        <p class="text-muted mt-3">No masters available. Please add one.</p>
+        }
 
-          @if (masterList().length) {
-          <div class="card-body">
-            <div class="row g-3">
-              @for (master of masterList(); track master.masterId) {
-              <div class="col-md-6 col-xl-4">
-                <div class="card package-card h-100 shadow-sm">
-                  <div class="card-body">
-                    <p class="mb-2">
-                      <strong>{{ master.masterFor }}</strong><br>
-                      <small class="text-muted"><i>{{ master.masterValue }}</i></small>
-                    </p>
-                  </div>
-                  <div class="card-footer d-flex justify-content-between">
+        @if (masterList().length) {
+        <div class="card-body">
+          <div class="row g-3">
+            @for (master of masterList(); track master.masterId) {
+            <div class="col-md-6 col-xl-4">
+              <div class="card package-card h-100 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title text-primary fw-bold">{{ master.masterFor }}</h5>
+
+                  <p class="mb-4">
+                    <small class="text-muted"><i>{{ master.masterValue }}</i></small>
+                  </p>
+                  <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-warning btn-sm" (click)="editMaster(master)">
                       <i class="bi bi-pencil-square"></i> Edit</button>
                     <button type="button" class="btn btn-danger btn-sm" (click)="deleteMaster(master.masterId)"><i
@@ -131,10 +116,11 @@
                   </div>
                 </div>
               </div>
-              }
             </div>
+            }
           </div>
-          }
+        </div>
+        }
         }
       </div>
 
