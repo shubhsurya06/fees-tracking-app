@@ -3,18 +3,11 @@
     transition: 0.3s ease;
 }
 
+.card:hover:first-child {
+    transform: none;
+}
+
 .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) !important;
     background: #f8f9fa;
-}
-
-.card-title {
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 5px;
-}
-
-h2 {
-    border-bottom: 3px solid #007bff;
-    display: inline-block;
-    padding-bottom: 5px;
 }

@@ -10,7 +10,165 @@
         </div>
     </div>
 
-    <form>
+    @if(isLoadingSingleInstitute()) {
+    <div class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    }
+
+    @if(!isLoadingSingleInstitute()) {
+    <form #instituteForm="ngForm" (ngSubmit)="onSubmit()" class="row justify-content-center">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+
+            <!-- Section 1 -->
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <span class="badge bg-white text-primary me-2">1</span>
+                    <h6 class="mb-0 fw-bold">Institute & Contact Details</h6>
+                </div>
+                <div class="card-body">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Institute Name</label>
+                            <input type="text" class="form-control" placeholder="Enter institute name"
+                                [(ngModel)]="instituteFormData.name" name="name" #name="ngModel" required minlength="3">
+                            <div *ngIf="name.invalid && name.touched" class="error">
+                                <div *ngIf="name.errors?.['required']">Name is required.</div>
+                                <div *ngIf="name.errors?.['minlength']">Name must be at least 3 characters long.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Owner Name</label>
+                            <input type="text" class="form-control" placeholder="Enter owner name"
+                                [(ngModel)]="instituteFormData.ownerName" name="ownerName" #ownerName="ngModel"
+                                required>
+                            <div *ngIf="ownerName.invalid && ownerName.touched" class="error">
+                                <div *ngIf="ownerName.errors?.['required']">Owner Name is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Contact No</label>
+                            <input type="text" class="form-control" placeholder="Enter contact number"
+                                [(ngModel)]="instituteFormData.conatctNo" name="conatctNo" #conatctNo="ngModel" required
+                                minlength="10" maxlength="10">
+                            <div *ngIf="conatctNo.invalid && conatctNo.touched" class="error">
+                                <div *ngIf="conatctNo.errors?.['required']">Contact no is required.</div>
+                                <div *ngIf="conatctNo.errors?.['minlength']">Contact no must be at least 10 characters
+                                    long.</div>
+                                <div *ngIf="conatctNo.errors?.['maxlength']">Maxmimum length of Contact No is 10.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Email ID</label>
+                            <input type="email" class="form-control" placeholder="Enter email address"
+                                [(ngModel)]="instituteFormData.emailId" name="emailId" #emailId="ngModel" required>
+                            <div *ngIf="emailId.invalid && emailId.touched" class="error">
+                                <div *ngIf="emailId.errors?.['required']">Email id is required.</div>
+                                <div *ngIf="emailId.errors?.['email']">Please enter valid Email id.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <span class="badge bg-white text-primary me-2">2</span>
+                    <h6 class="mb-0 fw-bold">Location & Business Details</h6>
+                </div>
+                <div class="card-body">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" placeholder="Enter city"
+                                [(ngModel)]="instituteFormData.city" name="city" #city="ngModel" required>
+                            <div *ngIf="city.invalid && city.touched" class="error">
+                                <div *ngIf="city.errors?.['required']">Please enter city.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" placeholder="Enter state"
+                                [(ngModel)]="instituteFormData.state" name="state" #state="ngModel" required>
+                            <div *ngIf="state.invalid && state.touched" class="error">
+                                <div *ngIf="state.errors?.['required']">Please enter state.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Pincode</label>
+                            <input type="text" class="form-control" placeholder="Enter pincode"
+                                [(ngModel)]="instituteFormData.pincode" name="pincode" #pincode="ngModel" required
+                                minlength="6" maxlength="6">
+                            <div *ngIf="pincode.invalid && pincode.touched" class="error">
+                                <div *ngIf="pincode.errors?.['required']">Please enter pinCode.</div>
+                                <div *ngIf="pincode.errors?.['minlength']">Pin Code must be of 6 characters.</div>
+                                <div *ngIf="pincode.errors?.['maxlength']">Pin Code length should not exceed 6
+                                    characters.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="Enter full address or location"
+                                [(ngModel)]="instituteFormData.location" name="location" #location="ngModel" required>
+                            <div *ngIf="location.invalid && location.touched" class="error">
+                                <div *ngIf="location.errors?.['required']">Please enter location.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">GST No</label>
+                            <input type="text" class="form-control" placeholder="Enter GST number"
+                                [(ngModel)]="instituteFormData.gstNo" name="gstNo" #gstNo="ngModel" required>
+                            <div *ngIf="gstNo.invalid && gstNo.touched" class="error">
+                                <div *ngIf="gstNo.errors?.['required']">Please enter GST No.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Submit -->
+            @if(isAddEditInstituteLoader()) {
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            }
+            <!-- [disabled]="instituteForm.invalid" -->
+            <div class="d-flex justify-content-between">
+                @if(!isAddEditInstituteLoader()) {
+                <button type="submit" class="btn px-4" 
+                    [ngClass]="{'btn-success': id == '0', 'btn-warning': id != '0' }">
+                    <i class="bi" [ngClass]="{ 'bi-plus-circle-fill': !id, 'bi-pencil-square': id }"></i>
+                    {{ id != '0' ? 'Update Institute' : 'Add Institute' }}
+                </button>
+                <button class="btn btn-primary" *ngIf="id != '0'" (click)="cancelEdit()">
+                    <i class="bi bi-x-circle-fill"></i> Cancel</button>
+                }
+            </div>
+
+        </div>
+        <div class="col-lg-2"></div>
+    </form>
+    }
+
+
+    <!-- <form>
         <div class="row">
             <div class="card">
                 <div class="card-body">
@@ -88,6 +246,6 @@
                 <i class="bi bi-plus-circle me-1"></i> Add Institute
             </button>
         </div>
-    </form>
+    </form> -->
 
 </div>

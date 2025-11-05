@@ -27,11 +27,13 @@ export class InstituteList implements OnInit {
     this.getAllInstitutes();
   }
 
-  addEditInstitute(id: number | string) {
-    id = id.toString();
+  // navigate to add/edit institute form
+  addEditInstitute(id: number | string | undefined) {
+    id = id && id.toString();
     this.router.navigate(['/institute', id]);
   }
 
+  // get all institutes from service
   getAllInstitutes() {
     this.isInstituteLoader.set(true);
     this.instituteService.getAllInstitutes().subscribe({
@@ -47,7 +49,8 @@ export class InstituteList implements OnInit {
     })
   }
 
-  deleteInstitute(id: number) {
+  // delete institute by id
+  deleteInstitute(id: number | undefined) {
     console.log('Delete institute with ID:', id);
     this.instituteService.deleteInstitute(id).subscribe({
       next: (res: any) => {

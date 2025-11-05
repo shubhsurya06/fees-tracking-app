@@ -92,22 +92,22 @@
         }
 
         @if (!isMasterListLoading()) {
-          @if (masterList().length == 0) {
-          <p class="text-muted mt-3">No masters available. Please add one.</p>
-          }
+        @if (masterList().length == 0) {
+        <p class="text-muted mt-3">No masters available. Please add one.</p>
+        }
 
-          @if (masterList().length) {
-          <div class="card-body">
-            <div class="row g-3">
-              @for (master of masterList(); track master.masterId) {
-              <div class="col-md-6 col-xl-4">
-                <div class="card package-card h-100 shadow-sm">
-                  <div class="card-body">
-                    <p class="mb-2">
-                      <strong>{{ master.masterFor }}</strong><br>
-                      <small class="text-muted"><i>{{ master.masterValue }}</i></small>
-                    </p>
-                  </div>
+        @if (masterList().length) {
+        <div class="card-body">
+          <div class="row g-3">
+            @for (master of masterList(); track master.masterId) {
+            <div class="col-md-6 col-xl-4">
+              <div class="card package-card h-100 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title text-primary fw-bold">{{ master.masterFor }}</h5>
+
+                  <p class="mb-4">
+                    <small class="text-muted"><i>{{ master.masterValue }}</i></small>
+                  </p>
                   <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-warning btn-sm" (click)="editMaster(master)">
                       <i class="bi bi-pencil-square"></i> Edit</button>
@@ -116,10 +116,11 @@
                   </div>
                 </div>
               </div>
-              }
             </div>
+            }
           </div>
-          }
+        </div>
+        }
         }
       </div>
 

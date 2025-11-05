@@ -1,5 +1,5 @@
 export interface IInstituteModel {
-  instituteId: number;
+  instituteId?: number | undefined;
   name: string;
   conatctNo: string;
   emailId: string;
@@ -8,6 +8,6 @@ export interface IInstituteModel {
   state: string;
   location: string;
   ownerName: string;
-  createdDate: string;
+  createdDate?: string;
   gstNo: string;
 }
