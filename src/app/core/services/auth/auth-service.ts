@@ -17,7 +17,7 @@ export class AuthService {
 
   // login user from here
   login(data: User) {
-    const url = this.baseUrl + ApiConstant.API_TYPES.USER + ApiConstant.USER_APIS.LOGIN;
+    const url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.USER + ApiConstant.USER_APIS.LOGIN;
     return this.http.post(url, data);
   }
 

@@ -18,8 +18,10 @@ export class PackageMasterService {
    * @returns 
    */
   getAllPackages() {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.GET_ALL_PACKAGES}`;
-    return this.http.get(url);
+    let url = `${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.GET_ALL_PACKAGES}`;
+    return this.http.get(url).pipe(
+      delay(1000)
+    );
   }
 
   /**
@@ -28,8 +30,10 @@ export class PackageMasterService {
    * @returns 
    */
   createPackage(packageData: PackageMasterModel) {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.CREATE_PACKAGE}`;
-    return this.http.post(url, packageData);
+    let url = `${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.CREATE_PACKAGE}`;
+    return this.http.post(url, packageData).pipe(
+      delay(1000)
+    );
   }
 
   /*
@@ -38,7 +42,7 @@ export class PackageMasterService {
     * @returns 
   */
   updatePackage(packageData: PackageMasterModel) {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.UPDATE_PACKAGE}/${packageData.packageId}`;
+    let url = `${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.UPDATE_PACKAGE}${ApiConstant.SLASH_CONST}${packageData.packageId}`;
     return this.http.put(url, packageData).pipe(
       delay(1000)
     );
@@ -50,7 +54,7 @@ export class PackageMasterService {
    * @returns 
    */
   deletePackage(packageId: number) {
-    let url = `${this.baseUrl}${ApiConstant.API_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.DELETE_PACKAGE}/${packageId}`;
+    let url = `${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.PACKAGE_MASTER}${ApiConstant.PACKAGE_MASTER_APIS.DELETE_PACKAGE}${ApiConstant.SLASH_CONST}${packageId}`;
     return this.http.delete(url);
   }
   
