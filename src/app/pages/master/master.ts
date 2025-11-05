@@ -19,7 +19,6 @@ export class Master implements OnInit {
   isAddUpdateLoader = signal<boolean>(false);
   masterList = signal<IMaster[]>([]);
   masterForm: FormGroup;
-  // isEditMode = signal<boolean>(false);
 
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
@@ -108,7 +107,7 @@ export class Master implements OnInit {
       next: (res: any) => {
         alert(res.message);
         console.log(res.message, ' ', res);
-        this.onMasterAddUpdate();
+        this.onMasterAddUpdate(res.data);
       },
       error: (error) => {
         console.log('Some error while creating master:', error);
@@ -120,9 +119,16 @@ export class Master implements OnInit {
   /**
    * On Master Add or Update reset form and get all masters again
    */
-  onMasterAddUpdate() {
+  onMasterAddUpdate(res: IMaster) {
     this.isAddUpdateLoader.set(false);
-    this.getAllMasters();
+    let list = this.masterList();
+    let index = list.findIndex((item: IMaster) => item.masterId === res.masterId);
+    if (index === -1) {
+      list.push(res);
+    } else {
+      list[index] = res;
+    }
+    this.masterList.set(list);
     this.masterForm.reset();
   }
 
@@ -152,7 +158,7 @@ export class Master implements OnInit {
     this.masterService.updateMaster(master).subscribe({
       next: (res: any) => {
         alert(res.message);
-        this.onMasterAddUpdate();
+        this.onMasterAddUpdate(res.data);
       },
       error: (error) => {
         console.log('Error while updating master:', error);
@@ -175,7 +181,9 @@ export class Master implements OnInit {
     this.masterService.deleteMaster(id).subscribe({
       next: (res: any) => {
         alert(res.message);
-        this.getAllMasters();
+        let updatedList = this.masterList();
+        updatedList = updatedList.filter((master: IMaster) => master.masterId != id);
+        this.masterList.set(updatedList);
       },
       error: (error) => {
         console.log('Error while deleting master:', error);
