@@ -19,7 +19,7 @@ export class Master implements OnInit {
   isAddUpdateLoader = signal<boolean>(false);
   masterList = signal<IMaster[]>([]);
   masterForm: FormGroup;
-  isEditMode = signal<boolean>(false);
+  // isEditMode = signal<boolean>(false);
 
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
@@ -37,6 +37,13 @@ export class Master implements OnInit {
   }
 
   /**
+   * get masterId from masterForm if availale, used for editing master
+   */
+  get masterFormControlId() {
+    return this.masterForm.get('masterId')?.value;
+  }
+
+  /**
    * Get all masters from server
    */
   getAllMasters() {
@@ -44,7 +51,6 @@ export class Master implements OnInit {
     this.masterService.getAllMasters().subscribe({
       next: (res: any) => {
         this.isMasterListLoading.set(false);
-        console.log('this is master list:', res.message);
         this.masterList.set(res?.data ?? []);
       },
       error: (error) => {
@@ -61,7 +67,6 @@ export class Master implements OnInit {
   onTrackByChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     this.selectedFilter = value;
-    console.log('Selected filter:', value);
     if (this.selectedFilter === '') {
       this.getAllMasters();
       return;
@@ -72,7 +77,6 @@ export class Master implements OnInit {
       this.masterService.getMasterByType(this.selectedFilter).subscribe({
         next: (res: any) => {
           this.isMasterListLoading.set(false);
-          console.log('Filtered master list:', res.message);
           this.masterList.set(res?.data ?? []);
         },
         error: (error) => {
@@ -95,7 +99,7 @@ export class Master implements OnInit {
     this.isAddUpdateLoader.set(true);
     let req: IMaster = this.masterForm.value;
 
-    if (this.isEditMode()) {
+    if (this.masterFormControlId) {
       this.updateMaster(req);
       return;
     }
@@ -120,10 +124,6 @@ export class Master implements OnInit {
     this.isAddUpdateLoader.set(false);
     this.getAllMasters();
     this.masterForm.reset();
-
-    if (this.isEditMode()) {
-      this.isEditMode.set(false);
-    }
   }
 
   /**
@@ -131,7 +131,6 @@ export class Master implements OnInit {
    * @param master 
    */
   editMaster(master: IMaster) {
-    this.isEditMode.set(true);
     this.masterForm.patchValue({
       masterId: master.masterId,
       masterFor: master.masterFor,
@@ -144,7 +143,6 @@ export class Master implements OnInit {
    */
   cancelEdit() {
     this.masterForm.reset();
-    this.isEditMode.set(false);
   }
 
   /**

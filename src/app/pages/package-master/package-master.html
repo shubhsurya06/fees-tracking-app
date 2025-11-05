@@ -68,19 +68,18 @@
                         @if (!isAddUpdatePkgLoader()) {
                         <div class="d-flex justify-content-between mt-3">
                             <button class="btn btn-sm"
-                                [ngClass]="{ 'btn-success': !isEditMode(), 'btn-warning': isEditMode() }" type="submit">
+                                [ngClass]="{ 'btn-success': !pacakgeMasterId, 'btn-warning': pacakgeMasterId }" type="submit">
                                 <i class="bi"
-                                    [ngClass]="{ 'bi-plus-circle-fill': !isEditMode(), 'bi-pencil-square': isEditMode() }"></i>
-                                {{ isEditMode() ? 'Update Package' : 'Add Package' }}
+                                    [ngClass]="{ 'bi-plus-circle-fill': !pacakgeMasterId, 'bi-pencil-square': pacakgeMasterId }"></i>
+                                {{ pacakgeMasterId ? 'Update Package' : 'Add Package' }}
                             </button>
 
-                            @if (isEditMode()) {
+                            @if (pacakgeMasterId) {
                             <button class="btn btn-primary btn-sm" type="button" (click)="cancelEdit()">
                                 <i class="bi bi-x-circle-fill"></i> Cancel</button>
                             }
                         </div>
                         }
-                        <!-- <button class="btn btn-success w-100">Save Package</button> -->
                     </form>
 
                 </div>

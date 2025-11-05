@@ -19,7 +19,6 @@ export class PackageMaster implements OnInit {
   isPackageLoading = signal<boolean>(false);
   isAddUpdatePkgLoader = signal<boolean>(false);
   packageForm: FormGroup;
-  isEditMode = signal<boolean>(false);
   addPackageMasterLoader = signal<boolean>(false);
   fb = inject(FormBuilder);
 
@@ -37,6 +36,13 @@ export class PackageMaster implements OnInit {
 
   ngOnInit(): void {
     this.getAllPackages();
+  }
+
+  /**
+   * return packageId from packageForm if available
+   */
+  get pacakgeMasterId() {
+    return this.packageForm.get('packageId')?.value;
   }
 
   /**
@@ -64,10 +70,6 @@ export class PackageMaster implements OnInit {
     this.isAddUpdatePkgLoader.set(false);
     this.packageForm.reset();
     this.getAllPackages();
-
-    if (this.isEditMode()) {
-      this.isEditMode.set(false);
-    }
   }
 
   /**
@@ -78,7 +80,7 @@ export class PackageMaster implements OnInit {
       this.isAddUpdatePkgLoader.set(true);
       const packageData: PackageMasterModel = this.packageForm.value;
 
-      if (this.isEditMode()) {
+      if (this.pacakgeMasterId) {
         this.updatePackageMaster(packageData);
         return;
       }
@@ -124,7 +126,6 @@ export class PackageMaster implements OnInit {
    * @param packageMaster 
    */
   editPackage(packageMaster: PackageMasterModel) {
-    this.isEditMode.set(true);
     this.packageForm.patchValue({
       packageId: packageMaster.packageId,
       packageName: packageMaster.packageName,
@@ -166,7 +167,6 @@ export class PackageMaster implements OnInit {
    */
   cancelEdit() {
     this.packageForm.reset();
-    this.isEditMode.set(false);
   }
 
 }
