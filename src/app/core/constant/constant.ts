@@ -1,5 +1,5 @@
 export const ApiConstant = {
-    API_TYPES: {
+    CONTROLLER_TYPES: {
         MASTER: 'Master',
         USER: 'User',
         PACKAGE_MASTER: 'PackageMaster'

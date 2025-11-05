@@ -26,7 +26,7 @@
               <label for="MasterFor" class="form-label fw-semibold">Master For:</label>
               <select name="masterFOr" class="form-control" id="masterFor" formControlName="masterFor">
                 <option value="">Select...</option>
-                @for (trackBy of trackByList; track $index) {
+                @for (trackBy of masterForList; track $index) {
                 <option [value]="trackBy">{{ trackBy | titlecase }}</option>
                 }
               </select>
@@ -38,7 +38,7 @@
                 placeholder="Enter master value">
             </div>
 
-            @if (addMasterLoader()) {
+            @if (isAddUpdateLoader()) {
             <div class="text-center my-3">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -46,7 +46,7 @@
             </div>
             }
 
-            @if (!addMasterLoader()) {
+            @if (!isAddUpdateLoader()) {
             <div class="d-flex justify-content-between mt-3">
               <button class="btn btn-sm" [ngClass]="{ 'btn-success': !isEditMode(), 'btn-warning': isEditMode() }"
                 type="submit">
@@ -70,7 +70,7 @@
     <!-- Master List Section -->
     <div class="col-lg-9">
 
-      @if (getMasterLoader()) {
+      @if (isMasterListLoading()) {
       <div class="text-center mt-4">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -78,7 +78,7 @@
       </div>
       }
 
-      @if (!getMasterLoader()) {
+      @if (!isMasterListLoading()) {
       @if (masterList().length == 0) {
       <p class="text-muted mt-3">No masters available. Please add one.</p>
       }
@@ -90,7 +90,7 @@
           <select class="form-control form-select form-select-sm w-auto" [(ngModel)]="selectedFilter"
             (change)="onTrackByChange($event)">
             <option value="">All</option>
-            @for (trackBy of trackByList; track $index) {
+            @for (trackBy of masterForList; track $index) {
             <option [value]="trackBy">{{ trackBy | titlecase }}</option>
             }
           </select>

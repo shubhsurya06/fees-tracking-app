@@ -16,9 +16,9 @@ export class PackageMaster implements OnInit {
 
   packageMasterService = inject(PackageMasterService);
   packageList = signal<PackageMasterModel[]>([]);
-  packageLoader = signal<boolean>(false);
-  addPackageLoader = signal<boolean>(false);
-  packageForm!: FormGroup;
+  isPackageLoading = signal<boolean>(false);
+  isAddUpdatePkgLoader = signal<boolean>(false);
+  packageForm: FormGroup;
   isEditMode = signal<boolean>(false);
   addPackageMasterLoader = signal<boolean>(false);
   fb = inject(FormBuilder);
@@ -43,15 +43,16 @@ export class PackageMaster implements OnInit {
    * Get all packages from server
    */
   getAllPackages() {
-    this.packageLoader.set(true);
+    this.isPackageLoading.set(true);
     this.packageMasterService.getAllPackages().subscribe({
       next: (res: any) => {
-        this.packageLoader.set(false);
+        this.isPackageLoading.set(false);
         this.packageList.set(res.data || []);
       },
       error: (err: any) => {
         console.error('Error fetching packages:', err.message);
-        this.packageLoader.set(false);
+        alert(err.message);
+        this.isPackageLoading.set(false);
       }
     });
   }
@@ -60,7 +61,7 @@ export class PackageMaster implements OnInit {
    * After Add/Update package operations
    */
   onPackageAddUpdate() {
-    this.addPackageLoader.set(false);
+    this.isAddUpdatePkgLoader.set(false);
     this.packageForm.reset();
     this.getAllPackages();
 
@@ -74,7 +75,7 @@ export class PackageMaster implements OnInit {
    */
   createPackage() {
     if (this.packageForm.valid) {
-      this.addPackageLoader.set(true);
+      this.isAddUpdatePkgLoader.set(true);
       const packageData: PackageMasterModel = this.packageForm.value;
 
       if (this.isEditMode()) {
@@ -87,13 +88,14 @@ export class PackageMaster implements OnInit {
 
       this.packageMasterService.createPackage(packageData).subscribe({
         next: (res: any) => {
-          this.addPackageLoader.set(false);
+          this.isAddUpdatePkgLoader.set(false);
           this.packageForm.reset();
           this.getAllPackages();
         },
         error: (err: any) => {
           console.error('Error creating package:', err.message);
-          this.addPackageLoader.set(false);
+          this.isAddUpdatePkgLoader.set(false);
+          alert(err.message);
         }
       });
     } else {
@@ -112,7 +114,8 @@ export class PackageMaster implements OnInit {
       },
       error: (err: any) => {
         console.error('Error updating package:', err.message);
-        this.addPackageLoader.set(false);
+        this.isAddUpdatePkgLoader.set(false);
+        alert(err.message);
       }
     });
   }
@@ -153,6 +156,7 @@ export class PackageMaster implements OnInit {
       },
       error: (err: any) => {
         console.error('Error deleting package:', err.message);
+        alert(err.message);
       }
     });
   }

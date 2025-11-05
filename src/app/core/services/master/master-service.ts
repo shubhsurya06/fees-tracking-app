@@ -19,7 +19,7 @@ export class MasterService {
     * @returns 
   */
   getAllMasters() {
-    let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_ALL_MASTER;
+    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_ALL_MASTER;
     return this.http.get(url).pipe(
       delay(1000)
     );
@@ -31,7 +31,7 @@ export class MasterService {
    * @returns 
    */
   createMaster(req: IMaster) {
-    let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.CREATE_MASTER;
+    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.MASTER + ApiConstant.MASTER_APIS.CREATE_MASTER;
     return this.http.post(url, req).pipe(
       delay(1000)
     );
@@ -43,7 +43,7 @@ export class MasterService {
    * @returns 
    */
   updateMaster(req: IMaster) {
-    let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.UPDATE_MASTER;
+    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.MASTER + ApiConstant.MASTER_APIS.UPDATE_MASTER;
     return this.http.put(url + ApiConstant.SLASH_CONST + req.masterId, req).pipe(
       delay(1000)
     );
@@ -55,7 +55,7 @@ export class MasterService {
    * @returns 
    */
   deleteMaster(id: number) {
-    let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.DELETE_MASTER;
+    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.MASTER + ApiConstant.MASTER_APIS.DELETE_MASTER;
     return this.http.delete(url + ApiConstant.SLASH_CONST + id);
   }
 
@@ -65,7 +65,7 @@ export class MasterService {
     * @returns 
   */
   getMasterByType(masterFor: string): Observable<IMaster[]> {
-    let url = this.baseUrl + ApiConstant.API_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_MASTER_BY_TYPE;
+    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.MASTER + ApiConstant.MASTER_APIS.GET_MASTER_BY_TYPE;
     return this.http.get<IMaster[]>(url + ApiConstant.SLASH_CONST + masterFor).pipe(
       delay(1000)
     );

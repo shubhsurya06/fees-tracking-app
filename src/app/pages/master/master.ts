@@ -15,13 +15,13 @@ export class Master implements OnInit {
 
   title = signal('Master Page');
   masterService = inject(MasterService);
-  getMasterLoader = signal<boolean>(false);
-  addMasterLoader = signal<boolean>(false);
+  isMasterListLoading = signal<boolean>(false);
+  isAddUpdateLoader = signal<boolean>(false);
   masterList = signal<IMaster[]>([]);
-  masterForm!: FormGroup;
+  masterForm: FormGroup;
   isEditMode = signal<boolean>(false);
 
-  trackByList: string[] = ['Payment Mode', 'Reference By'];
+  masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
 
   constructor(private fb: FormBuilder) {
@@ -40,15 +40,16 @@ export class Master implements OnInit {
    * Get all masters from server
    */
   getAllMasters() {
-    this.getMasterLoader.set(true);
+    this.isMasterListLoading.set(true);
     this.masterService.getAllMasters().subscribe({
       next: (res: any) => {
-        this.getMasterLoader.set(false);
+        this.isMasterListLoading.set(false);
         console.log('this is master list:', res.message);
         this.masterList.set(res?.data ?? []);
       },
       error: (error) => {
         console.log('Error while getting master data:', error);
+        alert(error.message);
       }
     });
   }
@@ -67,15 +68,16 @@ export class Master implements OnInit {
     }
 
     if (this.selectedFilter) {
-      this.getMasterLoader.set(true);
+      this.isMasterListLoading.set(true);
       this.masterService.getMasterByType(this.selectedFilter).subscribe({
         next: (res: any) => {
-          this.getMasterLoader.set(false);
+          this.isMasterListLoading.set(false);
           console.log('Filtered master list:', res.message);
           this.masterList.set(res?.data ?? []);
         },
         error: (error) => {
           console.log('Error while filtering master data:', error);
+          alert(error.message);
         }
       });
     }
@@ -90,7 +92,7 @@ export class Master implements OnInit {
       return;
     }
 
-    this.addMasterLoader.set(true);
+    this.isAddUpdateLoader.set(true);
     let req: IMaster = this.masterForm.value;
 
     if (this.isEditMode()) {
@@ -106,6 +108,7 @@ export class Master implements OnInit {
       },
       error: (error) => {
         console.log('Some error while creating master:', error);
+        alert(error.message);
       }
     })
   }
@@ -114,7 +117,7 @@ export class Master implements OnInit {
    * On Master Add or Update reset form and get all masters again
    */
   onMasterAddUpdate() {
-    this.addMasterLoader.set(false);
+    this.isAddUpdateLoader.set(false);
     this.getAllMasters();
     this.masterForm.reset();
 
@@ -154,8 +157,8 @@ export class Master implements OnInit {
         this.onMasterAddUpdate();
       },
       error: (error) => {
-        alert(error.message);
         console.log('Error while updating master:', error);
+        alert(error.message);
       }
     })
   }
@@ -178,6 +181,7 @@ export class Master implements OnInit {
       },
       error: (error) => {
         console.log('Error while deleting master:', error);
+        alert(error.message);
       }
     })
   }
