@@ -1,0 +1,32 @@
+.form-card {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 2px solid #007bff;
+    background-color: #fff;
+}
+
+.form-label {
+    color: #333;
+}
+
+input.form-control {
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+    transition: box-shadow 0.2s;
+}
+
+input.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+button.btn-success {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+h4 {
+    border-bottom: 3px solid #007bff;
+    display: inline-block;
+    padding-bottom: 4px;
+}

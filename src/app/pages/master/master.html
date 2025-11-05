@@ -46,21 +46,6 @@
             </div>
             }
 
-            <!-- @if (!isAddUpdateLoader()) {
-            <div class="d-flex justify-content-between mt-3">
-              <button class="btn btn-sm" [ngClass]="{ 'btn-success': !isEditMode(), 'btn-warning': isEditMode() }"
-                type="submit">
-                <i class="bi" [ngClass]="{ 'bi-plus-circle-fill': !isEditMode(), 'bi-pencil-square': isEditMode() }"></i>
-                {{ isEditMode() ? 'Update Master' : 'Add Master' }}
-              </button>
-
-              @if (isEditMode()) {
-              <button class="btn btn-primary btn-sm" type="button" (click)="cancelEdit()">
-                <i class="bi bi-x-circle-fill"></i> Cancel</button>
-              }
-            </div>
-            } -->
-
             @if (!isAddUpdateLoader()) {
             <div class="d-flex justify-content-between mt-3">
               <button class="btn btn-sm"
@@ -123,7 +108,7 @@
                       <small class="text-muted"><i>{{ master.masterValue }}</i></small>
                     </p>
                   </div>
-                  <div class="card-footer d-flex justify-content-between">
+                  <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-warning btn-sm" (click)="editMaster(master)">
                       <i class="bi bi-pencil-square"></i> Edit</button>
                     <button type="button" class="btn btn-danger btn-sm" (click)="deleteMaster(master.masterId)"><i

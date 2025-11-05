@@ -1,0 +1,20 @@
+.card {
+    border-left: 6px solid #1e60d4;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    background: #f8f9fa;
+}
+
+.card-title {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+h2 {
+    border-bottom: 3px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+}
