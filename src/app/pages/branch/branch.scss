@@ -1,0 +1,77 @@
+/* page-title styles intentionally removed or defined globally */
+
+.branch-card {
+    border-left: 6px solid #0d6efd;
+    border-radius: 10px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    background: #fff;
+}
+
+.branch-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.08);
+}
+
+.package-list-section {
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.package-list-section .card-body .input-group .form-control {
+    border-radius: 24px;
+}
+
+.branch-card .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Truncate long location text inside cards */
+.branch-card .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Modal form tweaks */
+.modal .form-control {
+    border-radius: 8px;
+}
+
+.modal .modal-header {
+    background: linear-gradient(90deg, rgba(13,110,253,0.06), rgba(13,110,253,0.02));
+}
+
+.modal .modal-footer .btn-primary {
+    border-radius: 24px;
+}
+
+/* Input group icon tweaks */
+.input-group .input-group-text {
+    border: 0;
+    background: transparent;
+    padding-right: 0.75rem;
+}
+
+.input-group .form-control {
+    border: 1px solid #e9eef8;
+    box-shadow: none;
+}
+
+.modal .form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.modal .input-group .input-group-text i {
+    font-size: 1rem;
+    color: #0d6efd;
+}
+
+/* Textarea tweak to match professional UI */
+.modal .form-control[rows] {
+    min-height: 90px; /* ensure taller appearance across browsers */
+    resize: vertical;
+}

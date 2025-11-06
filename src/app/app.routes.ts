@@ -4,6 +4,7 @@ import { Master } from './pages/master/master';
 import { authGuard } from './core/services/auth/auth-guard';
 import { PackageMaster } from './pages/package-master/package-master';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { Branch } from './pages/branch/branch';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
         loadChildren: () =>
             import('../app/pages/institute/institute.routes').then((m) => m.INSTITUTE_ROUTES),
         canActivate: [authGuard]
-    }
+    },
+    { path: 'branch', component: Branch, title: 'Branch::Fees Tracking app', canActivate: [authGuard] },
 ];

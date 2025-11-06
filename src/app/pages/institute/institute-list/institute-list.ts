@@ -39,8 +39,7 @@ export class InstituteList implements OnInit {
     this.instituteService.getAllInstitutes().subscribe({
       next: (res: any) => {
         this.isInstituteLoader.set(false);
-        this.instituteList.set(res.data);
-        console.log('Institutes:', this.instituteList());
+        this.instituteList.set(res.data.splice(1));
       },
       error: (error) => {
         this.isInstituteLoader.set(false);
@@ -54,7 +53,6 @@ export class InstituteList implements OnInit {
     console.log('Delete institute with ID:', id);
     this.instituteService.deleteInstitute(id).subscribe({
       next: (res: any) => {
-        console.log('Institute deleted:', res);
         let updatedList = this.instituteList().filter(institute => institute.instituteId !== id);
         this.instituteList.set(updatedList);
       },
