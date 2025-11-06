@@ -3,7 +3,8 @@ export const ApiConstant = {
         MASTER: 'Master',
         USER: 'User',
         PACKAGE_MASTER: 'PackageMaster',
-        INSTITUTE: 'InstituteMaster'
+        INSTITUTE: 'InstituteMaster',
+        BRANCH: 'BranchMaster'
     },
     SLASH_CONST: '/',
     MASTER_APIS: {
@@ -26,6 +27,13 @@ export const ApiConstant = {
         UPDATE_INSTITUTE: '/update-institute',
         DELETE_INSTITUTE: '/delete-institute',
         GET_SINGLE_INSTITUTE: '/get-institute-by-id'
+    },
+    BRANCH_APIS: {
+        GET_ALL_BRANCHES: '/get-all-branches',
+        CREATE_BRANCH: '/create-branch',
+        UPDATE_BRANCH: '/update-branch',
+        DELETE_BRANCH: '/delete-branch',
+        GET_SINGLE_BRANCH: '/get-branch-by-id'
     },
     USER_APIS: {
         LOGIN: '/login',
