@@ -55,13 +55,22 @@ export class Branch implements OnInit {
     });
   }
 
+  onGetAllBranchSuccess(res: any) {
+    res.map((branch: IBranch) => {
+      const institute = this.instituteList().find((inst: IInstituteModel) => inst.instituteId === branch.instituteId);
+      branch.instituteName = institute ? institute.name : 'N/A';
+      return branch;
+    })
+    this.branchList.set(res);
+  }
+
   getAllBranches() {
     this.isBranchLoading.set(true);
     this.branchService.getAllBranches().subscribe({
       next: (res: any) => {
         this.isBranchLoading.set(false);
-        this.branchList.set(res);
-        console.log('Branches fetched:', this.branchList(), res.data);
+        console.log('Institute List for mapping:', this.instituteList(), res);
+        this.onGetAllBranchSuccess(res);
       },
       error: (err: any) => {
         console.error('Error fetching branches:', err);
@@ -153,7 +162,7 @@ export class Branch implements OnInit {
       // ignore if bootstrap not available
     }
     this.cancelEdit();
-    
+
     // Update the branch list
     this.branchList.update(list => {
       const index = list.findIndex(b => b.branchId === branchData.branchId);

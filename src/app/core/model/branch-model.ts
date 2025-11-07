@@ -9,4 +9,5 @@ export interface IBranch {
   branchContactNo: string;
   branchEmail: string;
   branchCode: string;
+  instituteName?: string;
 }
