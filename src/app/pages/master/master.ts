@@ -96,6 +96,64 @@ export class Master implements OnInit {
   }
 
   /**
+   * show alert box on create and update (for success, error)
+   * @param isSuccess 
+   * @param res 
+   */
+  showAlert(isSuccess: boolean, res: any) {
+    this.isShowAlert = true;
+    this.isSuccessAlert = isSuccess;
+    this.alertObj = {
+      type: isSuccess ? ApiConstant.ALERT_CONSTANT.TYPE.SUCCESS : ApiConstant.ALERT_CONSTANT.TYPE.DANGER,
+      title: isSuccess ? ApiConstant.ALERT_CONSTANT.TITLE.SUCCESS : ApiConstant.ALERT_CONSTANT.TITLE.DANGER,
+      message: res.message
+    }
+    setTimeout(() => {
+      this.isShowAlert = false;
+      this.cdr.detectChanges()
+    }, 5000);
+  }
+
+  /**
+   * On Master Add or Update reset form and get all masters again
+   */
+  onMasterAddUpdate(res: any) {
+    this.showAlert(true, res);
+    this.isAddUpdateLoader.set(false);
+    let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.data.masterId);
+    if (index === -1) {
+      this.masterList().push(res.data);
+    } else {
+      this.masterList()[index] = res.data;
+    }
+    this.masterForm.reset();
+  }
+
+  /**
+   * handle error while create and update master
+   * @param error 
+   */
+  onMastetAddUpdateError(error: any) {
+    this.isAddUpdateLoader.set(false);
+    this.showAlert(false, error);
+  }
+
+  /**
+   * Update Master
+   */
+  updateMaster(master: IMaster) {
+    this.masterService.updateMaster(master).subscribe({
+      next: (res: any) => {
+        this.onMasterAddUpdate(res);
+      },
+      error: (error) => {
+        console.log('Error while updating master:', error);
+        this.onMastetAddUpdateError(error);
+      }
+    })
+  }
+
+  /**
    * Create master form here and also update master if in edit mode
    * @returns 
    */
@@ -124,30 +182,6 @@ export class Master implements OnInit {
   }
 
   /**
-   * On Master Add or Update reset form and get all masters again
-   */
-  onMasterAddUpdate(res: any) {
-    this.showAlert(true, res);
-    this.isAddUpdateLoader.set(false);
-    let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.data.masterId);
-    if (index === -1) {
-      this.masterList().push(res.data);
-    } else {
-      this.masterList()[index] = res.data;
-    }
-    this.masterForm.reset();
-  }
-
-  /**
-   * handle error while create and update master
-   * @param error 
-   */
-  onMastetAddUpdateError(error: any) {
-    this.isAddUpdateLoader.set(false);
-    this.showAlert(false, error);
-  }
-
-  /**
    * Edit Master and set some values to make form in edit mode
    * @param master 
    */
@@ -164,40 +198,6 @@ export class Master implements OnInit {
    */
   cancelEdit() {
     this.masterForm.reset();
-  }
-
-  /**
-   * show alert box on create and update (for success, error)
-   * @param isSuccess 
-   * @param res 
-   */
-  showAlert(isSuccess: boolean, res: any) {
-    this.isShowAlert = true;
-    this.isSuccessAlert = isSuccess;
-    this.alertObj = {
-      type: isSuccess ? ApiConstant.ALERT_CONSTANT.TYPE.SUCCESS : ApiConstant.ALERT_CONSTANT.TYPE.DANGER,
-      title: isSuccess ? ApiConstant.ALERT_CONSTANT.TITLE.SUCCESS : ApiConstant.ALERT_CONSTANT.TITLE.DANGER,
-      message: res.message
-    }
-    setTimeout(() => {
-      this.isShowAlert = false;
-      this.cdr.detectChanges()
-    }, 5000);
-  }
-
-  /**
-   * Update Master
-   */
-  updateMaster(master: IMaster) {
-    this.masterService.updateMaster(master).subscribe({
-      next: (res: any) => {
-        this.onMasterAddUpdate(res);
-      },
-      error: (error) => {
-        console.log('Error while updating master:', error);
-        this.onMastetAddUpdateError(error);
-      }
-    })
   }
 
   /**
