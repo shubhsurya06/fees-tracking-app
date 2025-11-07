@@ -13,6 +13,10 @@
     </div>
   </div>
 
+  @if (isShowAlert) {
+    <app-alert-box [isShowSuccess]="isSuccessAlert" [alertReq]="alertObj"></app-alert-box>
+  }
+
   <div class="row g-4">
 
     <!-- Master CRUD Section -->

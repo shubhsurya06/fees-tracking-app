@@ -1,0 +1,4 @@
+<div class="alert alert-dismissible" [ngClass]="{'alert-success': isShowSuccess, 'alert-danger': !isShowSuccess}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>{{alertReq.title}}</strong> {{alertReq.message}}
+</div>

@@ -1,13 +1,16 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, Output, signal, ChangeDetectorRef } from '@angular/core';
 import { Header } from '../header/header';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe, NgStyle } from '@angular/common';
+import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
+import { ApiConstant } from '../../core/constant/constant';
+import { IAlert } from '../../core/model/alert-model';
 
 @Component({
   selector: 'app-master',
-  imports: [Header, ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule],
+  imports: [Header, ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox],
   templateUrl: './master.html',
   styleUrl: './master.scss'
 })
@@ -19,6 +22,12 @@ export class Master implements OnInit {
   isAddUpdateLoader = signal<boolean>(false);
   masterList = signal<IMaster[]>([]);
   masterForm: FormGroup;
+
+  // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
+  @Output() isSuccessAlert: boolean = false;
+  @Output() alertObj!: IAlert;
+  isShowAlert: Boolean = false;
+  cdr = inject(ChangeDetectorRef);
 
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
@@ -105,13 +114,11 @@ export class Master implements OnInit {
 
     this.masterService.createMaster(req).subscribe({
       next: (res: any) => {
-        alert(res.message);
-        console.log(res.message, ' ', res);
-        this.onMasterAddUpdate(res.data);
+        this.onMasterAddUpdate(res);
       },
       error: (error) => {
         console.log('Some error while creating master:', error);
-        alert(error.message);
+        this.onMastetAddUpdateError(error);
       }
     })
   }
@@ -119,16 +126,25 @@ export class Master implements OnInit {
   /**
    * On Master Add or Update reset form and get all masters again
    */
-  onMasterAddUpdate(res: IMaster) {
+  onMasterAddUpdate(res: any) {
+    this.showAlert(true, res);
     this.isAddUpdateLoader.set(false);
-    let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.masterId);
+    let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.data.masterId);
     if (index === -1) {
-      this.masterList().push(res);
+      this.masterList().push(res.data);
     } else {
-      this.masterList()[index] = res;
+      this.masterList()[index] = res.data;
     }
-    // this.masterList.set(list);
     this.masterForm.reset();
+  }
+
+  /**
+   * handle error while create and update master
+   * @param error 
+   */
+  onMastetAddUpdateError(error: any) {
+    this.isAddUpdateLoader.set(false);
+    this.showAlert(false, error);
   }
 
   /**
@@ -151,17 +167,35 @@ export class Master implements OnInit {
   }
 
   /**
+   * show alert box on create and update (for success, error)
+   * @param isSuccess 
+   * @param res 
+   */
+  showAlert(isSuccess: boolean, res: any) {
+    this.isShowAlert = true;
+    this.isSuccessAlert = isSuccess;
+    this.alertObj = {
+      type: isSuccess ? ApiConstant.ALERT_CONSTANT.TYPE.SUCCESS : ApiConstant.ALERT_CONSTANT.TYPE.DANGER,
+      title: isSuccess ? ApiConstant.ALERT_CONSTANT.TITLE.SUCCESS : ApiConstant.ALERT_CONSTANT.TITLE.DANGER,
+      message: res.message
+    }
+    setTimeout(() => {
+      this.isShowAlert = false;
+      this.cdr.detectChanges()
+    }, 5000);
+  }
+
+  /**
    * Update Master
    */
   updateMaster(master: IMaster) {
     this.masterService.updateMaster(master).subscribe({
       next: (res: any) => {
-        alert(res.message);
-        this.onMasterAddUpdate(res.data);
+        this.onMasterAddUpdate(res);
       },
       error: (error) => {
         console.log('Error while updating master:', error);
-        alert(error.message);
+        this.onMastetAddUpdateError(error);
       }
     })
   }

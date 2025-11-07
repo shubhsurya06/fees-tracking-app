@@ -7,6 +7,16 @@ export const ApiConstant = {
         BRANCH: 'BranchMaster'
     },
     SLASH_CONST: '/',
+    ALERT_CONSTANT: {
+        TYPE: {
+            SUCCESS: 'alert-success',
+            DANGER: 'alert-danger'
+        },
+        TITLE: {
+            SUCCESS: 'SUCCESS!',
+            DANGER: 'DANGER'
+        }
+    },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
         CREATE_MASTER: '/create-master',
