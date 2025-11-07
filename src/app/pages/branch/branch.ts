@@ -31,7 +31,7 @@ export class Branch implements OnInit {
       state: ['', Validators.required],
       pincode: ['', Validators.required],
       location: ['', Validators.required],
-      instituteId: [0, Validators.required],
+      instituteId: ['', Validators.required],
       branchContactNo: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       branchEmail: ['', [Validators.required, Validators.email]],
       branchCode: ['', Validators.required]

@@ -22,7 +22,8 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Branch List</h5>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
                         <i class="bi bi-plus-circle-fill"></i> Add Branch
                     </button>
                 </div>
@@ -31,7 +32,8 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="input-group w-50">
                             <span class="input-group-text bg-white border-0"><i class="bi bi-search"></i></span>
-                            <input type="search" class="form-control border-0 shadow-sm" placeholder="Search branches...">
+                            <input type="search" class="form-control border-0 shadow-sm"
+                                placeholder="Search branches...">
                         </div>
                         <div class="text-muted small">Showing <strong>{{ branchList().length }}</strong> branches</div>
                     </div>
@@ -57,21 +59,26 @@
                                     </div>
 
                                     <div class="text-muted small mb-3">
-                                        <div><i class="bi bi-building me-1"></i> <strong>Institute:</strong> {{ branch.instituteId }}</div>
+                                        <div><i class="bi bi-building me-1"></i> <strong>Institute:</strong> {{
+                                            branch.instituteId }}</div>
                                         <div><i class="bi bi-telephone me-1"></i> {{ branch.branchContactNo }}</div>
                                     </div>
 
                                     <ul class="list-unstyled small mb-3">
                                         <li><i class="bi bi-envelope me-2"></i>{{ branch.branchEmail }}</li>
-                                        <li><i class="bi bi-geo-alt me-2"></i>{{ branch.city }}, {{ branch.state }} - {{ branch.pincode }}</li>
-                                        <li class="text-truncate"><i class="bi bi-pin-map me-2"></i>{{ branch.location }}</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i>{{ branch.city }}, {{ branch.state }} - {{
+                                            branch.pincode }}</li>
+                                        <li class="text-truncate"><i class="bi bi-pin-map me-2"></i>{{ branch.location
+                                            }}</li>
                                     </ul>
 
                                     <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <button class="btn btn-outline-warning btn-sm" (click)="editBranch(branch)" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                        <button class="btn btn-outline-warning btn-sm" (click)="editBranch(branch)"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm" (click)="deleteBranch(branch.branchId)">
+                                        <button class="btn btn-outline-danger btn-sm"
+                                            (click)="deleteBranch(branch.branchId)">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </div>
@@ -96,15 +103,18 @@
             <form [formGroup]="branchForm" (ngSubmit)="createBranch()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Add / Update Branch</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="cancelEdit()"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label">Branch Name</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-briefcase-fill text-primary"></i></span>
-                                <input type="text" class="form-control" formControlName="branchName" placeholder="Branch name">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-briefcase-fill text-primary"></i></span>
+                                <input type="text" class="form-control" formControlName="branchName"
+                                    placeholder="Branch name">
                             </div>
                             @if (branchForm.get('branchName')?.invalid && branchForm.get('branchName')?.touched) {
                             <small class="text-danger">Branch name is required</small>
@@ -126,22 +136,34 @@
                             <label class="form-label">Institute</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white"><i class="bi bi-building text-primary"></i></span>
-                                <select class="form-select" formControlName="instituteId">
+                                <select class="form-select" formControlName="instituteId" required>
                                     <option value="">Select Institute</option>
                                     @for (institute of instituteList(); track institute.instituteId) {
                                     <option [value]="institute.instituteId">{{ institute.name }}</option>
                                     }
                                 </select>
+                                <div class="">
+                                    @if (branchForm.get('instituteId')?.invalid && branchForm.get('instituteId')?.touched) {
+                                    <small class="text-danger">
+                                        @if (branchForm.get('instituteId')?.errors?.['required']) {
+                                        Please select an institute.
+                                        }
+                                    </small>
+                                    }
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Contact Number</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-telephone text-primary"></i></span>
-                                <input type="text" class="form-control" formControlName="branchContactNo" placeholder="Contact no">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-telephone text-primary"></i></span>
+                                <input type="text" class="form-control" formControlName="branchContactNo"
+                                    placeholder="Contact no">
                             </div>
-                            @if (branchForm.get('branchContactNo')?.invalid && branchForm.get('branchContactNo')?.touched) {
+                            @if (branchForm.get('branchContactNo')?.invalid &&
+                            branchForm.get('branchContactNo')?.touched) {
                             <small class="text-danger">
                                 @if (branchForm.get('branchContactNo')?.errors?.['required']) {
                                 Contact number is required.
@@ -156,8 +178,10 @@
                         <div class="col-md-4">
                             <label class="form-label">Email</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-envelope text-primary"></i></span>
-                                <input type="email" class="form-control" formControlName="branchEmail" placeholder="Email address">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-envelope text-primary"></i></span>
+                                <input type="email" class="form-control" formControlName="branchEmail"
+                                    placeholder="Email address">
                             </div>
                             @if (branchForm.get('branchEmail')?.invalid && branchForm.get('branchEmail')?.touched) {
                             <small class="text-danger">
@@ -174,7 +198,8 @@
                         <div class="col-md-4">
                             <label class="form-label">City</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-geo-alt text-primary"></i></span>
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-geo-alt text-primary"></i></span>
                                 <input type="text" class="form-control" formControlName="city" placeholder="City">
                             </div>
                             @if (branchForm.get('city')?.invalid && branchForm.get('city')?.touched) {
@@ -196,21 +221,19 @@
                         <div class="col-md-4">
                             <label class="form-label">Pincode</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-postcard text-primary"></i></span>
-                                <input type="text" 
-                                       class="form-control" 
-                                       formControlName="pincode" 
-                                       placeholder="Pincode"
-                                       pattern="[0-9]{6}"
-                                       maxlength="6"
-                                       minlength="6">
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-postcard text-primary"></i></span>
+                                <input type="text" class="form-control" formControlName="pincode" placeholder="Pincode"
+                                    pattern="[0-9]{6}" maxlength="6" minlength="6">
                             </div>
                             @if (branchForm.get('pincode')?.invalid && branchForm.get('pincode')?.touched) {
                             <small class="text-danger">
                                 @if (branchForm.get('pincode')?.errors?.['required']) {
                                 Pincode is required
                                 }
-                                @if (branchForm.get('pincode')?.errors?.['pattern'] || branchForm.get('pincode')?.errors?.['minlength'] || branchForm.get('pincode')?.errors?.['maxlength']) {
+                                @if (branchForm.get('pincode')?.errors?.['pattern'] ||
+                                branchForm.get('pincode')?.errors?.['minlength'] ||
+                                branchForm.get('pincode')?.errors?.['maxlength']) {
                                 Pincode must be exactly 6 digits
                                 }
                             </small>
@@ -220,8 +243,10 @@
                         <div class="col-md-8">
                             <label class="form-label">Location</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white align-self-start pt-2"><i class="bi bi-pin-map text-primary"></i></span>
-                                <textarea class="form-control" formControlName="location" rows="2" placeholder="Enter full address"></textarea>
+                                <span class="input-group-text bg-white align-self-start pt-2"><i
+                                        class="bi bi-pin-map text-primary"></i></span>
+                                <textarea class="form-control" formControlName="location" rows="2"
+                                    placeholder="Enter full address"></textarea>
                             </div>
                             @if (branchForm.get('location')?.invalid && branchForm.get('location')?.touched) {
                             <small class="text-danger">Location is required</small>
@@ -243,8 +268,11 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn d-flex align-items-center" [ngClass]="branchForm.get('branchId')?.value ? 'btn-warning' : 'btn-success'" [disabled]="branchForm.invalid">
-                        <i class="bi me-2" [ngClass]="branchForm.get('branchId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                    <button type="submit" class="btn d-flex align-items-center"
+                        [ngClass]="branchForm.get('branchId')?.value ? 'btn-warning' : 'btn-success'"
+                        [disabled]="branchForm.invalid">
+                        <i class="bi me-2"
+                            [ngClass]="branchForm.get('branchId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
                         <span>{{ branchForm.get('branchId')?.value ? 'Update Branch' : 'Add Branch' }}</span>
                     </button>
 
@@ -252,4 +280,4 @@
             </form>
         </div>
     </div>
-</div>  
+</div>
