@@ -1,24 +1,28 @@
 <app-header></app-header>
+
 <div class="container py-4">
 
     <div class="row mb-4">
         <div class="col text-center">
-            <h2 class="fw-bold text-primary">{{ title() }}</h2>
+            <h2 class="fw-bold text-primary">
+                <i class="bi bi-box-seam me-2"></i>{{ title() }}
+            </h2>
+            <p class="text-muted small">Manage your service packages and pricing</p>
             <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" />
         </div>
     </div>
 
-    <!-- <h2 class="text-center fw-bold text-primary"></h2>
-    <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" /> -->
-
     <div class="row">
+
         <!-- Left: Add / Update Form -->
         <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Add / Update Package</h5>
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light border-0 py-3">
+                    <h5 class="mb-0 text-primary fw-bold">Add / Update Package</h5>
                 </div>
-                <div class="card-body">
+
+                <!-- SCROLLABLE ONLY THIS SECTION -->
+                <div class="card-body left-form-scroll">
 
                     <form [formGroup]="packageForm" (ngSubmit)="createPackage()" class="mt-2">
 
@@ -68,7 +72,8 @@
                         @if (!isAddUpdatePkgLoader()) {
                         <div class="d-flex justify-content-between mt-3">
                             <button class="btn btn-sm"
-                                [ngClass]="{ 'btn-success': !pacakgeMasterId, 'btn-warning': pacakgeMasterId }" type="submit">
+                                [ngClass]="{ 'btn-success': !pacakgeMasterId, 'btn-warning': pacakgeMasterId }"
+                                type="submit">
                                 <i class="bi"
                                     [ngClass]="{ 'bi-plus-circle-fill': !pacakgeMasterId, 'bi-pencil-square': pacakgeMasterId }"></i>
                                 {{ pacakgeMasterId ? 'Update Package' : 'Add Package' }}
@@ -80,6 +85,7 @@
                             }
                         </div>
                         }
+
                     </form>
 
                 </div>
@@ -88,24 +94,33 @@
 
         <!-- Right: Package List -->
         <div class="col-md-9">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Package List</h5>
-                </div>
-
-                <div class="card-body package-list-section">
-
-                    @if (isPackageLoading()) {
-                    <div class="text-center mt-4">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+            <div class="card shadow-sm h-100">
+                <!-- <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <h5 class="mb-0 text-primary fw-bold">Package List</h5>
                     </div>
-                    }
+                </div> -->
 
-                    @if (!isPackageLoading()) {
+                <div class="card-body p-0">
+                    <div class="list-viewport" style="max-height: calc(100vh - 260px); overflow:auto; padding:1rem;">
+
+                        @if (isPackageLoading()) {
+                        <div class="d-flex align-items-center justify-content-center"
+                            style="height:100%; min-height:200px;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        }
+
+                        @if (!isPackageLoading()) {
+                        @if (packageList().length == 0) {
+                        <p class="text-muted">No packages available. Please add one.</p>
+                        }
+
+                        @if (packageList().length) {
                         <div class="row g-3">
-    
+
                             @for (pkg of packageList(); track pkg.packageId) {
                             <div class="col-md-4">
                                 <div class="card package-card shadow-sm">
@@ -119,17 +134,18 @@
                                         <p class="mb-1"><strong>Students:</strong> {{pkg.maxStudents}}</p>
                                         <p class="mb-4">
                                             <strong>SMS Alert:</strong>
-    
+
                                             <span [class.text-success]="pkg.isSmsAlert"
                                                 [class.text-danger]="!pkg.isSmsAlert">
                                                 {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
                                             </span>
                                         </p>
-    
+
                                         <div class="d-flex justify-content-between mt-3">
-                                            <button class="btn btn-warning btn-sm" (click)="editPackage(pkg)">
+                                            <button class="btn btn-outline-warning btn-sm" (click)="editPackage(pkg)">
                                                 <i class="bi bi-pencil-square"></i> Edit</button>
-                                            <button class="btn btn-danger btn-sm" (click)="deletePackage(pkg.packageId)">
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                (click)="deletePackage(pkg.packageId)">
                                                 <i class="bi bi-trash-fill"></i> Delete</button>
                                         </div>
                                     </div>
@@ -137,9 +153,13 @@
                             </div>
                             }
                         </div>
-                    }
+                        }
+                        }
+
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

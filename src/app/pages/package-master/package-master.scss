@@ -18,3 +18,9 @@
     max-height: 80vh;
     overflow-y: auto;
 }
+
+.left-form-scroll {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: 6px;
+}

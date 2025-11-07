@@ -12,16 +12,6 @@
     box-shadow: 0 10px 30px rgba(13, 110, 253, 0.08);
 }
 
-.package-list-section {
-    max-height: 75vh;
-    overflow-y: auto;
-    padding-right: 6px;
-}
-
-.package-list-section .card-body .input-group .form-control {
-    border-radius: 24px;
-}
-
 .branch-card .card-body {
     display: flex;
     flex-direction: column;

@@ -17,7 +17,7 @@ export class BranchService {
   }
 
   updateBranch(branchData: any) {
-    return this.http.put(`${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.BRANCH}${ApiConstant.BRANCH_APIS.UPDATE_BRANCH}${ApiConstant.SLASH_CONST}${branchData.branchId}`, branchData);
+    return this.http.put(`${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.BRANCH}${ApiConstant.BRANCH_APIS.UPDATE_BRANCH}${ApiConstant.SLASH_CONST}`, branchData);
   }
 
   createBranch(branchData: any) {

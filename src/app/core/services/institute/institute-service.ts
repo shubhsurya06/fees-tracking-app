@@ -13,9 +13,10 @@ export class InstituteService {
   baseUrl: string = environment.API_URL;
 
   getAllInstitutes() {
-    return this.http.get(`${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.INSTITUTE}${ApiConstant.INSTITUTE_APIS.GET_ALL_INSTITUTES}`).pipe(
-      delay(1000)
-    );
+    return this.http.get(`${this.baseUrl}${ApiConstant.CONTROLLER_TYPES.INSTITUTE}${ApiConstant.INSTITUTE_APIS.GET_ALL_INSTITUTES}`);
+    // .pipe(
+    //   delay(1000)
+    // );
   }
 
   deleteInstitute(id: number | undefined) {
