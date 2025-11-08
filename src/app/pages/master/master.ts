@@ -5,7 +5,7 @@ import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgClass, TitleCasePipe, NgStyle } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
-import { ApiConstant } from '../../core/constant/constant';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { IAlert } from '../../core/model/alert-model';
 
 @Component({
@@ -104,8 +104,8 @@ export class Master implements OnInit {
     this.isShowAlert = true;
     this.isSuccessAlert = isSuccess;
     this.alertObj = {
-      type: isSuccess ? ApiConstant.ALERT_CONSTANT.TYPE.SUCCESS : ApiConstant.ALERT_CONSTANT.TYPE.DANGER,
-      title: isSuccess ? ApiConstant.ALERT_CONSTANT.TITLE.SUCCESS : ApiConstant.ALERT_CONSTANT.TITLE.DANGER,
+      type: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TYPE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TYPE.DANGER,
+      title: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TITLE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TITLE.DANGER,
       message: res.message
     }
     setTimeout(() => {

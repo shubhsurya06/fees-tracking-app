@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ICourses } from '../../core/model/course-model';
 import { CourseService } from '../../core/services/course/course-service';
-import { ApiConstant } from '../../core/constant/constant';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { Header } from '../header/header';
 
 @Component({

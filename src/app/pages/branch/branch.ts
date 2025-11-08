@@ -7,7 +7,9 @@ import { IInstituteModel } from '../../core/model/institute-model';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
-import { ApiConstant } from '../../core/constant/constant';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
+
+
 
 @Component({
   selector: 'app-branch',
@@ -25,7 +27,7 @@ export class Branch implements OnInit {
   branchList = signal<IBranch[]>([]);
   instituteList = signal<IInstituteModel[]>([]);
   branchForm!: FormGroup;
-  instituteAdminRole = ApiConstant.USER_ROLES.INSTITUTE_ADMIN;
+  instituteAdminRole = APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN;
 
   constructor(private fb: FormBuilder) {
     this.branchForm = this.fb.group({

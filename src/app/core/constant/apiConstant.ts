@@ -1,4 +1,4 @@
-export const ApiConstant = {
+export const API_CONSTANT = {
     CONTROLLER_TYPES: {
         MASTER: 'Master',
         USER: 'User',
@@ -6,25 +6,6 @@ export const ApiConstant = {
         INSTITUTE: 'InstituteMaster',
         BRANCH: 'BranchMaster',
         COURSE: 'Course'
-    },
-    USER_DATA: {
-        TOKEN: 'userToken',
-        USER_DETAILS: 'instituteUser'
-    },
-    USER_ROLES: {
-        INSTITUTE_ADMIN: 'InstituteAdmin',
-        SYSTEM_ADMIN: 'SystemAdmin'
-    },
-    SLASH_CONST: '/',
-    ALERT_CONSTANT: {
-        TYPE: {
-            SUCCESS: 'alert-success',
-            DANGER: 'alert-danger'
-        },
-        TITLE: {
-            SUCCESS: 'SUCCESS!',
-            DANGER: 'DANGER'
-        }
     },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',

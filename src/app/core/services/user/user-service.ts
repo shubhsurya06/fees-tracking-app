@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { IUser } from '../../model/user-model';
-import { ApiConstant } from '../../constant/constant';
+import { APP_CONSTANT } from '../../constant/appConstant';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class UserService {
 
   // get logged in user details from localStorage & set in loggedInUser
   getLoggedInUser() {
-    let user = localStorage.getItem(ApiConstant.USER_DATA.USER_DETAILS);
+    let user = localStorage.getItem(APP_CONSTANT.USER_DATA.USER_DETAILS);
     if (user != null) {
       this.loggedInUser.set(JSON.parse(user));
     }

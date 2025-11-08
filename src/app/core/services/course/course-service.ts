@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { ApiConstant } from '../../constant/constant';
+import { API_CONSTANT } from '../../constant/apiConstant';
+import { APP_CONSTANT } from '../../constant/appConstant';
 import { delay } from 'rxjs';
 
 @Injectable({
@@ -17,7 +18,7 @@ export class CourseService {
    * @returns 
    */
   getAllCourses() {
-    let url = this.baseUrl + ApiConstant.CONTROLLER_TYPES.COURSE + ApiConstant.COURSE_APIS.GET_ALL_COURSES;
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.COURSE + API_CONSTANT.COURSE_APIS.GET_ALL_COURSES;
     return this.http.get(url).pipe(
       delay(1000)
     );
