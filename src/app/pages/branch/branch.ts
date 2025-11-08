@@ -8,7 +8,7 @@ import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angula
 import { NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
-
+import { CommonService } from '../../core/services/common/common-service';
 
 
 @Component({
@@ -22,6 +22,8 @@ export class Branch implements OnInit {
   branchService = inject(BranchService);
   userService = inject(UserService);
   InstituteService = inject(InstituteService);
+  commonService = inject(CommonService);
+
   isBranchLoading = signal<boolean>(false);
   isAddEditBranchLoader = signal<boolean>(false);
   branchList = signal<IBranch[]>([]);
@@ -55,22 +57,26 @@ export class Branch implements OnInit {
   }
 
   ngOnInit(): void {
+    // TO DO - WHEN APPLICATION WILL GET DEVELOPED FULLY, THEN ONLY CALL BELOW FOR SUPER_ADMIN
+    // if (this.userService.loggedInUser() && this.userService.loggedInUser().role === APP_CONSTANT.USER_ROLES.SYSTEM_ADMIN) {
+    //   console.log('################################################ SYSTEM ADMIN ROLE############')
+    // }
     this.getAllInstitutes();
     this.getAllBranches();
   }
 
-  getAllInstitutes() {
-    this.InstituteService.getAllInstitutes().subscribe({
-      next: (res: any) => {
-        this.instituteList.set(res.data);
-      },
-      error: (err: any) => {
-        console.error('Error fetching institutes:', err);
-        alert(err.message);
-      }
-    });
+  /**
+   * get all institutes from commonService on page load
+   */
+  async getAllInstitutes() {
+    let list = await this.commonService.returnAllInstitute();
+    this.instituteList.set(list);
   }
 
+  /**
+   * Add insitituteName in all branches after all branches data will be available, used map here
+   * @param res 
+   */
   onGetAllBranchSuccess(res: any) {
     res.map((branch: IBranch) => {
       const institute = this.instituteList().find((inst: IInstituteModel) => inst.instituteId === branch.instituteId);
@@ -96,6 +102,10 @@ export class Branch implements OnInit {
     });
   }
 
+  /**
+   * add and update new branch from here
+   * @returns 
+   */
   createBranch() {
     if (this.branchForm.invalid) {
       // Mark all fields as touched to trigger validation messages
@@ -143,6 +153,11 @@ export class Branch implements OnInit {
     });
   }
 
+  /**
+   * delete branch data from here
+   * @param branchId 
+   * @returns 
+   */
   deleteBranch(branchId: number | undefined) {
     if (!branchId) return;
 
@@ -161,6 +176,9 @@ export class Branch implements OnInit {
     });
   }
 
+  /**
+   * User is editing branch, but later he don't wants to edit, then cancelForm edit and reset form
+   */
   cancelEdit() {
     this.branchForm.reset();
     this.branchForm.patchValue({
@@ -169,6 +187,11 @@ export class Branch implements OnInit {
     });
   }
 
+  /**
+   * when branch add/udpate gets success, then reset loader, update list
+   * @param branchData 
+   * @param message 
+   */
   private handleBranchSuccess(branchData: IBranch, message: string) {
     this.isAddEditBranchLoader.set(false);
     alert(message);
@@ -208,6 +231,10 @@ export class Branch implements OnInit {
     closeBtn?.click();
   }
 
+  /**
+   * Set loader to false, when branch add/edit gets failed
+   * @param error 
+   */
   private handleBranchError(error: any) {
     console.error('Error saving branch:', error);
     this.isAddEditBranchLoader.set(false);

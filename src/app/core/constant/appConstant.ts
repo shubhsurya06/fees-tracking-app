@@ -5,7 +5,7 @@ export const APP_CONSTANT = {
     },
     USER_ROLES: {
         INSTITUTE_ADMIN: 'InstituteAdmin',
-        SYSTEM_ADMIN: 'SystemAdmin'
+        SYSTEM_ADMIN: 'SuperAdmin'
     },
     SLASH_CONST: '/',
     ALERT_CONSTANT: {
