@@ -30,7 +30,7 @@ export class InstituteList implements OnInit {
   // navigate to add/edit institute form
   addEditInstitute(id: number | string | undefined) {
     id = id && id.toString();
-    this.router.navigate(['/institute', id]);
+    this.router.navigate(['/institute/form', id]);
   }
 
   // get all institutes from service
