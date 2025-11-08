@@ -6,6 +6,8 @@ import { InstituteService } from '../../core/services/institute/institute-servic
 import { IInstituteModel } from '../../core/model/institute-model';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { UserService } from '../../core/services/user/user-service';
+import { ApiConstant } from '../../core/constant/constant';
 
 @Component({
   selector: 'app-branch',
@@ -16,12 +18,14 @@ import { NgClass } from '@angular/common';
 export class Branch implements OnInit {
 
   branchService = inject(BranchService);
+  userService = inject(UserService);
   InstituteService = inject(InstituteService);
   isBranchLoading = signal<boolean>(false);
   isAddEditBranchLoader = signal<boolean>(false);
   branchList = signal<IBranch[]>([]);
   instituteList = signal<IInstituteModel[]>([]);
   branchForm!: FormGroup;
+  instituteAdminRole = ApiConstant.USER_ROLES.INSTITUTE_ADMIN;
 
   constructor(private fb: FormBuilder) {
     this.branchForm = this.fb.group({
@@ -36,6 +40,16 @@ export class Branch implements OnInit {
       branchEmail: ['', [Validators.required, Validators.email]],
       branchCode: ['', Validators.required]
     });
+
+    // get roles userService, if not available, then set in userService.
+    if (!Object.keys(this.userService.loggedInUser()).length) {
+      this.userService.getLoggedInUser();
+    }
+
+    // check loggedInUser role and set default value of insitituteId of user if he is InstituteAdmin
+    if (this.userService.loggedInUser() && this.userService.loggedInUser().role === this.instituteAdminRole) {
+      this.branchForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId)
+    }
   }
 
   ngOnInit(): void {

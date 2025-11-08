@@ -157,7 +157,7 @@ export class Master implements OnInit {
    * Create master form here and also update master if in edit mode
    * @returns 
    */
-  createMaster() {
+  addUpdateMaster() {
     if (this.masterForm.invalid) {
       return;
     }
@@ -170,6 +170,14 @@ export class Master implements OnInit {
       return;
     }
 
+    this.createMaster(req);
+  }
+
+  /**
+   * Create new master from here
+   * @param req 
+   */
+  createMaster(req: IMaster) {
     this.masterService.createMaster(req).subscribe({
       next: (res: any) => {
         this.onMasterAddUpdate(res);

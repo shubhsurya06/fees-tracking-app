@@ -4,7 +4,16 @@ export const ApiConstant = {
         USER: 'User',
         PACKAGE_MASTER: 'PackageMaster',
         INSTITUTE: 'InstituteMaster',
-        BRANCH: 'BranchMaster'
+        BRANCH: 'BranchMaster',
+        COURSE: 'Course'
+    },
+    USER_DATA: {
+        TOKEN: 'userToken',
+        USER_DETAILS: 'instituteUser'
+    },
+    USER_ROLES: {
+        INSTITUTE_ADMIN: 'InstituteAdmin',
+        SYSTEM_ADMIN: 'SystemAdmin'
     },
     SLASH_CONST: '/',
     ALERT_CONSTANT: {
@@ -44,6 +53,12 @@ export const ApiConstant = {
         UPDATE_BRANCH: '/update-branch',
         DELETE_BRANCH: '/delete-branch',
         GET_SINGLE_BRANCH: '/get-branch-by-id'
+    },
+    COURSE_APIS: {
+        GET_ALL_COURSES: '/getAllCourses',
+        CREATE_COURSES: '/createCourse',
+        UPDATE_COURSES: '/updateCourse',
+        DELETE_COURSES: '/deleteCourse'
     },
     USER_APIS: {
         LOGIN: '/login',
