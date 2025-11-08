@@ -13,8 +13,8 @@
     </div>
   </div>
 
-  @if (isShowAlert) {
-    <app-alert-box [isShowSuccess]="isSuccessAlert" [alertReq]="alertObj"></app-alert-box>
+  @if (isShowAlert()) {
+    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   }
 
   <div class="row g-4">

@@ -17,5 +17,6 @@ export const APP_CONSTANT = {
             SUCCESS: 'SUCCESS!',
             DANGER: 'DANGER'
         }
-    }
+    },
+    TIMEOUT: 5000
 }

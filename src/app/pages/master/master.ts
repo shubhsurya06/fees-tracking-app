@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, Output, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, effect, inject, OnInit, Output, signal } from '@angular/core';
 import { Header } from '../header/header';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
@@ -24,10 +24,9 @@ export class Master implements OnInit {
   masterForm: FormGroup;
 
   // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
-  @Output() isSuccessAlert: boolean = false;
-  @Output() alertObj!: IAlert;
-  isShowAlert: Boolean = false;
-  cdr = inject(ChangeDetectorRef);
+  @Output() isSuccessAlert = signal<boolean>(false);
+  @Output() alertObj = signal<IAlert | any>({});
+  isShowAlert = signal<boolean>(false);
 
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
@@ -101,17 +100,16 @@ export class Master implements OnInit {
    * @param res 
    */
   showAlert(isSuccess: boolean, res: any) {
-    this.isShowAlert = true;
-    this.isSuccessAlert = isSuccess;
-    this.alertObj = {
+    this.isShowAlert.set(true);
+    this.isSuccessAlert.set(isSuccess);
+    this.alertObj.set({
       type: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TYPE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TYPE.DANGER,
       title: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TITLE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TITLE.DANGER,
       message: res.message
-    }
+    });
     setTimeout(() => {
-      this.isShowAlert = false;
-      this.cdr.detectChanges()
-    }, 5000);
+      this.isShowAlert.set(false);
+    }, APP_CONSTANT.TIMEOUT);
   }
 
   /**
