@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth-service';
-import { User } from '../../core/model/user-model';
+import { IUser } from '../../core/model/user-model';
 import { ReactiveFormsModule, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NgClass } from '@angular/common';
 
@@ -41,7 +41,7 @@ export class Login implements OnInit {
     if (this.loginForm.invalid) return;
 
     this.loginLoader.set(true);
-    let obj: User = {
+    let obj: IUser = {
       userName: this.loginForm.value.userName,
       password: this.loginForm.value.password
     }
@@ -51,7 +51,7 @@ export class Login implements OnInit {
         this.resetOnLogin(true);
         console.log(res.message);
         let token = (res as any).token;
-        this.authService.saveToken(token);
+        this.authService.saveToken(token, res.data);
         this.redirectToMaster();
       },
       error: (error: any) => {

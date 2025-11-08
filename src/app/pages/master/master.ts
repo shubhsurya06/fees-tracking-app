@@ -1,11 +1,11 @@
-import { Component, effect, inject, OnInit, Output, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, effect, inject, OnInit, Output, signal } from '@angular/core';
 import { Header } from '../header/header';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgClass, TitleCasePipe, NgStyle } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
-import { ApiConstant } from '../../core/constant/constant';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { IAlert } from '../../core/model/alert-model';
 
 @Component({
@@ -24,10 +24,9 @@ export class Master implements OnInit {
   masterForm: FormGroup;
 
   // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
-  @Output() isSuccessAlert: boolean = false;
-  @Output() alertObj!: IAlert;
-  isShowAlert: Boolean = false;
-  cdr = inject(ChangeDetectorRef);
+  @Output() isSuccessAlert = signal<boolean>(false);
+  @Output() alertObj = signal<IAlert | any>({});
+  isShowAlert = signal<boolean>(false);
 
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
@@ -96,31 +95,21 @@ export class Master implements OnInit {
   }
 
   /**
-   * Create master form here and also update master if in edit mode
-   * @returns 
+   * show alert box on create and update (for success, error)
+   * @param isSuccess 
+   * @param res 
    */
-  createMaster() {
-    if (this.masterForm.invalid) {
-      return;
-    }
-
-    this.isAddUpdateLoader.set(true);
-    let req: IMaster = this.masterForm.value;
-
-    if (this.masterFormControlId) {
-      this.updateMaster(req);
-      return;
-    }
-
-    this.masterService.createMaster(req).subscribe({
-      next: (res: any) => {
-        this.onMasterAddUpdate(res);
-      },
-      error: (error) => {
-        console.log('Some error while creating master:', error);
-        this.onMastetAddUpdateError(error);
-      }
-    })
+  showAlert(isSuccess: boolean, res: any) {
+    this.isShowAlert.set(true);
+    this.isSuccessAlert.set(isSuccess);
+    this.alertObj.set({
+      type: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TYPE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TYPE.DANGER,
+      title: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TITLE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TITLE.DANGER,
+      message: res.message
+    });
+    setTimeout(() => {
+      this.isShowAlert.set(false);
+    }, APP_CONSTANT.TIMEOUT);
   }
 
   /**
@@ -148,6 +137,57 @@ export class Master implements OnInit {
   }
 
   /**
+   * Update Master
+   */
+  updateMaster(master: IMaster) {
+    this.masterService.updateMaster(master).subscribe({
+      next: (res: any) => {
+        this.onMasterAddUpdate(res);
+      },
+      error: (error) => {
+        console.log('Error while updating master:', error);
+        this.onMastetAddUpdateError(error);
+      }
+    })
+  }
+
+  /**
+   * Create master form here and also update master if in edit mode
+   * @returns 
+   */
+  addUpdateMaster() {
+    if (this.masterForm.invalid) {
+      return;
+    }
+
+    this.isAddUpdateLoader.set(true);
+    let req: IMaster = this.masterForm.value;
+
+    if (this.masterFormControlId) {
+      this.updateMaster(req);
+      return;
+    }
+
+    this.createMaster(req);
+  }
+
+  /**
+   * Create new master from here
+   * @param req 
+   */
+  createMaster(req: IMaster) {
+    this.masterService.createMaster(req).subscribe({
+      next: (res: any) => {
+        this.onMasterAddUpdate(res);
+      },
+      error: (error) => {
+        console.log('Some error while creating master:', error);
+        this.onMastetAddUpdateError(error);
+      }
+    })
+  }
+
+  /**
    * Edit Master and set some values to make form in edit mode
    * @param master 
    */
@@ -164,40 +204,6 @@ export class Master implements OnInit {
    */
   cancelEdit() {
     this.masterForm.reset();
-  }
-
-  /**
-   * show alert box on create and update (for success, error)
-   * @param isSuccess 
-   * @param res 
-   */
-  showAlert(isSuccess: boolean, res: any) {
-    this.isShowAlert = true;
-    this.isSuccessAlert = isSuccess;
-    this.alertObj = {
-      type: isSuccess ? ApiConstant.ALERT_CONSTANT.TYPE.SUCCESS : ApiConstant.ALERT_CONSTANT.TYPE.DANGER,
-      title: isSuccess ? ApiConstant.ALERT_CONSTANT.TITLE.SUCCESS : ApiConstant.ALERT_CONSTANT.TITLE.DANGER,
-      message: res.message
-    }
-    setTimeout(() => {
-      this.isShowAlert = false;
-      this.cdr.detectChanges()
-    }, 5000);
-  }
-
-  /**
-   * Update Master
-   */
-  updateMaster(master: IMaster) {
-    this.masterService.updateMaster(master).subscribe({
-      next: (res: any) => {
-        this.onMasterAddUpdate(res);
-      },
-      error: (error) => {
-        console.log('Error while updating master:', error);
-        this.onMastetAddUpdateError(error);
-      }
-    })
   }
 
   /**

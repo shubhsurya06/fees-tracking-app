@@ -20,13 +20,16 @@
                     <a class="nav-link" routerLink="/package-master" routerLinkActive="active">Package Master</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link" routerLink="/institute" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Institute List</a>
+                    <a class="nav-link" routerLink="/institute/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Institute List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/institute', id]" routerLinkActive="active">Institute Form</a>
+                    <a class="nav-link" [routerLink]="['/institute/form', id]" routerLinkActive="active">Institute Form</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/branch" routerLinkActive="active">Branch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/course" routerLinkActive="active">Course</a>
                 </li>
             </ul>
         </div>

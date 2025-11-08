@@ -1,21 +1,11 @@
-export const ApiConstant = {
+export const API_CONSTANT = {
     CONTROLLER_TYPES: {
         MASTER: 'Master',
         USER: 'User',
         PACKAGE_MASTER: 'PackageMaster',
         INSTITUTE: 'InstituteMaster',
-        BRANCH: 'BranchMaster'
-    },
-    SLASH_CONST: '/',
-    ALERT_CONSTANT: {
-        TYPE: {
-            SUCCESS: 'alert-success',
-            DANGER: 'alert-danger'
-        },
-        TITLE: {
-            SUCCESS: 'SUCCESS!',
-            DANGER: 'DANGER'
-        }
+        BRANCH: 'BranchMaster',
+        COURSE: 'Course'
     },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
@@ -44,6 +34,12 @@ export const ApiConstant = {
         UPDATE_BRANCH: '/update-branch',
         DELETE_BRANCH: '/delete-branch',
         GET_SINGLE_BRANCH: '/get-branch-by-id'
+    },
+    COURSE_APIS: {
+        GET_ALL_COURSES: '/getAllCourses',
+        CREATE_COURSES: '/createCourse',
+        UPDATE_COURSES: '/updateCourse',
+        DELETE_COURSES: '/deleteCourse'
     },
     USER_APIS: {
         LOGIN: '/login',

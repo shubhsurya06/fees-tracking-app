@@ -13,8 +13,8 @@
     </div>
   </div>
 
-  @if (isShowAlert) {
-    <app-alert-box [isShowSuccess]="isSuccessAlert" [alertReq]="alertObj"></app-alert-box>
+  @if (isShowAlert()) {
+    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   }
 
   <div class="row g-4">
@@ -29,7 +29,7 @@
         </div>
         <div class="card-body">
 
-          <form [formGroup]="masterForm" (ngSubmit)="createMaster()" class="mt-2">
+          <form [formGroup]="masterForm" (ngSubmit)="addUpdateMaster()" class="mt-2">
 
             <div class="mb-3">
               <label for="MasterFor" class="form-label fw-semibold">Master For:</label>

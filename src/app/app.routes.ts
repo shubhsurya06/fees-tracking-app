@@ -5,6 +5,7 @@ import { authGuard } from './core/services/auth/auth-guard';
 import { PackageMaster } from './pages/package-master/package-master';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Branch } from './pages/branch/branch';
+import { Courses } from './pages/courses/courses';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,4 +20,5 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     { path: 'branch', component: Branch, title: 'Branch::Fees Tracking app', canActivate: [authGuard] },
+    { path: 'course', component: Courses, title: 'Course | Fees Tracking app', canActivate: [authGuard] },
 ];

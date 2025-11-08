@@ -1,0 +1,95 @@
+<app-header></app-header>
+<div class="container py-4">
+
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h2 class="fw-bold text-primary">
+                <i class="bi bi-diagram-3-fill me-2"></i>Course Management
+            </h2>
+            <p class="text-muted small">Manage your Courses from here</p>
+            <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" />
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- List Header -->
+        <div class="col">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <h5 class="mb-0 text-primary fw-bold">Course List</h5>
+                    </div>
+                    <!-- <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        <i class="bi bi-plus-circle-fill me-2"></i>
+                        <span>Add Branch</span>
+                    </button> -->
+                </div>
+            </div>
+            <!-- <div class="card">
+                <div class="card-body"> -->
+
+                    @if (isCourseListLoading()) {
+                    <div class="text-center mt-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    }
+
+                    @if (!isCourseListLoading()) {
+                    <div class="row g-3">
+
+                        @for (course of courseList(); track course.courseId) {
+                        <div class="col-md-3">
+                            <div class="card branch-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0 text-primary fw-bold">{{ course.courseName }}</h6>
+                                    </div>
+
+                                    <div class="text-muted small mb-1">
+                                        <div><i class="bi bi-currency-rupee me-1"></i> <strong>{{
+                                                course.courseCost }}</strong></div>
+                                        <div><i class="bi bi-hourglass-split me-1"></i> {{ course.duration }}</div>
+                                    </div>
+
+                                    <ul class="list-unstyled small mb-3">
+                                        
+                                        <li><i class="bi bi-calendar-event me-2"></i>{{ course.creratedDate | date }}</li>
+                                        <li><i class="bi bi-info-circle me-2"></i>{{ course.courseDescription }}</li>
+                                        <li><i class="bi bi-card-heading me-2"></i>{{ course.isActive ? 'Active' : 'Not Active' }}</li>
+
+                                    </ul>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                                        <button class="btn btn-outline-warning btn-sm" (click)="editCourse(course)"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" (click)="deleteCourse(course)">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                <!-- </div> -->
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<!-- Modal -->
+<div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
