@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, Output } from '@angular/core';
 import { Header } from '../header/header';
 import { IBranch } from '../../core/model/branch-model';
 import { BranchService } from '../../core/services/branch/branch-service';
@@ -9,11 +9,13 @@ import { NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { CommonService } from '../../core/services/common/common-service';
+import { IAlert } from '../../core/model/alert-model';
+import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 
 
 @Component({
   selector: 'app-branch',
-  imports: [Header, ReactiveFormsModule, NgClass],
+  imports: [Header, ReactiveFormsModule, NgClass, AlertBox],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
@@ -30,6 +32,11 @@ export class Branch implements OnInit {
   instituteList = signal<IInstituteModel[]>([]);
   branchForm!: FormGroup;
   instituteAdminRole = APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN;
+
+  // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
+  @Output() isSuccessAlert = signal<boolean>(false);
+  @Output() alertObj = signal<IAlert | any>({});
+  isShowAlert = signal<boolean>(false);
 
   constructor(private fb: FormBuilder) {
     this.branchForm = this.fb.group({
@@ -86,20 +93,42 @@ export class Branch implements OnInit {
     this.branchList.set(res);
   }
 
+  /**
+   * get all branches
+   */
   getAllBranches() {
     this.isBranchLoading.set(true);
     this.branchService.getAllBranches().subscribe({
       next: (res: any) => {
+        this.showAlert(true, res);
         this.isBranchLoading.set(false);
-        console.log('Institute List for mapping:', this.instituteList(), res);
-        this.onGetAllBranchSuccess(res);
+        console.log('Institute List for mapping:', this.instituteList(), res.data);
+        this.onGetAllBranchSuccess(res.data);
       },
       error: (err: any) => {
         console.error('Error fetching branches:', err);
+        this.showAlert(false, err);
         this.isBranchLoading.set(false);
-        alert(err.message);
       }
     });
+  }
+
+  /**
+   * show alert box on create and update (for success, error)
+   * @param isSuccess 
+   * @param res 
+   */
+  showAlert(isSuccess: boolean, res: any) {
+    this.isShowAlert.set(true);
+    this.isSuccessAlert.set(isSuccess);
+    this.alertObj.set({
+      type: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TYPE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TYPE.DANGER,
+      title: isSuccess ? APP_CONSTANT.ALERT_CONSTANT.TITLE.SUCCESS : APP_CONSTANT.ALERT_CONSTANT.TITLE.DANGER,
+      message: res.message
+    });
+    setTimeout(() => {
+      this.isShowAlert.set(false);
+    }, APP_CONSTANT.TIMEOUT);
   }
 
   /**
@@ -123,7 +152,7 @@ export class Branch implements OnInit {
       // Update existing branch
       this.branchService.updateBranch(branchData).subscribe({
         next: (res: any) => {
-          this.handleBranchSuccess(res.data, 'Branch updated successfully');
+          this.handleBranchSuccess(res);
         },
         error: this.handleBranchError.bind(this)
       });
@@ -131,7 +160,7 @@ export class Branch implements OnInit {
       // Create new branch
       this.branchService.createBranch(branchData).subscribe({
         next: (res: any) => {
-          this.handleBranchSuccess(res.data, 'Branch created successfully');
+          this.handleBranchSuccess(res);
         },
         error: this.handleBranchError.bind(this)
       });
@@ -166,12 +195,12 @@ export class Branch implements OnInit {
 
     this.branchService.deleteBranch(branchId).subscribe({
       next: (res: any) => {
-        alert('Branch deleted successfully');
+        this.showAlert(true, res);
         this.branchList.update(list => list.filter(b => b.branchId !== branchId));
       },
       error: (error: any) => {
         console.error('Error deleting branch:', error);
-        alert(error.message || 'Error deleting branch');
+        this.showAlert(false, error);
       }
     });
   }
@@ -192,9 +221,9 @@ export class Branch implements OnInit {
    * @param branchData 
    * @param message 
    */
-  private handleBranchSuccess(branchData: IBranch, message: string) {
+  private handleBranchSuccess(branchData: IBranch) {
     this.isAddEditBranchLoader.set(false);
-    alert(message);
+    this.showAlert(true, branchData);
     try {
       this.closeModal();
     } catch (e) {
@@ -203,15 +232,22 @@ export class Branch implements OnInit {
     this.cancelEdit();
 
     // Update the branch list
-    this.branchList.update(list => {
-      const index = list.findIndex(b => b.branchId === branchData.branchId);
-      if (index === -1) {
-        return [...list, branchData];
-      } else {
-        list[index] = branchData;
-        return [...list];
-      }
-    });
+    // this.branchList.update(list => {
+    //   const index = list.findIndex(b => b.branchId === branchData.branchId);
+    //   if (index === -1) {
+    //     return [...list, branchData];
+    //   } else {
+    //     list[index] = branchData;
+    //     return [...list];
+    //   }
+    // });
+    // let bList = this.branchList();
+    let index = this.branchList().findIndex((item: IBranch) => item.branchId === branchData.branchId);
+    if (index === -1) {
+      this.branchList().push(branchData);
+    } else {
+      this.branchList()[index] = branchData;
+    }
   }
 
   /**
@@ -238,6 +274,6 @@ export class Branch implements OnInit {
   private handleBranchError(error: any) {
     console.error('Error saving branch:', error);
     this.isAddEditBranchLoader.set(false);
-    alert(error.message || 'Error saving branch');
+    this.showAlert(false, error);
   }
 }
