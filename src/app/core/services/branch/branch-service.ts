@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { API_CONSTANT } from '../../constant/apiConstant';
 import { APP_CONSTANT } from '../../constant/appConstant';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,15 @@ export class BranchService {
   private baseUrl: string = environment.API_URL;
 
   getAllBranches() {
-    return this.http.get(`${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.BRANCH}${API_CONSTANT.BRANCH_APIS.GET_ALL_BRANCHES}`);
+    return this.http.get(`${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.BRANCH}${API_CONSTANT.BRANCH_APIS.GET_ALL_BRANCHES}`).pipe(
+      map((res: any) => {
+        let obj = {
+          message: 'Branch fetched successfully.',
+          data: res
+        }
+        return obj;
+      })
+    );
   }
 
   updateBranch(branchData: any) {

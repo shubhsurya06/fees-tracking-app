@@ -5,5 +5,5 @@ export interface PackageMasterModel {
     emiTotalCost: string;
     maxBranches: number;
     maxStudents: Date;
-    isSmsAlert: Date;
+    isSmsAlert: boolean;
 }

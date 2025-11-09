@@ -57,12 +57,13 @@ export class Master implements OnInit {
     this.isMasterListLoading.set(true);
     this.masterService.getAllMasters().subscribe({
       next: (res: any) => {
+        this.showAlert(true, res);
         this.isMasterListLoading.set(false);
         this.masterList.set(res?.data ?? []);
       },
       error: (error) => {
         console.log('Error while getting master data:', error);
-        alert(error.message);
+        this.showAlert(true, error);
       }
     });
   }
@@ -84,11 +85,12 @@ export class Master implements OnInit {
       this.masterService.getMasterByType(this.selectedFilter).subscribe({
         next: (res: any) => {
           this.isMasterListLoading.set(false);
+          this.showAlert(true, res);
           this.masterList.set(res?.data ?? []);
         },
         error: (error) => {
           console.log('Error while filtering master data:', error);
-          alert(error.message);
+          this.showAlert(true, error);
         }
       });
     }
@@ -219,14 +221,14 @@ export class Master implements OnInit {
     }
     this.masterService.deleteMaster(id).subscribe({
       next: (res: any) => {
-        alert(res.message);
+        this.showAlert(true, res);
         let updatedList = this.masterList();
         updatedList = updatedList.filter((master: IMaster) => master.masterId != id);
         this.masterList.set(updatedList);
       },
       error: (error) => {
         console.log('Error while deleting master:', error);
-        alert(error.message);
+        this.showAlert(false, error);
       }
     })
   }
