@@ -1,9 +1,9 @@
 <app-header></app-header>
 
-<div class="container py-4">
+<div class="container-fluid p-tb">
 
     <!-- Page Title -->
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
         <div class="col text-center">
             <h2 class="fw-bold text-primary">
                 <i class="bi bi-building me-2"></i>Institute Management
@@ -11,7 +11,7 @@
             <p class="text-muted small">Manage your educational institutions and their details</p>
             <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" />
         </div>
-    </div>
+    </div> -->
 
     <div class="row">
         <!-- List Header -->
@@ -46,7 +46,7 @@
         @if (instituteList().length > 0) {
 
         @for (institute of instituteList(); track institute.instituteId) {
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card branch-card shadow-sm ">
                 <div class="card-body">
                     <h5 class="card-title text-capitalize text-primary fw-bold">
@@ -62,7 +62,7 @@
                         <p class="mb-4"><i class="bi bi-calendar-event me-2"></i>{{ institute.createdDate | date: 'dd MMM yyyy' }}</p>
                     </div>
 
-                    <div class="d-flex justify-content-between mt-3">
+                    <div class="d-flex justify-content-between mt-1">
                         <button class="btn btn-outline-warning btn-sm me-2" (click)="addEditInstitute(institute.instituteId)">
                             <i class="bi bi-pencil-square"></i> Edit
                         </button>

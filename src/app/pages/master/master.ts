@@ -47,7 +47,7 @@ export class Master implements OnInit {
    * get masterId from masterForm if availale, used for editing master
    */
   get masterFormControlId() {
-    return this.masterForm.get('masterId')?.value;
+    return this.masterForm.get('masterId')?.value || 0;
   }
 
   /**
@@ -57,7 +57,7 @@ export class Master implements OnInit {
     this.isMasterListLoading.set(true);
     this.masterService.getAllMasters().subscribe({
       next: (res: any) => {
-        this.showAlert(true, res);
+        // this.showAlert(true, res);
         this.isMasterListLoading.set(false);
         this.masterList.set(res?.data ?? []);
       },
@@ -115,10 +115,28 @@ export class Master implements OnInit {
   }
 
   /**
+ * Close bootstrap modal with id 'staticBackdrop' programmatically.
+ */
+  private closeModal() {
+    const modalEl = document.getElementById('masterModal');
+    if (!modalEl) return;
+    const bootstrap = (window as any).bootstrap;
+    if (bootstrap && bootstrap.Modal) {
+      const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      inst.hide();
+      return;
+    }
+    // fallback: click close button if modal API not found
+    const closeBtn = modalEl.querySelector('.btn-close') as HTMLElement | null;
+    closeBtn?.click();
+  }
+
+  /**
    * On Master Add or Update reset form and get all masters again
    */
   onMasterAddUpdate(res: any) {
     this.showAlert(true, res);
+    this.closeModal();
     this.isAddUpdateLoader.set(false);
     let index = this.masterList().findIndex((item: IMaster) => item.masterId === res.data.masterId);
     if (index === -1) {

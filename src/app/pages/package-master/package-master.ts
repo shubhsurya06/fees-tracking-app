@@ -78,7 +78,7 @@ export class PackageMaster implements OnInit {
     this.isPackageLoading.set(true);
     this.packageMasterService.getAllPackages().subscribe({
       next: (res: any) => {
-        this.showAlert(true, res);
+        // this.showAlert(true, res);
         this.isPackageLoading.set(false);
         this.packageList.set(res.data || []);
       },
@@ -95,6 +95,7 @@ export class PackageMaster implements OnInit {
    */
   onPackageAddUpdate(pkg: any) {
     this.showAlert(true, pkg);
+    this.closeModal();
     const res: PackageMasterModel = pkg.data;
     this.isAddUpdatePkgLoader.set(false);
     this.packageForm.reset();
@@ -210,6 +211,23 @@ export class PackageMaster implements OnInit {
    */
   cancelEdit() {
     this.packageForm.reset();
+  }
+
+  /**
+ * Close bootstrap modal with id 'staticBackdrop' programmatically.
+ */
+  private closeModal() {
+    const modalEl = document.getElementById('addPackageModal');
+    if (!modalEl) return;
+    const bootstrap = (window as any).bootstrap;
+    if (bootstrap && bootstrap.Modal) {
+      const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      inst.hide();
+      return;
+    }
+    // fallback: click close button if modal API not found
+    const closeBtn = modalEl.querySelector('.btn-close') as HTMLElement | null;
+    closeBtn?.click();
   }
 
 }
