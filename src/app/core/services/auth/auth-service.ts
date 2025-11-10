@@ -5,6 +5,7 @@ import { API_CONSTANT } from '../../constant/apiConstant';
 import { APP_CONSTANT } from '../../constant/appConstant';
 import { IUser } from '../../model/user-model';
 import { UserService } from '../user/user-service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,9 @@ export class AuthService {
 
   http = inject(HttpClient);
   userService = inject(UserService);
+
+  // added logged in user in subject, so that  we can subscribe it on App.ts component, to show header/NAVBAR
+  loggedInSubject = new BehaviorSubject(false);
 
   private baseUrl = environment.API_URL;
 
@@ -30,6 +34,8 @@ export class AuthService {
 
     // set user data in userService.loggedInUser(), so that it will be accessible throughout the application
     this.userService.getLoggedInUser();
+
+    this.loggedInSubject.next(true);
   }
 
   // get token from local storage
@@ -48,6 +54,7 @@ export class AuthService {
     localStorage.removeItem(APP_CONSTANT.USER_DATA.TOKEN);
     localStorage.removeItem(APP_CONSTANT.USER_DATA.USER_DETAILS);
     this.userService.removeUser();
+    this.loggedInSubject.next(false);
   }
 
 }

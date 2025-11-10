@@ -1,5 +1,4 @@
 import { Component, effect, inject, OnInit, Output, signal } from '@angular/core';
-import { Header } from '../header/header';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -10,7 +9,7 @@ import { IAlert } from '../../core/model/alert-model';
 
 @Component({
   selector: 'app-master',
-  imports: [Header, ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox],
   templateUrl: './master.html',
   styleUrl: './master.scss'
 })

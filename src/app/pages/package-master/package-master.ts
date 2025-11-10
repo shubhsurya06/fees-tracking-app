@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Header } from '../header/header';
 import { PackageMasterModel } from '../../core/model/package-master-model';
 import { PackageMasterService } from '../../core/services/package-master/package-master-service';
 import { NgClass } from '@angular/common';
@@ -10,7 +9,7 @@ import { APP_CONSTANT } from '../../core/constant/appConstant';
 
 @Component({
   selector: 'app-package-master',
-  imports: [Header, ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox],
   templateUrl: './package-master.html',
   styleUrl: './package-master.scss'
 })

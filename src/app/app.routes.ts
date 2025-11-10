@@ -9,16 +9,16 @@ import { Courses } from './pages/courses/courses';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: Login, title: 'User Login' },
+    { path: 'login', component: Login, title: 'Login | Fees Tracking App' },
     { path: 'dashboard', component: Dashboard, title: 'Dashboard | Fees Tracking App', canActivate: [authGuard] },
-    { path: 'master', component: Master, title: 'Master Page', canActivate: [authGuard] },
-    { path: 'package-master', component: PackageMaster, title: 'Package Master Page', canActivate: [authGuard] },
+    { path: 'master', component: Master, title: 'Master | Fees Tracking App', canActivate: [authGuard] },
+    { path: 'package-master', component: PackageMaster, title: 'Package Master | Fees Tracking App', canActivate: [authGuard] },
     {
         path: 'institute',
         loadChildren: () =>
             import('../app/pages/institute/institute.routes').then((m) => m.INSTITUTE_ROUTES),
         canActivate: [authGuard]
     },
-    { path: 'branch', component: Branch, title: 'Branch::Fees Tracking app', canActivate: [authGuard] },
+    { path: 'branch', component: Branch, title: 'Branch | Fees Tracking app', canActivate: [authGuard] },
     { path: 'course', component: Courses, title: 'Course | Fees Tracking app', canActivate: [authGuard] },
 ];

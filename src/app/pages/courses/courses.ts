@@ -2,7 +2,6 @@ import { Component, OnInit, Output, inject, signal } from '@angular/core';
 import { ICourses } from '../../core/model/course-model';
 import { CourseService } from '../../core/services/course/course-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
-import { Header } from '../header/header';
 import { DatePipe, NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -13,7 +12,7 @@ import { IAlert } from '../../core/model/alert-model';
 
 @Component({
   selector: 'app-courses',
-  imports: [Header, DatePipe, ReactiveFormsModule, NgClass, AlertBox],
+  imports: [DatePipe, ReactiveFormsModule, NgClass, AlertBox],
   templateUrl: './courses.html',
   styleUrl: './courses.scss'
 })

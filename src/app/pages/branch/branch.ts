@@ -1,5 +1,4 @@
 import { Component, OnInit, signal, inject, Output } from '@angular/core';
-import { Header } from '../header/header';
 import { IBranch } from '../../core/model/branch-model';
 import { BranchService } from '../../core/services/branch/branch-service';
 import { InstituteService } from '../../core/services/institute/institute-service';
@@ -15,7 +14,7 @@ import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 
 @Component({
   selector: 'app-branch',
-  imports: [Header, ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
