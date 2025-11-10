@@ -141,21 +141,21 @@
 
                         <div class="student-card glass-card p-3 my-3">
                             <div class="card-header-custom mb-3">
-                                Rahul
+                                {{ enrollment.studentName }}
                             </div>
 
                             <div class="section-title">Student Information</div>
-                            <div class="info-item"><strong>Email:</strong> string</div>
-                            <div class="info-item"><strong>Contact No:</strong> 0000009900</div>
+                            <div class="info-item"><strong>Email:</strong> {{ enrollment.studentEmail }}</div>
+                            <div class="info-item"><strong>Contact No:</strong> {{ enrollment.studentContact }}</div>
 
                             <hr />
 
                             <div class="section-title">Course Information</div>
-                            <div class="info-item"><strong>Course Name:</strong> Computer Technology</div>
-                            <div class="info-item"><strong>Course Cost:</strong> ₹1000</div>
-                            <div class="info-item"><strong>Final Amount:</strong> ₹50000</div>
-                            <div class="info-item"><strong>Discount:</strong> ₹0</div>
-                            <div class="info-item"><strong>Date Enrolled:</strong> Nov 10, 2025</div>
+                            <div class="info-item"><strong>Course Name:</strong> {{ enrollment.courseName }}</div>
+                            <div class="info-item"><strong>Course Cost:</strong> ₹{{ enrollment.courseCost }}</div>
+                            <div class="info-item"><strong>Final Amount:</strong> ₹{{ enrollment.finalAmount }}</div>
+                            <div class="info-item"><strong>Discount:</strong> ₹{{ enrollment.discountGiven }}</div>
+                            <div class="info-item"><strong>Date Enrolled:</strong> {{ enrollment.enrollmentDate | date }}</div>
 
                             <div class="button-row mt-4">
                                 <button class="btn btn-outline-primary btn-sm" (click)="editEnrollment(enrollment)"
