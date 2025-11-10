@@ -23,7 +23,7 @@
               }
             </select>
   
-            <button type="button" class="btn btn-success d-flex align-items-center" data-bs-toggle="modal"
+            <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
               data-bs-target="#masterModal">
               <i class="bi bi-plus-circle-fill me-2"></i>
               <span>Add Master</span>
@@ -120,7 +120,7 @@
         <div class="modal-footer d-flex justify-content-between mt-3">
 
           <!-- @if (!isAddUpdateLoader()) { -->
-            <button class="btn" [disabled]="isAddUpdateLoader()"
+            <button class="btn btn-sm" [disabled]="masterForm.invalid || isAddUpdateLoader()"
               [ngClass]="{ 'btn-success': !masterFormControlId, 'btn-warning': masterFormControlId }" type="submit">
               <i class="bi"
                 [ngClass]="{ 'bi-plus-circle-fill': !masterFormControlId, 'bi-pencil-square': masterFormControlId }"></i>
@@ -128,7 +128,7 @@
             </button>
 
             @if (masterFormControlId) {
-            <button class="btn btn-primary" [disabled]="isAddUpdateLoader()" type="button" (click)="cancelEdit()">
+            <button class="btn btn-sm btn-primary" [disabled]="isAddUpdateLoader()" type="button" (click)="cancelEdit()">
               <i class="bi bi-x-circle-fill"></i> Cancel</button>
             }
           <!-- } -->

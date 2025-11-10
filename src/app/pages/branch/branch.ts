@@ -100,7 +100,6 @@ export class Branch implements OnInit {
     this.isBranchLoading.set(true);
     this.branchService.getAllBranches().subscribe({
       next: (res: any) => {
-        this.showAlert(true, res);
         this.isBranchLoading.set(false);
         console.log('Institute List for mapping:', this.instituteList(), res.data);
         this.onGetAllBranchSuccess(res.data);

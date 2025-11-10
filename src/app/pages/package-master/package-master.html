@@ -13,7 +13,7 @@
                     <div>
                         <h5 class="mb-0 text-primary fw-bold">Package List</h5>
                     </div>
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPackageModal">
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addPackageModal">
                         <i class="bi bi-plus-circle-fill"></i> Add Package
                     </button>
                 </div>
@@ -151,7 +151,7 @@
 
                 <div class="modal-footer d-flex justify-content-between mt-3">
                     <!-- <div class=""> -->
-                    <button class="btn btn-sm" [disabled]="isAddUpdatePkgLoader()"
+                    <button class="btn btn-sm" [disabled]="packageForm.invalid || isAddUpdatePkgLoader()"
                         [ngClass]="{ 'btn-success': !pacakgeMasterId, 'btn-warning': pacakgeMasterId }" type="submit">
                         <i class="bi" [ngClass]="{ 'bi-plus-circle-fill': !pacakgeMasterId, 'bi-pencil-square': pacakgeMasterId }"></i>
                         {{ pacakgeMasterId ? 'Update Package' : 'Add Package' }}
