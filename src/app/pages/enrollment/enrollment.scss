@@ -1,0 +1,234 @@
+.card {
+    // border-left: 6px solid #1e60d4;
+    border-radius: 10px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    background: #fff;
+}
+
+.card .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card:hover:first-child {
+    transform: none;
+}
+
+.card:hover {
+    background: #f8f9fa;
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.08);
+}
+
+// .card-body hr {
+//   opacity: 0.2;
+// }
+
+// .card-body .small div {
+//   margin-bottom: 3px;
+// }
+
+.student-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+    background: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.student-card-header {
+    background: linear-gradient(90deg, #0059ff, #00c6ff);
+    padding: 14px 20px;
+}
+
+.section-title {
+    color: #0059ff;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.card-body p {
+    margin-bottom: 6px;
+    font-size: 0.92rem;
+}
+
+.card-footer button {
+    width: 48%;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.modal-xl {
+    max-width: 90%;
+}
+
+.accordion-button i {
+    font-size: 1.2rem;
+}
+
+.accordion-body .form-label {
+    font-weight: 500;
+}
+
+.text-danger.small {
+    font-size: 0.8rem;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.form-control.ng-invalid.ng-touched {
+    border-color: #dc3545;
+    box-shadow: none;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 150, 255, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 24px rgba(0, 180, 255, 0.45);
+}
+
+.card-header-custom {
+    font-size: 1.3rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, #007bff, #00e5ff);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.info-item {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-row .btn {
+    width: 48%;
+    //   border-radius: 25px;
+    font-weight: 500;
+}
+
+/* Vertical Tab Navigation */
+.nav-pills .nav-link {
+    text-align: left;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-weight: 500;
+    color: #444;
+    background: #f8f9fa;
+    border: 1px solid #e1e1e1;
+}
+
+.nav-pills .nav-link.active {
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    border-color: #0d6efd;
+}
+
+/* Tab Hover */
+.nav-pills .nav-link:not(.active):hover {
+    background: #e9ecef;
+    color: #000;
+}
+
+/* Right side tab content */
+.tab-content {
+    min-height: 420px;
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Scrollbar styling */
+.tab-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 4px;
+}
+
+/* Make modal body content scroll instead of page */
+.modal-dialog-scrollable .modal-body {
+    max-height: calc(100vh - 190px);
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+/* Label spacing consistency */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Validation error text small spacing */
+small.text-danger {
+    font-size: 12px;
+}
+
+/* Checkbox alignment */
+.form-check-label {
+    margin-left: 4px;
+}
+
+/* Divider between tabs and form */
+.border-end {
+    border-right: 1px solid #dee2e6 !important;
+}
+
+/* Responsive: Convert vertical tabs to horizontal on small screens */
+@media (max-width: 768px) {
+    .border-end {
+        border: none !important;
+    }
+
+    .nav-pills {
+        flex-direction: row !important;
+        overflow-x: auto;
+        white-space: nowrap;
+        gap: 6px;
+    }
+
+    .nav-pills .nav-link {
+        flex: 0 0 auto;
+    }
+
+    .tab-content {
+        margin-top: 12px;
+        max-height: unset;
+    }
+}

@@ -19,6 +19,6 @@ export const routes: Routes = [
             import('../app/pages/institute/institute.routes').then((m) => m.INSTITUTE_ROUTES),
         canActivate: [authGuard]
     },
-    { path: 'branch', component: Branch, title: 'Branch | Fees Tracking app', canActivate: [authGuard] },
-    { path: 'course', component: Courses, title: 'Course | Fees Tracking app', canActivate: [authGuard] },
+    // { path: 'branch', component: Branch, title: 'Branch | Fees Tracking app', canActivate: [authGuard] },
+    // { path: 'course', component: Courses, title: 'Course | Fees Tracking app', canActivate: [authGuard] },
 ];
