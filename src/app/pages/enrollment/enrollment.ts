@@ -89,7 +89,7 @@ export class Enrollment implements OnInit {
   getAllCourse() {
     this.courseService.getAllCourses().subscribe({
       next: (res: any) => {
-        this.courseList.set(res)
+        this.courseList.set(res);
       }, error: (err) => {
         console.error('Some error while loading course List in enrollments:', err);
       }
@@ -153,6 +153,23 @@ export class Enrollment implements OnInit {
     return !!control && control.invalid && (control.touched || this.submitted);
   }
 
+  onAddUpdateEnrollment(res: any) {
+    this.isAddEditEnrollment.set(false);
+    this.submitted = false;
+    this.enrollmentForm.reset();
+    this.closeModal();
+
+    this.enrollmentList.update(list => {
+      let index = list.findIndex(item => item.enrollmentId === res.data.enrollmentId);
+      if (index === -1) {
+        return [...list, res.data];
+      } else {
+        list[index] = res;
+        return [...list];
+      }
+    })
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -163,14 +180,44 @@ export class Enrollment implements OnInit {
 
     this.isAddEditEnrollment.set(true);
 
-    console.log('✅ Enrollment Form Submitted:', this.enrollmentForm.value);
+    this.enrollmentForm.patchValue({
+      discountApprovedByUserId: this.userService.loggedInUser().userId,
+      enrollmentDoneByUserId: this.userService.loggedInUser().userId,
+      insitituteId: Number(this.enrollmentForm.value.insitituteId),
+      refrenceById: Number(this.enrollmentForm.value.refrenceById)
+    });
+
+    let enrollment: IEnrollment = this.enrollmentForm.value;
+
+    console.log('✅ Enrollment Form Submitted:', enrollment);
 
     // TODO: API CALL HERE
-
-    // Reset flags after successful submit
-    this.submitted = false;
-    this.enrollmentForm.reset();
+    this.enrollmentService.createStudentEnrollment(enrollment).subscribe({
+      next: (res: any) => {
+        this.onAddUpdateEnrollment(res);
+      }, error: (error: any) => {
+        this.isAddEditEnrollment.set(false);
+        console.error('Some error while adding enrollment:', error);
+      }
+    })
     // this.initForm(); // resets date to today again
+  }
+
+  /**
+   * Close bootstrap modal with id 'staticBackdrop' programmatically.
+   */
+  private closeModal() {
+    const modalEl = document.getElementById('enrollmentModal');
+    if (!modalEl) return;
+    const bootstrap = (window as any).bootstrap;
+    if (bootstrap && bootstrap.Modal) {
+      const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      inst.hide();
+      return;
+    }
+    // fallback: click close button if modal API not found
+    const closeBtn = modalEl.querySelector('.btn-close') as HTMLElement | null;
+    closeBtn?.click();
   }
 
 }

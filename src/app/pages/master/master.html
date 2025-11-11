@@ -1,35 +1,34 @@
-<div class="container-fluid p-tb">
+<div class="p-tb">
 
   @if (isShowAlert()) {
   <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   }
 
-  <div class="row g-4">
-
+  <div class="row">
     <div class="col">
-
       <div class="card shadow-sm">
-        <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center">
+        <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
           <div>
             <h5 class="mb-0 text-primary fw-bold">Master List</h5>
           </div>
-            <select class="form-control form-select form-select-sm w-auto" [(ngModel)]="selectedFilter"
-              (change)="onTrackByChange($event)">
-              <option value="">All</option>
-              @for (trackBy of masterForList; track $index) {
-              <option [value]="trackBy">{{ trackBy | titlecase }}</option>
-              }
-            </select>
-  
-            <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
-              data-bs-target="#masterModal">
-              <i class="bi bi-plus-circle-fill me-2"></i>
-              <span>Add Master</span>
-            </button>
+          <select class="form-control form-select form-select-sm w-auto" [(ngModel)]="selectedFilter"
+            (change)="onTrackByChange($event)">
+            <option value="">All</option>
+            @for (trackBy of masterForList; track $index) {
+            <option [value]="trackBy">{{ trackBy | titlecase }}</option>
+            }
+          </select>
+
+          <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
+            data-bs-target="#masterModal">
+            <i class="bi bi-plus-circle-fill me-2"></i>
+            <span>Add Master</span>
+          </button>
         </div>
 
+
         <div class="card-body p-0">
-          <div class="list-viewport" style="max-height: calc(100vh - 170px); overflow:auto; padding:1rem;">
+          <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 140px);">
 
             @if (isMasterListLoading()) {
             <div class="d-flex align-items-center justify-content-center" style="height:100%; min-height:200px;">
@@ -56,8 +55,8 @@
                       <small class="text-muted"><i>{{ master.masterValue }}</i></small>
                     </p>
                     <div class="d-flex justify-content-between">
-                      <button type="button" class="btn btn-outline-warning btn-sm"
-                      data-bs-toggle="modal" data-bs-target="#masterModal" (click)="editMaster(master)">
+                      <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#masterModal" (click)="editMaster(master)">
                         <i class="bi bi-pencil-square"></i> Edit</button>
                       <button type="button" class="btn btn-outline-danger btn-sm"
                         (click)="deleteMaster(master.masterId)"><i class="bi bi-trash-fill"></i> Delete</button>
@@ -73,10 +72,9 @@
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
+
 </div>
 
 <!-- Modal -->
@@ -118,17 +116,17 @@
         <div class="modal-footer d-flex justify-content-between mt-3">
 
           <!-- @if (!isAddUpdateLoader()) { -->
-            <button class="btn btn-sm" [disabled]="masterForm.invalid || isAddUpdateLoader()"
-              [ngClass]="{ 'btn-success': !masterFormControlId, 'btn-warning': masterFormControlId }" type="submit">
-              <i class="bi"
-                [ngClass]="{ 'bi-plus-circle-fill': !masterFormControlId, 'bi-pencil-square': masterFormControlId }"></i>
-              {{ masterFormControlId ? 'Update Master' : 'Add Master' }}
-            </button>
+          <button class="btn btn-sm" [disabled]="masterForm.invalid || isAddUpdateLoader()"
+            [ngClass]="{ 'btn-success': !masterFormControlId, 'btn-warning': masterFormControlId }" type="submit">
+            <i class="bi"
+              [ngClass]="{ 'bi-plus-circle-fill': !masterFormControlId, 'bi-pencil-square': masterFormControlId }"></i>
+            {{ masterFormControlId ? 'Update Master' : 'Add Master' }}
+          </button>
 
-            @if (masterFormControlId) {
-            <button class="btn btn-sm btn-primary" [disabled]="isAddUpdateLoader()" type="button" (click)="cancelEdit()">
-              <i class="bi bi-x-circle-fill"></i> Cancel</button>
-            }
+          @if (masterFormControlId) {
+          <button class="btn btn-sm btn-primary" [disabled]="isAddUpdateLoader()" type="button" (click)="cancelEdit()">
+            <i class="bi bi-x-circle-fill"></i> Cancel</button>
+          }
           <!-- } -->
         </div>
 

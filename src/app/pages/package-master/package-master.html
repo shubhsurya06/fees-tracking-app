@@ -1,4 +1,4 @@
-<div class="container-fluid p-tb">
+<div class="p-tb">
 
     @if (isShowAlert()) {
     <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="card-body p-0">
-                    <div class="list-viewport" style="max-height: calc(100vh - 156px); overflow:auto; padding:1rem;">
+                    <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 142px);">
 
                         @if (isPackageLoading()) {
                         <div class="d-flex align-items-center justify-content-center"

@@ -1,79 +1,85 @@
-<div class="container-fluid p-tb">
-
-    <!-- Page Title -->
-    <!-- <div class="row mb-4">
-        <div class="col text-center">
-            <h2 class="fw-bold text-primary">
-                <i class="bi bi-building me-2"></i>Institute Management
-            </h2>
-            <p class="text-muted small">Manage your educational institutions and their details</p>
-            <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" />
-        </div>
-    </div> -->
+<div class="p-tb">
 
     <div class="row">
         <!-- List Header -->
-        <div class="col-12 mb-4">
+        <div class="col">
             <div class="card shadow-sm">
                 <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
                     <div>
                         <h5 class="mb-0 text-primary fw-bold">Institute List</h5>
-                        <!-- <small class="text-muted">Showing <strong>{{ instituteList().length }}</strong> institutes</small> -->
                     </div>
                     <button class="btn btn-primary d-flex align-items-center" (click)="addEditInstitute(0)">
                         <i class="bi bi-plus-circle-fill me-2"></i>
                         <span>Add Institute</span>
                     </button>
                 </div>
-            </div>
-        </div>
 
-        @if (isInstituteLoader()) {
-        <div class="text-center mt-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        }
 
-        @if (!isInstituteLoader()) {
-        @if (instituteList().length == 0) {
-        <p class="text-muted mt-3">No institutes available. Please add one.</p>
-        }
+                <div class="card-body p-0">
+                    <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 156px);">
+                        @if (isInstituteLoader()) {
+                        <div class="text-center mt-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        }
 
-        @if (instituteList().length > 0) {
+                        @if (!isInstituteLoader()) {
+                        @if (instituteList().length == 0) {
+                        <p class="text-muted mt-3">No institutes available. Please add one.</p>
+                        }
 
-        @for (institute of instituteList(); track institute.instituteId) {
-        <div class="col-md-3 mb-4">
-            <div class="card branch-card shadow-sm ">
-                <div class="card-body">
-                    <h5 class="card-title text-capitalize text-primary fw-bold">
-                        {{ institute.name }}
-                    </h5>
-                    <div class="text-muted small">
-                        <p class="mb-1"><i class="bi bi-person me-2"></i>{{ institute.ownerName }}</p>
-                        <p class="mb-1"><i class="bi bi-telephone me-2"></i>{{ institute.conatctNo }}</p>
-                        <p class="mb-1"><i class="bi bi-envelope me-2"></i>{{ institute.emailId }}</p>
-                        <p class="mb-1"><i class="bi bi-pin-map me-2"></i>{{ institute.location }}</p>
-                        <p class="mb-1"><i class="bi bi-geo-alt me-2"></i>{{ institute.city }}, {{ institute.state }} - {{ institute.pincode }}</p>
-                        <p class="mb-1"><i class="bi bi-receipt me-2"></i>{{ institute.gstNo }}</p>
-                        <p class="mb-4"><i class="bi bi-calendar-event me-2"></i>{{ institute.createdDate | date: 'dd MMM yyyy' }}</p>
-                    </div>
+                        <div class="row g-3">
+                            @if (instituteList().length > 0) {
 
-                    <div class="d-flex justify-content-between mt-1">
-                        <button class="btn btn-outline-warning btn-sm me-2" (click)="addEditInstitute(institute.instituteId)">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm" (click)="deleteInstitute(institute.instituteId)">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
+                            @for (institute of instituteList(); track institute.instituteId) {
+                            <div class="col-md-3">
+                                <div class="card branch-card shadow-sm ">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-capitalize text-primary fw-bold">
+                                            {{ institute.name }}
+                                        </h5>
+                                        <div class="text-muted small">
+                                            <p class="mb-1"><i class="bi bi-person me-2"></i>{{ institute.ownerName }}
+                                            </p>
+                                            <p class="mb-1"><i class="bi bi-telephone me-2"></i>{{ institute.conatctNo
+                                                }}</p>
+                                            <p class="mb-1"><i class="bi bi-envelope me-2"></i>{{ institute.emailId }}
+                                            </p>
+                                            <p class="mb-1"><i class="bi bi-pin-map me-2"></i>{{ institute.location }}
+                                            </p>
+                                            <p class="mb-1"><i class="bi bi-geo-alt me-2"></i>{{ institute.city }}, {{
+                                                institute.state }} -
+                                                {{ institute.pincode }}</p>
+                                            <p class="mb-1"><i class="bi bi-receipt me-2"></i>{{ institute.gstNo }}</p>
+                                            <p class="mb-4"><i class="bi bi-calendar-event me-2"></i>{{
+                                                institute.createdDate |
+                                                date: 'dd MMM yyyy' }}</p>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <button class="btn btn-outline-warning btn-sm me-2"
+                                                (click)="addEditInstitute(institute.instituteId)">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                (click)="deleteInstitute(institute.instituteId)">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            }
+                        </div>
+
+                        }
                     </div>
                 </div>
+
             </div>
         </div>
-        }
-        }
-        }
-
     </div>
 </div>

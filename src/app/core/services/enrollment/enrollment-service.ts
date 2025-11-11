@@ -30,9 +30,11 @@ export class EnrollmentService {
    * @param courseData 
    * @returns 
    */
-  createCourse(courseData: IEnrollment) {
-    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.COURSE + API_CONSTANT.COURSE_APIS.CREATE_COURSES;
-    return this.http.post(url, courseData);
+  createStudentEnrollment(enrollment: IEnrollment) {
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT + API_CONSTANT.ENROLLMENT_APIS.CREATE_ENROLLMENT;
+    return this.http.post(url, enrollment).pipe(
+      delay(500)
+    );
   }
 
   /**
