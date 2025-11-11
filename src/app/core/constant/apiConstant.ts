@@ -5,7 +5,8 @@ export const API_CONSTANT = {
         PACKAGE_MASTER: 'PackageMaster',
         INSTITUTE: 'InstituteMaster',
         BRANCH: 'BranchMaster',
-        COURSE: 'Course'
+        COURSE: 'Course',
+        ENROLLMENT: 'Enrollments'
     },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
@@ -40,6 +41,14 @@ export const API_CONSTANT = {
         CREATE_COURSES: '/createCourse',
         UPDATE_COURSES: '/updateCourse',
         DELETE_COURSES: '/deleteCourse'
+    },
+    ENROLLMENT_APIS: {
+        GET_ALL_ENROLLMENT: '/getAllEnrollments',
+        GET_ENROLLMENT_BY_ID: '/getAllEnrollmentById',
+        CREATE_ENROLLMENT: '/createStudentEnrollment',
+        UPDATE_ENROLLMENT: '/updateEnrollment',
+        DELETE_ENROLLMENT: '/deleteEnrollment',
+        FILTER_ENROLLMENTS: '/filterEnrollments'
     },
     USER_APIS: {
         LOGIN: '/login',

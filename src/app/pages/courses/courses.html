@@ -1,16 +1,4 @@
-<app-header></app-header>
-<div class="container py-4">
-
-    <div class="row mb-4">
-        <div class="col text-center">
-            <h2 class="fw-bold text-primary">
-                <i class="bi bi-diagram-3-fill me-2"></i>Course Management
-            </h2>
-            <p class="text-muted small">Manage your Courses from here</p>
-            <hr class="mx-auto" style="width: 160px; height: 3px; background-color: #0d6efd; border: none;" />
-        </div>
-    </div>
-
+<div class="container-fluid p-tb">
     @if (isShowAlert()) {
     <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
     }
@@ -23,7 +11,7 @@
                     <div>
                         <h5 class="mb-0 text-primary fw-bold">Course List</h5>
                     </div>
-                    <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
                         data-bs-target="#courseModal">
                         <i class="bi bi-plus-circle-fill me-2"></i>
                         <span>Add Course</span>
@@ -219,7 +207,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn d-flex align-items-center"
+                    <button type="submit" class="btn btn-sm d-flex align-items-center"
                         [ngClass]="courseForm.get('courseId')?.value ? 'btn-warning' : 'btn-success'"
                         [disabled]="courseForm.invalid || isAddEditCourseLoader()">
                         <i class="bi me-2"

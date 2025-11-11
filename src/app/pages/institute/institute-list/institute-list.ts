@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Header } from '../../header/header'
 import { Router, ActivatedRoute } from '@angular/router';
 import { InstituteService } from '../../../core/services/institute/institute-service';
 import { IInstituteModel } from '../../../core/model/institute-model';
@@ -7,7 +6,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-institute-list',
-  imports: [Header, DatePipe],
+  imports: [DatePipe],
   templateUrl: './institute-list.html',
   styleUrl: './institute-list.scss'
 })

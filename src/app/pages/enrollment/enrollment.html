@@ -1,0 +1,405 @@
+<div class="container-fluid p-tb">
+    @if (isShowAlert()) {
+    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+    }
+
+    <div class="row">
+        <!-- List Header -->
+        <div class="col">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <h5 class="mb-0 text-primary fw-bold">Enrollment List</h5>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+                        <i class="bi bi-plus-circle-fill me-2"></i>
+                        <span>Add Enrollment</span>
+                    </button>
+                </div>
+            </div>
+            <!-- <div class="card">
+                <div class="card-body"> -->
+
+            @if (isEnrollmentListLoading()) {
+            <div class="text-center mt-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            }
+
+            @if (!isEnrollmentListLoading()) {
+            <div class="row g-3">
+
+                @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
+                <div class="col-md-3">
+                    <div class="card branch-card shadow-sm h-100">
+                        <!-- <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title mb-0 text-primary fw-bold">{{ enrollment.studentName }}</h6>
+                            </div>
+
+                            <div class="small mb-1">
+                                <div><strong>Course Name:</strong> {{enrollment.courseName}}</div>
+                                <div><strong>Email:</strong> {{enrollment.studentEmail}}</div>
+                                <div><strong>Contact No:</strong> {{enrollment.studentContact}}</div>
+                            </div>
+
+                            <ul class="list-unstyled small mb-3">
+                                <li><strong>Course Cost:</strong> {{ enrollment.courseCost }}</li>
+                                <li><strong>Final Amount:</strong> {{ enrollment.finalAmount }}</li>
+                                <li><strong>Discount:</strong> {{ enrollment.discountGiven }}</li>
+                                
+                            </ul>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <button class="btn btn-outline-warning btn-sm" (click)="editEnrollment(enrollment)"
+                                    data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" (click)="deleteEnrollment(enrollment.enrollmentId)">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </button>
+                            </div>
+                        </div> -->
+                        <!-- <div class="card-body d-flex flex-column">
+
+                            
+                            <div>
+                                <h6 class="card-title mb-1 text-primary fw-bold">
+                                    {{ enrollment.studentName }}
+                                </h6>
+
+                                <div class="mb-1"><strong>Student Information</strong></div>
+
+                                <div class="small">
+                                    <div>Email: {{ enrollment.studentEmail }}</div>
+                                    <div>Contact No: {{ enrollment.studentContact }}</div>
+                                </div>
+                            </div>
+
+                        
+                            <hr class="my-2">
+
+                            
+                            <div>
+                                <div class="mb-1"><strong>Course Information</strong></div>
+
+                                <div class="small">
+                                    <div>Course Name: {{ enrollment.courseName }}</div>
+                                    <div>Course Cost: ₹{{ enrollment.courseCost }}</div>
+                                    <div>Final Amount: ₹{{ enrollment.finalAmount }}</div>
+                                    <div>Discount: ₹{{ enrollment.discountGiven }}</div>
+                                    <div>Date Enrolled: {{ enrollment.enrollmentDate | date }}</div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                <button class="btn btn-outline-warning btn-sm" (click)="editEnrollment(enrollment)"
+                                    data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+
+                                <button class="btn btn-outline-danger btn-sm"
+                                    (click)="deleteEnrollment(enrollment.enrollmentId)">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </button>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="card student-card shadow-sm">
+                            <div class="card-header student-card-header">
+                                <h5 class="mb-0 fw-bold text-white">Rahul</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <h6 class="section-title">Student Information</h6>
+                                <p><strong>Email:</strong> string</p>
+                                <p><strong>Contact No:</strong> 0000009900</p>
+
+                                <hr />
+
+                                <h6 class="section-title">Course Information</h6>
+                                <p><strong>Course Name:</strong> Computer Technology</p>
+                                <p><strong>Course Cost:</strong> ₹1000</p>
+                                <p><strong>Final Amount:</strong> ₹50000</p>
+                                <p><strong>Discount:</strong> ₹0</p>
+                                <p><strong>Date Enrolled:</strong> Nov 10, 2025</p>
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash3-fill"></i> Delete
+                                </button>
+                            </div>
+                        </div> -->
+
+                        <div class="student-card glass-card p-3 my-3">
+                            <div class="card-header-custom mb-3">
+                                {{ enrollment.studentName }}
+                            </div>
+
+                            <div class="section-title">Student Information</div>
+                            <div class="info-item"><strong>Email:</strong> {{ enrollment.studentEmail }}</div>
+                            <div class="info-item"><strong>Contact No:</strong> {{ enrollment.studentContact }}</div>
+
+                            <hr />
+
+                            <div class="section-title">Course Information</div>
+                            <div class="info-item"><strong>Course Name:</strong> {{ enrollment.courseName }}</div>
+                            <div class="info-item"><strong>Course Cost:</strong> ₹{{ enrollment.courseCost }}</div>
+                            <div class="info-item"><strong>Final Amount:</strong> ₹{{ enrollment.finalAmount }}</div>
+                            <div class="info-item"><strong>Discount:</strong> ₹{{ enrollment.discountGiven }}</div>
+                            <div class="info-item"><strong>Date Enrolled:</strong> {{ enrollment.enrollmentDate | date }}</div>
+
+                            <div class="button-row mt-4">
+                                <button class="btn btn-outline-primary btn-sm" (click)="editEnrollment(enrollment)"
+                                    data-bs-toggle="modal" data-bs-target="#enrollmentModal"><i class="bi bi-pencil-square"></i>
+                                    Edit</button>
+                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i>
+                                    Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+            <!-- </div> -->
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<!-- Button to Open Modal -->
+
+<!-- Enrollment Modal -->
+<!-- Enrollment Modal -->
+<div class="modal fade" id="enrollmentModal" tabindex="-1" aria-labelledby="enrollmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-primary" id="enrollmentModalLabel">Add / Edit Enrollment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="modal-body">
+                    <div class="row g-3">
+
+                        <!-- Left Tabs -->
+                        <div class="col-3 border-end">
+                            <ul class="nav flex-column nav-pills" id="enrollTabs" role="tablist">
+                                <li class="nav-item mb-2">
+                                    <button class="nav-link active" id="tab-student-tab" data-bs-toggle="pill"
+                                        data-bs-target="#tab-student" type="button" role="tab">
+                                        👤 Student Info
+                                    </button>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <button class="nav-link" id="tab-course-tab" data-bs-toggle="pill"
+                                        data-bs-target="#tab-course" type="button" role="tab">
+                                        🎓 Course & Enrollment
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" id="tab-attach-tab" data-bs-toggle="pill"
+                                        data-bs-target="#tab-attach" type="button" role="tab">
+                                        📎 Attachments
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Right Side Form -->
+                        <div class="col-9">
+                            <div class="tab-content" id="enrollTabsContent">
+
+                                <!-- Student Info Tab -->
+                                <div class="tab-pane fade show active" id="tab-student" role="tabpanel">
+                                    <div class="row g-3">
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" formControlName="name">
+                                            <small class="text-danger" *ngIf="showError('name')">Name is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Contact No</label>
+                                            <input type="text" class="form-control" formControlName="contactNo">
+                                            <small class="text-danger" *ngIf="showError('contactNo')">Contact is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" formControlName="email">
+                                            <small class="text-danger" *ngIf="showError('email')">Valid Email is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label">City</label>
+                                            <input type="text" class="form-control" formControlName="city">
+                                            <small class="text-danger" *ngIf="showError('city')">City is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label">State</label>
+                                            <input type="text" class="form-control" formControlName="state">
+                                            <small class="text-danger" *ngIf="showError('state')">State is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label">Pincode</label>
+                                            <input type="text" class="form-control" formControlName="pincode">
+                                            <small class="text-danger" *ngIf="showError('pincode')">Pincode is
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Family Details</label>
+                                            <textarea class="form-control" rows="2"
+                                                formControlName="familyDetails"></textarea>
+                                            <small class="text-danger" *ngIf="showError('familyDetails')">Family details
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Aadhar Card</label>
+                                            <input type="text" class="form-control" formControlName="aadharCard">
+                                            <small class="text-danger" *ngIf="showError('aadharCard')">Aadhar
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Profile Photo Name</label>
+                                            <input type="text" class="form-control" formControlName="profilePhotoName">
+                                            <small class="text-danger" *ngIf="showError('profilePhotoName')">Profile
+                                                Photo required</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Course & Enrollment Tab -->
+                                <div class="tab-pane fade" id="tab-course" role="tabpanel">
+                                    <div class="row g-3">
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Course</label>
+                                            <select class="form-select" formControlName="courseId">
+                                                <option value="">Select Course</option>
+                                                <option *ngFor="let c of courseList" [value]="c.id">{{c.name}}</option>
+                                            </select>
+                                            <small class="text-danger" *ngIf="showError('courseId')">Course
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Final Amount</label>
+                                            <input type="number" class="form-control" formControlName="finalAmount">
+                                            <small class="text-danger" *ngIf="showError('finalAmount')">Final amount
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Discount Given</label>
+                                            <input type="number" class="form-control" formControlName="discountGiven">
+                                            <small class="text-danger" *ngIf="showError('discountGiven')">Discount
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Reference By</label>
+                                            <select class="form-select" formControlName="refrenceById">
+                                                <option value="">Select Reference</option>
+                                                <option *ngFor="let r of referenceList" [value]="r.id">{{r.name}}
+                                                </option>
+                                            </select>
+                                            <small class="text-danger" *ngIf="showError('refrenceById')">Reference
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Institute</label>
+                                            <select class="form-select" formControlName="instituteId">
+                                                <option value="">Select Institute</option>
+                                                <option *ngFor="let i of instituteList1" [value]="i.id">{{i.name}}
+                                                </option>
+                                            </select>
+                                            <small class="text-danger" *ngIf="showError('instituteId')">Institute
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Enrollment Date</label>
+                                            <input type="date" class="form-control" formControlName="enrollmentDate">
+                                            <small class="text-danger" *ngIf="showError('enrollmentDate')">Date
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-12 form-check mt-2">
+                                            <input type="checkbox" class="form-check-input"
+                                                formControlName="isFeesCompleted" id="feesDone">
+                                            <label class="form-check-label" for="feesDone">Is Fees Completed?</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Attachments Tab -->
+                                <div class="tab-pane fade" id="tab-attach" role="tabpanel">
+                                    <div class="row g-3">
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Qualification</label>
+                                            <input type="text" class="form-control" formControlName="qualification">
+                                            <small class="text-danger" *ngIf="showError('qualification')">Qualification
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">College Name</label>
+                                            <input type="text" class="form-control" formControlName="collegeName">
+                                            <small class="text-danger" *ngIf="showError('collegeName')">College
+                                                required</small>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">College City</label>
+                                            <input type="text" class="form-control" formControlName="collegeCity">
+                                            <small class="text-danger" *ngIf="showError('collegeCity')">College City
+                                                required</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-check2-circle"></i> Save Enrollment
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

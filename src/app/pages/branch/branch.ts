@@ -1,5 +1,4 @@
 import { Component, OnInit, signal, inject, Output } from '@angular/core';
-import { Header } from '../header/header';
 import { IBranch } from '../../core/model/branch-model';
 import { BranchService } from '../../core/services/branch/branch-service';
 import { InstituteService } from '../../core/services/institute/institute-service';
@@ -15,7 +14,7 @@ import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 
 @Component({
   selector: 'app-branch',
-  imports: [Header, ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
@@ -100,7 +99,6 @@ export class Branch implements OnInit {
     this.isBranchLoading.set(true);
     this.branchService.getAllBranches().subscribe({
       next: (res: any) => {
-        this.showAlert(true, res);
         this.isBranchLoading.set(false);
         console.log('Institute List for mapping:', this.instituteList(), res.data);
         this.onGetAllBranchSuccess(res.data);
@@ -221,9 +219,10 @@ export class Branch implements OnInit {
    * @param branchData 
    * @param message 
    */
-  private handleBranchSuccess(branchData: IBranch) {
+  private handleBranchSuccess(branchData: any) {
     this.isAddEditBranchLoader.set(false);
     this.showAlert(true, branchData);
+    let res: IBranch = branchData.data;
     try {
       this.closeModal();
     } catch (e) {
@@ -232,22 +231,15 @@ export class Branch implements OnInit {
     this.cancelEdit();
 
     // Update the branch list
-    // this.branchList.update(list => {
-    //   const index = list.findIndex(b => b.branchId === branchData.branchId);
-    //   if (index === -1) {
-    //     return [...list, branchData];
-    //   } else {
-    //     list[index] = branchData;
-    //     return [...list];
-    //   }
-    // });
-    // let bList = this.branchList();
-    let index = this.branchList().findIndex((item: IBranch) => item.branchId === branchData.branchId);
-    if (index === -1) {
-      this.branchList().push(branchData);
-    } else {
-      this.branchList()[index] = branchData;
-    }
+    this.branchList.update(list => {
+      const index = list.findIndex(b => b.branchId === res.branchId);
+      if (index === -1) {
+        return [...list, res];
+      } else {
+        list[index] = res;
+        return [...list];
+      }
+    })
   }
 
   /**

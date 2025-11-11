@@ -1,5 +1,4 @@
 import { Component, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
-import { Header } from '../../header/header';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InstituteService } from '../../../core/services/institute/institute-service';
 import { IInstituteModel } from '../../../core/model/institute-model';
@@ -8,7 +7,7 @@ import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-institute-form',
-  imports: [Header, FormsModule, NgClass, NgIf],
+  imports: [FormsModule, NgClass, NgIf],
   templateUrl: './institute-form.html',
   styleUrl: './institute-form.scss'
 })
