@@ -249,24 +249,9 @@ export class Courses implements OnInit {
    */
   cancelEdit() {
     this.courseForm.reset();
+    this.courseForm.patchValue({
+      courseId: 0
+    })
   }
 
 }
-
-
-// {
-//   "message": "Course created successfully",
-//   "data": {
-//     "courseId": 1,
-//     "courseName": "Computer Science",
-//     "courseCost": 20000,
-//     "duration": "3 months",
-//     "creratedDate": "2025-11-08T08:35:30.5661189+05:30",
-//     "courseDescription": "basic computer science course"
-//     "isActive": true,
-//     "instituteId": 10,
-//   }
-// }
-
-// add toggle button to change view from CARD to TABLE
-//

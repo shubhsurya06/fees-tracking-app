@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { API_CONSTANT } from '../../constant/apiConstant';
 import { APP_CONSTANT } from '../../constant/appConstant';
-import { delay } from 'rxjs';
+import { delay, map } from 'rxjs';
 import { IEnrollment } from '../../model/enrollment-model';
 
 @Injectable({
@@ -30,28 +30,39 @@ export class EnrollmentService {
    * @param courseData 
    * @returns 
    */
-  createCourse(courseData: IEnrollment) {
-    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.COURSE + API_CONSTANT.COURSE_APIS.CREATE_COURSES;
-    return this.http.post(url, courseData);
+  createStudentEnrollment(enrollment: IEnrollment) {
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT + API_CONSTANT.ENROLLMENT_APIS.CREATE_ENROLLMENT;
+    return this.http.post(url, enrollment).pipe(
+      delay(500)
+    );
   }
 
   /**
-   * Call updateCourse API from here and udpate course
+   * Call updateEnrollment API from here and udpate enrollment
    * @param courseData 
    * @returns 
    */
-  updateCourse(courseData: IEnrollment) {
-    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.COURSE + API_CONSTANT.COURSE_APIS.UPDATE_COURSES;
-    return this.http.put(url, courseData);
+  updateEnrollment(enrollment: any) {
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT + API_CONSTANT.ENROLLMENT_APIS.UPDATE_ENROLLMENT;
+    return this.http.put(url + APP_CONSTANT.SLASH_CONST + enrollment.enrollmentId, enrollment);
+    // .pipe(
+    //   map((res: any) => {
+    //     let obj = {
+    //       message: 'Enrollment updated successfully',
+    //       data: res.data
+    //     }
+    //     return obj;
+    //   }
+    // ));
   }
 
 
   /**
-   * Call deleteCourse API from here and delete course
+   * Call deleteEnrollment API from here and delete enrollment
    * @param courseData 
    * @returns 
    */
-  deleteCourse(id: number | undefined) {
-    return this.http.delete(`${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.COURSE}${API_CONSTANT.COURSE_APIS.DELETE_COURSES}${APP_CONSTANT.SLASH_CONST}${id}`);
+  deleteEnrollment(id: number | undefined) {
+    return this.http.delete(`${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT}${API_CONSTANT.ENROLLMENT_APIS.DELETE_ENROLLMENT}${APP_CONSTANT.SLASH_CONST}${id}`);
   }
 }

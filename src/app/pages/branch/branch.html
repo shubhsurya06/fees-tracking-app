@@ -1,4 +1,4 @@
-<div class="container-fluid p-tb">
+<div class="p-tb">
 
     @if (isShowAlert()) {
     <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
@@ -12,64 +12,69 @@
                     <div>
                         <h5 class="mb-0 text-primary fw-bold">Branch List</h5>
                     </div>
-                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"> <i class="bi bi-plus-circle-fill me-2"></i>
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"> <i
+                            class="bi bi-plus-circle-fill me-2"></i>
                         <span>Add Branch</span>
                     </button>
                 </div>
 
-                <div class="card-body">
-
-                    @if (isBranchLoading()) {
-                    <div class="text-center mt-4">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    }
-
-                    @if (!isBranchLoading()) {
-                    <div class="row g-3">
-
-                        @for (branch of branchList(); track branch.branchId) {
-                        <div class="col-md-3">
-                            <div class="card branch-card shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <h6 class="card-title mb-0 text-primary fw-bold">{{ branch.branchName }}</h6>
-                                        <span class="badge bg-secondary">{{ branch.branchCode }}</span>
-                                    </div>
-
-                                    <div class="text-muted small mb-1">
-                                        <div><i class="bi bi-building me-1"></i> <strong>Institute: {{
-                                            branch.instituteName }}</strong></div>
-                                        <div><i class="bi bi-telephone me-1"></i> {{ branch.branchContactNo }}</div>
-                                    </div>
-
-                                    <ul class="list-unstyled small mb-3">
-                                        <li><i class="bi bi-envelope me-2"></i>{{ branch.branchEmail }}</li>
-                                        <li><i class="bi bi-geo-alt me-2"></i>{{ branch.city }}, {{ branch.state }} - {{
-                                            branch.pincode }}</li>
-                                        <li class="text-truncate"><i class="bi bi-pin-map me-2"></i>{{ branch.location
-                                            }}</li>
-                                    </ul>
-
-                                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <button class="btn btn-outline-warning btn-sm" (click)="editBranch(branch)"
-                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </button>
-                                        <button class="btn btn-outline-danger btn-sm"
-                                            (click)="deleteBranch(branch.branchId)">
-                                            <i class="bi bi-trash-fill"></i> Delete
-                                        </button>
-                                    </div>
-                                </div>
+                <div class="card-body p-0">
+                    <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 140px);">
+                        @if (isBranchLoading()) {
+                        <div class="text-center mt-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
                         }
+
+                        @if (!isBranchLoading()) {
+                        <div class="row g-3">
+
+                            @for (branch of branchList(); track branch.branchId) {
+                            <div class="col-md-3">
+                                <div class="card branch-card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="card-title mb-0 text-primary fw-bold">{{ branch.branchName }}
+                                            </h6>
+                                            <span class="badge bg-secondary">{{ branch.branchCode }}</span>
+                                        </div>
+
+                                        <div class="text-muted small mb-1">
+                                            <div><i class="bi bi-building me-1"></i> <strong>Institute: {{
+                                                    branch.instituteName }}</strong></div>
+                                            <div><i class="bi bi-telephone me-1"></i> {{ branch.branchContactNo }}</div>
+                                        </div>
+
+                                        <ul class="list-unstyled small mb-3">
+                                            <li><i class="bi bi-envelope me-2"></i>{{ branch.branchEmail }}</li>
+                                            <li><i class="bi bi-geo-alt me-2"></i>{{ branch.city }}, {{ branch.state }}
+                                                - {{
+                                                branch.pincode }}</li>
+                                            <li class="text-truncate"><i class="bi bi-pin-map me-2"></i>{{
+                                                branch.location
+                                                }}</li>
+                                        </ul>
+
+                                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                                            <button class="btn btn-outline-warning btn-sm" (click)="editBranch(branch)"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                (click)="deleteBranch(branch.branchId)">
+                                                <i class="bi bi-trash-fill"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        }
                     </div>
-                    }
                 </div>
             </div>
         </div>
@@ -114,10 +119,11 @@
                             }
                         </div>
                         @if (userService.loggedInUser().role !== instituteAdminRole) {
-                            <div class="col-md-4">
+                        <div class="col-md-4">
                             <label class="form-label">Institute</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-building text-primary"></i></span>
+                                <span class="input-group-text bg-white"><i
+                                        class="bi bi-building text-primary"></i></span>
                                 <select class="form-select" formControlName="instituteId" required>
                                     <option value="">Select Institute</option>
                                     @for (institute of instituteList(); track institute.instituteId) {
@@ -125,7 +131,8 @@
                                     }
                                 </select>
                                 <div class="">
-                                    @if (branchForm.get('instituteId')?.invalid && branchForm.get('instituteId')?.touched) {
+                                    @if (branchForm.get('instituteId')?.invalid &&
+                                    branchForm.get('instituteId')?.touched) {
                                     <small class="text-danger">
                                         @if (branchForm.get('instituteId')?.errors?.['required']) {
                                         Please select an institute.
@@ -136,7 +143,7 @@
                             </div>
                         </div>
                         }
-                        
+
 
                         <div class="col-md-4">
                             <label class="form-label">Contact Number</label>

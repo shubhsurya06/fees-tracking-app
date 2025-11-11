@@ -6,7 +6,8 @@ export const API_CONSTANT = {
         INSTITUTE: 'InstituteMaster',
         BRANCH: 'BranchMaster',
         COURSE: 'Course',
-        ENROLLMENT: 'Enrollments'
+        ENROLLMENT: 'Enrollments',
+        STUDENT: 'Student'
     },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
@@ -49,6 +50,9 @@ export const API_CONSTANT = {
         UPDATE_ENROLLMENT: '/updateEnrollment',
         DELETE_ENROLLMENT: '/deleteEnrollment',
         FILTER_ENROLLMENTS: '/filterEnrollments'
+    },
+    STUDENT_APIS: {
+        GET_STUDENT_BY_INSTITUTE: '/institute'
     },
     USER_APIS: {
         LOGIN: '/login',

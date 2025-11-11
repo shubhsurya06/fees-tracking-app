@@ -1,22 +1,17 @@
-.card {
-    border-left: 6px solid #1e60d4;
+.branch-card {
+    border-left: 6px solid #0d6efd;
     border-radius: 10px;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     background: #fff;
 }
 
-.card .card-body {
+.branch-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.08);
+}
+
+.branch-card .card-body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.card:hover:first-child {
-    transform: none;
-}
-
-.card:hover {
-    background: #f8f9fa;
-    transform: translateY(-6px);
-    box-shadow: 0 10px 30px rgba(13, 110, 253, 0.08);
 }
