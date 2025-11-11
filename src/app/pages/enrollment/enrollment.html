@@ -61,10 +61,10 @@
 
                     <div class="button-row mt-4">
                       <button class="btn btn-outline-primary btn-sm" (click)="editEnrollment(enrollment)"
-                        data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+                        data-bs-toggle="modal" data-bs-target="#editEnrollmentModal">
                         <i class="bi bi-pencil-square"></i> Edit
                       </button>
-                      <button class="btn btn-outline-danger btn-sm">
+                      <button class="btn btn-outline-danger btn-sm" (click)="deleteEnrollment(enrollment.enrollmentId)">
                         <i class="bi bi-trash"></i> Delete
                       </button>
                     </div>
@@ -276,6 +276,66 @@
           <button class="btn btn-primary" type="submit" [disabled]="isAddEditEnrollment()">
             <i class="bi bi-check2-circle"></i> Save Enrollment
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editEnrollmentModal" tabindex="-1" aria-labelledby="editEnrollmentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editEnrollmentModalLabel">Edit Enrollment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="editEnrollmentForm" (ngSubmit)="onEditEnrollment()">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select class="form-select" formControlName="courseId">
+              <option value="">Select Course</option>
+              <option *ngFor="let c of courseList()" [value]="c.courseId">{{c.courseName}}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="enrollmentDate" class="form-label">Enrollment Date</label>
+            <input type="date" id="enrollmentDate" class="form-control" formControlName="enrollmentDate">
+          </div>
+
+          <div class="mb-3">
+            <label for="finalAmount" class="form-label">Final Amount</label>
+            <input type="number" id="finalAmount" class="form-control" formControlName="finalAmount">
+          </div>
+
+          <div class="mb-3">
+            <label for="discountGiven" class="form-label">Discount Given</label>
+            <input type="number" id="discountGiven" class="form-control" formControlName="discountGiven">
+          </div>
+
+          <div class="form-check mb-3">
+            <input type="checkbox" id="isFeesCompleted" class="form-check-input" formControlName="isFeesCompleted">
+            <label for="isFeesCompleted" class="form-check-label">Is Fees Completed</label>
+          </div>
+
+          <div class="form-check mb-3">
+            <input type="checkbox" id="isConfirmed" class="form-check-input" formControlName="isConfirmed">
+            <label for="isConfirmed" class="form-check-label">Is Confirmed</label>
+          </div>
+        </div>
+        @if (isAddEditEnrollment()) {
+        <div class="text-center my-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        }
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-warning btn-sm" [disabled]="editEnrollmentForm.invalid || isAddEditEnrollment()">
+            <i class="bi me-2 bi-pencil-square"></i> Update Enrollment</button>
         </div>
       </form>
     </div>

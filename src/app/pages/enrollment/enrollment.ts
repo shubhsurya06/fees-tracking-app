@@ -12,6 +12,8 @@ import { ICourses } from '../../core/model/course-model';
 import { IMaster } from '../../core/model/master-model';
 import { CourseService } from '../../core/services/course/course-service';
 import { MasterService } from '../../core/services/master/master-service';
+import { IStudent } from '../../core/model/student-model';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
 
 @Component({
   selector: 'app-enrollment',
@@ -35,7 +37,9 @@ export class Enrollment implements OnInit {
   courseList = signal<ICourses[]>([]);
   refByMasterList = signal<IMaster[]>([]);
   enrollmentList = signal<any[]>([]);
+  studentList = signal<IStudent[]>([]);
   enrollmentForm!: FormGroup;
+  editEnrollmentForm!: FormGroup;
   submitted = false;
 
   constructor(private fb: FormBuilder) {
@@ -66,11 +70,25 @@ export class Enrollment implements OnInit {
       aadharCard: ['', [Validators.required, Validators.pattern(/^[0-9]{12}$/)]],
       profilePhotoName: ['', Validators.required]
     });
+
+    this.editEnrollmentForm = this.fb.group({
+      enrollmentId: [0],
+      studentId: [0],
+      courseId: ['', Validators.required],
+      enrollmentDoneByUserId: [0],
+      enrollmentDate: [new Date(), Validators.required],
+      finalAmount: [0, [Validators.required, Validators.min(0)]],
+      discountGiven: [0, [Validators.min(0)]],
+      discountApprovedByUserId: [0],
+      isFeesCompleted: [false],
+      isConfirmed: [false]
+    });
   }
 
   ngOnInit(): void {
     console.log('current logged in user:', this.userService.loggedInUser());
     this.getAllInstitutes();
+    this.getStudentByInstitute();
     this.getAllCourse();
     this.getMasterByReference();
     this.getInstituteEnrollments();
@@ -86,6 +104,9 @@ export class Enrollment implements OnInit {
     this.instituteList.set(list);
   }
 
+  /**
+   * get all courses from courseService on page load
+   */
   getAllCourse() {
     this.courseService.getAllCourses().subscribe({
       next: (res: any) => {
@@ -96,6 +117,19 @@ export class Enrollment implements OnInit {
     })
   }
 
+  /**
+   * get all students from commonService on page load
+   */
+  async getStudentByInstitute() {
+    let instituteId: number | undefined = this.userService.loggedInUser().instituteId;
+    let list = await this.commonService.returnAllStudents(instituteId);
+    this.studentList.set(list);
+    console.log('student list in enrollments page:', this.studentList());
+  }
+
+  /**
+   * get master list for 'Reference By' type from masterService on page load
+   */
   getMasterByReference() {
     this.masterService.getMasterByType('Reference By').subscribe({
       next: (res: any) => {
@@ -107,6 +141,9 @@ export class Enrollment implements OnInit {
     });
   }
 
+  /**
+   * get all enrollments for logged in user's institute from enrollmentService on page load
+   */
   getInstituteEnrollments() {
     let id = this.userService.loggedInUser().instituteId;
 
@@ -122,26 +159,6 @@ export class Enrollment implements OnInit {
     })
   }
 
-  editEnrollment(enrollment: any) {
-
-    this.enrollmentForm.patchValue({
-      enrollmentId: enrollment.enrollmentId,
-      studentId: enrollment.enrollmentId,
-      courseId: enrollment.enrollmentId,
-      enrollmentDoneByUserId: enrollment.enrollmentId,
-      enrollmentDate: enrollment.enrollmentId,
-      finalAmount: enrollment.enrollmentId,
-      discountGiven: enrollment.enrollmentId,
-      discountApprovedByUserId: enrollment.enrollmentId,
-      isFeesCompleted: enrollment.enrollmentId,
-      isConfirmed: enrollment.enrollmentId,
-    })
-  }
-
-  deleteEnrollment(id: number) {
-
-  }
-
   // Returns yyyy-MM-dd (for input type="date")
   getTodayDate(): string {
     return new Date().toISOString().split('T')[0];
@@ -153,23 +170,40 @@ export class Enrollment implements OnInit {
     return !!control && control.invalid && (control.touched || this.submitted);
   }
 
-  onAddUpdateEnrollment(res: any) {
+  /**
+   * Handle after add or update enrollment
+   * @param res API response
+   */
+  onAddUpdateEnrollment(res: any, isFromAdd: boolean) {
     this.isAddEditEnrollment.set(false);
     this.submitted = false;
     this.enrollmentForm.reset();
-    this.closeModal();
+    if (isFromAdd) {
+      this.closeModal();
+    } else {
+      this.closeModalEdit();
+    }
 
     this.enrollmentList.update(list => {
       let index = list.findIndex(item => item.enrollmentId === res.data.enrollmentId);
       if (index === -1) {
         return [...list, res.data];
       } else {
-        list[index] = res;
+        let item = list[index];
+        item.finalAmount = res.data.finalAmount;
+        item.discountGiven = res.data.discountGiven;
+        item.enrollmentDate = res.data.enrollmentDate;
+        item.isFeesCompleted = res.data.isFeesCompleted;
+        item.isConfirmed = res.data.isConfirmed;
+        list[index] = item;
         return [...list];
       }
     })
   }
 
+  /**
+   * Handle form submission for adding new enrollment
+   */
   onSubmit() {
     this.submitted = true;
 
@@ -194,7 +228,7 @@ export class Enrollment implements OnInit {
     // TODO: API CALL HERE
     this.enrollmentService.createStudentEnrollment(enrollment).subscribe({
       next: (res: any) => {
-        this.onAddUpdateEnrollment(res);
+        this.onAddUpdateEnrollment(res, true);
       }, error: (error: any) => {
         this.isAddEditEnrollment.set(false);
         console.error('Some error while adding enrollment:', error);
@@ -204,10 +238,107 @@ export class Enrollment implements OnInit {
   }
 
   /**
+   * Handle form submission for editing existing enrollment
+   */
+  onEditEnrollment() {
+    this.isAddEditEnrollment.set(true);
+
+    this.editEnrollmentForm.patchValue({
+      discountApprovedByUserId: this.userService.loggedInUser().userId,
+      enrollmentDoneByUserId: this.userService.loggedInUser().userId,
+      enrollmentDate: new Date(this.editEnrollmentForm.value.enrollmentDate).toISOString()
+    });
+
+    let enrollment: IEnrollment = this.editEnrollmentForm.value;
+
+    console.log('✅ Enrollment Form Submitted:', enrollment);
+
+    // TODO: API CALL HERE
+    this.enrollmentService.updateEnrollment(enrollment).subscribe({
+      next: (res: any) => {
+        let obj = {
+          message: 'Enrollment updated successfully',
+          data: enrollment
+        }
+        this.onAddUpdateEnrollment(obj, false);
+      }, error: (error: any) => {
+        this.isAddEditEnrollment.set(false);
+        console.error('Some error while adding enrollment:', error);
+      }
+    })
+  }
+
+  /**
+   * Populate editEnrollmentForm with selected enrollment data
+   * @param enrollment selected enrollment data
+   */
+  editEnrollment(enrollment: any) {
+    let course: any = this.courseList().find(c => c.courseName === enrollment.courseName);
+    let student: any = this.studentList().find(s => s.name === enrollment.studentName);
+
+    this.editEnrollmentForm.patchValue({
+      enrollmentId: enrollment.enrollmentId,
+      studentId: student.studentId,
+      courseId: course.courseId,
+      enrollmentDoneByUserId: enrollment.enrollmentDoneByUserId,
+      enrollmentDate: enrollment.enrollmentDate ? enrollment.enrollmentDate.split('T')[0] : '',
+      finalAmount: enrollment.finalAmount,
+      discountGiven: enrollment.discountGiven,
+      discountApprovedByUserId: enrollment.discountApprovedByUserId,
+      isFeesCompleted: enrollment.isFeesCompleted,
+      isConfirmed: enrollment.isConfirmed,
+    })
+  }
+
+  /**
+   *  Delete enrollment by id
+   * @param id 
+   * @returns 
+   */
+  deleteEnrollment(id: number) {
+    if (!confirm('Are you sure you want to delete this enrollment?')) {
+      return;
+    }
+    this.enrollmentService.deleteEnrollment(id).subscribe({
+      next: (res: any) => {
+        this.enrollmentList.update(list => list.filter(item => item.enrollmentId !== id));
+        this.isSuccessAlert.set(true);
+        this.alertObj.set({
+          type: 'success',
+          message: 'Enrollment deleted successfully'
+        });
+        this.isShowAlert.set(true);
+        setTimeout(() => {
+          this.isShowAlert.set(false);
+        }, APP_CONSTANT.TIMEOUT);
+      }, error: (error: any) => {
+        console.error('Some error while deleting enrollment:', error);
+      }
+    })
+  }
+
+  /**
    * Close bootstrap modal with id 'staticBackdrop' programmatically.
    */
   private closeModal() {
     const modalEl = document.getElementById('enrollmentModal');
+    if (!modalEl) return;
+    const bootstrap = (window as any).bootstrap;
+    if (bootstrap && bootstrap.Modal) {
+      const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      inst.hide();
+      return;
+    }
+    // fallback: click close button if modal API not found
+    const closeBtn = modalEl.querySelector('.btn-close') as HTMLElement | null;
+    closeBtn?.click();
+  }
+
+  /*
+    * Close bootstrap modal with id 'editEnrollmentModal' programmatically.
+  */
+  private closeModalEdit() {
+    const modalEl = document.getElementById('editEnrollmentModal');
     if (!modalEl) return;
     const bootstrap = (window as any).bootstrap;
     if (bootstrap && bootstrap.Modal) {
