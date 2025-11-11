@@ -8,6 +8,10 @@ import { UserService } from '../../core/services/user/user-service';
 import { EnrollmentService } from '../../core/services/enrollment/enrollment-service';
 import { DatePipe, NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ICourses } from '../../core/model/course-model';
+import { IMaster } from '../../core/model/master-model';
+import { CourseService } from '../../core/services/course/course-service';
+import { MasterService } from '../../core/services/master/master-service';
 
 @Component({
   selector: 'app-enrollment',
@@ -23,31 +27,16 @@ export class Enrollment implements OnInit {
   commonService = inject(CommonService);
   userService = inject(UserService);
   enrollmentService = inject(EnrollmentService);
+  courseService = inject(CourseService);
+  masterService = inject(MasterService);
   isEnrollmentListLoading = signal<boolean>(false);
+  isAddEditEnrollment = signal<boolean>(false);
   instituteList = signal<IInstituteModel[]>([]);
+  courseList = signal<ICourses[]>([]);
+  refByMasterList = signal<IMaster[]>([]);
   enrollmentList = signal<any[]>([]);
   enrollmentForm!: FormGroup;
   submitted = false;
-
-
-  // Dummy Dropdown Data
-  courseList = [
-    { id: 1, name: 'Computer Technology' },
-    { id: 2, name: 'Web Development' },
-    { id: 3, name: 'Full Stack Developer' }
-  ];
-
-  referenceList = [
-    { id: 1, name: 'Friend' },
-    { id: 2, name: 'Facebook' },
-    { id: 3, name: 'Walk-In' }
-  ];
-
-  instituteList1 = [
-    { id: 1, name: 'Main Branch' },
-    { id: 2, name: 'Branch 2' },
-    { id: 3, name: 'Branch 3' }
-  ];
 
   constructor(private fb: FormBuilder) {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -82,6 +71,8 @@ export class Enrollment implements OnInit {
   ngOnInit(): void {
     console.log('current logged in user:', this.userService.loggedInUser());
     this.getAllInstitutes();
+    this.getAllCourse();
+    this.getMasterByReference();
     this.getInstituteEnrollments();
   }
 
@@ -93,6 +84,27 @@ export class Enrollment implements OnInit {
   async getAllInstitutes() {
     let list = await this.commonService.returnAllInstitute();
     this.instituteList.set(list);
+  }
+
+  getAllCourse() {
+    this.courseService.getAllCourses().subscribe({
+      next: (res: any) => {
+        this.courseList.set(res)
+      }, error: (err) => {
+        console.error('Some error while loading course List in enrollments:', err);
+      }
+    })
+  }
+
+  getMasterByReference() {
+    this.masterService.getMasterByType('Reference By').subscribe({
+      next: (res: any) => {
+        this.refByMasterList.set(res?.data ?? []);
+      },
+      error: (error) => {
+        console.log('Some error while loading master by ref List in enrollments:', error);
+      }
+    });
   }
 
   getInstituteEnrollments() {
@@ -111,28 +123,18 @@ export class Enrollment implements OnInit {
   }
 
   editEnrollment(enrollment: any) {
+
     this.enrollmentForm.patchValue({
-      courseId: enrollment.courseId,
-      enrollmentDoneByUserId: enrollment.enrollmentDoneByUserId,
-      finalAmount: enrollment.finalAmount,
-      discountGiven: enrollment.discountGiven,
-      discountApprovedByUserId: enrollment.discountApprovedByUserId,
-      refrenceById: enrollment.refrenceById,
-      instituteId: enrollment.instituteId,
-      isFeesCompleted: enrollment.isFeesCompleted,
-      enrollmentDate: enrollment.enrollmentDate,
-      name: enrollment.name,
-      contactNo: enrollment.contactNo,
-      email: enrollment.email,
-      city: enrollment.city,
-      state: enrollment.state,
-      pincode: enrollment.pincode,
-      qualification: enrollment.qualification,
-      collegeName: enrollment.collegeName,
-      collegeCity: enrollment.collegeCity,
-      familyDetails: enrollment.familyDetails,
-      aadharCard: enrollment.aadharCard,
-      profilePhotoName: enrollment.profilePhotoName
+      enrollmentId: enrollment.enrollmentId,
+      studentId: enrollment.enrollmentId,
+      courseId: enrollment.enrollmentId,
+      enrollmentDoneByUserId: enrollment.enrollmentId,
+      enrollmentDate: enrollment.enrollmentId,
+      finalAmount: enrollment.enrollmentId,
+      discountGiven: enrollment.enrollmentId,
+      discountApprovedByUserId: enrollment.enrollmentId,
+      isFeesCompleted: enrollment.enrollmentId,
+      isConfirmed: enrollment.enrollmentId,
     })
   }
 
@@ -158,6 +160,8 @@ export class Enrollment implements OnInit {
       this.enrollmentForm.markAllAsTouched();
       return;
     }
+
+    this.isAddEditEnrollment.set(true);
 
     console.log('✅ Enrollment Form Submitted:', this.enrollmentForm.value);
 

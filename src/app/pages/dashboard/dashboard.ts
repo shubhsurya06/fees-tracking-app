@@ -1,9 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { Header } from '../header/header';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Header],
+  imports: [],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
