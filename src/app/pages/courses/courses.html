@@ -64,14 +64,14 @@
                         <div class="feature-item">
                           <i class="bi bi-clock feature-icon"></i>
                           <div class="feature-content">
-                            <span class="feature-label">Duration</span>
+                            <!-- <span class="feature-label">Duration</span> -->
                             <span class="feature-value">{{ course.duration }}</span>
                           </div>
                         </div>
                         <div class="feature-item">
                           <i class="bi bi-info-circle feature-icon"></i>
                           <div class="feature-content">
-                            <span class="feature-label">Description</span>
+                            <!-- <span class="feature-label">Description</span> -->
                             <span class="feature-value">{{ course.courseDescription }}</span>
                           </div>
                         </div>
@@ -129,7 +129,9 @@
                                 {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new course' }}
                             </p>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="row g-3">

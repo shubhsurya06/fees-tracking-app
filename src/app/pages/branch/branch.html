@@ -118,7 +118,9 @@
                             {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to create a new branch' }}
                         </p>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row g-3">
