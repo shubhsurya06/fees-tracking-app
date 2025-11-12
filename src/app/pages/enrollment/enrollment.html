@@ -1,71 +1,118 @@
-<div class="container-fluid p-tb">
+<div class="p-tb">
   @if (isShowAlert()) {
   <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   }
 
   <div class="row">
     <div class="col">
-      <div class="card shadow-sm">
-        <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
-          <div>
-            <h5 class="mb-0 text-primary fw-bold">Enrollment List</h5>
+      <div class="card shadow-premium border-0 h-100">
+        <div class="card-header-premium d-flex justify-content-between align-items-center">
+          <div class="header-content">
+            <h5 class="mb-1 header-title"><i class="bi bi-person-plus me-2"></i>Student Enrollment Management</h5>
+            <p class="header-subtitle mb-0">Manage student enrollments and course registrations</p>
           </div>
-          <button type="button" class="btn btn-sm btn-success d-flex align-items-center" data-bs-toggle="modal"
-            data-bs-target="#enrollmentModal">
-            <i class="bi bi-plus-circle-fill me-2"></i>
+          <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+            <i class="bi bi-plus-lg me-2"></i>
             <span>Add Enrollment</span>
           </button>
         </div>
 
-        <div class="card-body p-0">
-          <div class="list-viewport cd-ht-bg" style="max-height: calc(100vh - 140px);">
+        <div class="card-body packages-container">
+          <div class="list-viewport" style="max-height: calc(100vh - 200px)">
             @if (isEnrollmentListLoading()) {
-            <div class="text-center mt-4">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div class="loading-container">
+              <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading enrollments...</p>
               </div>
             </div>
-            } @if (!isEnrollmentListLoading()) {
-            <div class="row g-3">
+            } @if (!isEnrollmentListLoading()) { @if (enrollmentList().length == 0) {
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="bi bi-person-plus"></i>
+              </div>
+              <h4 class="empty-state-title">No Enrollments Yet</h4>
+              <p class="empty-state-text">Get started by enrolling your first student</p>
+              <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+                <i class="bi bi-plus-circle me-2"></i>Enroll First Student
+              </button>
+            </div>
+            } @if (enrollmentList().length) {
+            <div class="row g-4">
               @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
-              <div class="col-md-3">
-                <div class="card branch-card shadow-sm h-100">
-
-                  <div class="student-card glass-card p-3">
-                    <div class="card-header-custom mb-3">
-                      {{ enrollment.studentName }}
+              <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card package-card-modern h-100">
+                  <div class="card-body d-flex flex-column">
+                    <div class="package-card-header">
+                      <div class="package-icon-wrapper">
+                        <i class="bi bi-person-fill"></i>
+                      </div>
+                      <h5 class="package-name">{{ enrollment.studentName || enrollment.name }}</h5>
                     </div>
 
-                    <div class="section-title">Student Information</div>
-                    <div class="info-item"><strong>Email:</strong> {{ enrollment.studentEmail }}</div>
-                    <div class="info-item">
-                      <strong>Contact No:</strong> {{ enrollment.studentContact }}
+                    <div class="package-card-body flex-grow-1">
+                      <div class="pricing-section">
+                        <div class="price-item">
+                          <span class="price-label">Course Fee</span>
+                          <span class="price-value">₹{{ enrollment.courseCost || enrollment.finalAmount }}</span>
+                        </div>
+                      </div>
+
+                      <div class="features-section">
+                        <div class="feature-item">
+                          <i class="bi bi-book-fill feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Course</span>
+                            <span class="feature-value">{{ enrollment.courseName }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-envelope-fill feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Email</span>
+                            <span class="feature-value text-truncate">{{ enrollment.studentEmail || enrollment.email }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-telephone-fill feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Contact</span>
+                            <span class="feature-value">{{ enrollment.studentContact || enrollment.contactNo }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-calendar-check feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Enrolled</span>
+                            <span class="feature-value">{{ enrollment.enrolledDate || enrollment.enrollmentDate | date:'dd MMM yyyy' }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-toggle-on feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Status</span>
+                            <span
+                              class="feature-badge"
+                              [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
+                              [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted"
+                            >
+                              {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <hr />
-
-                    <div class="section-title">Course Information</div>
-                    <div class="info-item"><strong>Course Name:</strong> {{ enrollment.courseName }}</div>
-                    <div class="info-item">
-                      <strong>Course Cost:</strong> ₹{{ enrollment.courseCost }}
-                    </div>
-                    <div class="info-item">
-                      <strong>Final Amount:</strong> ₹{{ enrollment.finalAmount }}
-                    </div>
-                    <div class="info-item">
-                      <strong>Discount:</strong> ₹{{ enrollment.discountGiven }}
-                    </div>
-                    <div class="info-item">
-                      <strong>Date Enrolled:</strong> {{ enrollment.enrollmentDate | date }}
-                    </div>
-
-                    <div class="button-row mt-4">
-                      <button class="btn btn-outline-primary btn-sm" (click)="editEnrollment(enrollment)"
-                        data-bs-toggle="modal" data-bs-target="#editEnrollmentModal">
-                        <i class="bi bi-pencil-square"></i> Edit
+                    <div class="package-card-footer mt-auto">
+                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#enrollmentModal" (click)="editEnrollment(enrollment)">
+                        <i class="bi bi-pencil-square"></i>
+                        <span>Edit</span>
                       </button>
-                      <button class="btn btn-outline-danger btn-sm" (click)="deleteEnrollment(enrollment.enrollmentId)">
-                        <i class="bi bi-trash"></i> Delete
+                      <button class="btn-action btn-delete" (click)="deleteEnrollment(enrollment.enrollmentId)">
+                        <i class="bi bi-trash-fill"></i>
+                        <span>Delete</span>
                       </button>
                     </div>
                   </div>
@@ -73,9 +120,8 @@
               </div>
               }
             </div>
-            }
+            } }
           </div>
-
         </div>
       </div>
     </div>
@@ -89,7 +135,9 @@
         <h5 class="modal-title fw-bold text-primary" id="enrollmentModalLabel">
           Add / Edit Enrollment
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i> 
+        </button>
       </div>
 
       <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()">
