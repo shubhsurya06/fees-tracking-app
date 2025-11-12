@@ -1,167 +1,320 @@
 <div class="p-tb">
+  @if (isShowAlert()) {
+  <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+  }
 
-    @if (isShowAlert()) {
-    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
-    }
-
-    <div class="row">
-        <div class="col">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
-                    <div>
-                        <h5 class="mb-0 text-primary fw-bold">Package List</h5>
-                    </div>
-                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addPackageModal">
-                        <i class="bi bi-plus-circle-fill"></i> Add Package
-                    </button>
-                </div>
-
-                <div class="card-body p-0">
-                    <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 142px);">
-
-                        @if (isPackageLoading()) {
-                        <div class="d-flex align-items-center justify-content-center"
-                            style="height:100%; min-height:200px;">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        }
-
-                        @if (!isPackageLoading()) {
-                        @if (packageList().length == 0) {
-                        <p class="text-muted">No packages available. Please add one.</p>
-                        }
-
-                        @if (packageList().length) {
-                        <div class="row g-3">
-                            <!-- Display 4 cards per row -->
-                            @for (pkg of packageList(); track pkg.packageId) {
-                            <div class="col-md-3">
-                                <div class="card package-card shadow-sm">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-primary fw-bold">
-                                            {{pkg.packageName}}
-                                        </h5>
-                                        <p class="mb-1"><strong>One Time Cost:</strong> ₹{{pkg.oneTimeTotalCost}}</p>
-                                        <p class="mb-1"><strong>EMI Amount:</strong> ₹{{pkg.emiTotalCost}}</p>
-                                        <p class="mb-1"><strong>Branches:</strong> {{pkg.maxBranches}}</p>
-                                        <p class="mb-1"><strong>Students:</strong> {{pkg.maxStudents}}</p>
-                                        <p class="mb-4">
-                                            <strong>SMS Alert:</strong>
-                                            <span [class.text-success]="pkg.isSmsAlert"
-                                                [class.text-danger]="!pkg.isSmsAlert">
-                                                {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
-                                            </span>
-                                        </p>
-
-                                        <div class="d-flex justify-content-between mt-3">
-                                            <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#addPackageModal" (click)="editPackage(pkg)">
-                                                <i class="bi bi-pencil-square"></i> Edit</button>
-                                            <button class="btn btn-outline-danger btn-sm"
-                                                (click)="deletePackage(pkg.packageId)">
-                                                <i class="bi bi-trash-fill"></i> Delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            }
-                        </div>
-                        }
-                        }
-
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col">
+      <div class="card shadow-premium border-0 h-100">
+        <div class="card-header-premium d-flex justify-content-between align-items-center">
+          <div class="header-content">
+            <h5 class="mb-1 header-title"><i class="bi bi-box-seam me-2"></i>Package Management</h5>
+            <p class="header-subtitle mb-0">Create and manage subscription packages</p>
+          </div>
+          <button
+            class="btn btn-add-package"
+            data-bs-toggle="modal"
+            data-bs-target="#addPackageModal"
+          >
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>Add New Package</span>
+          </button>
         </div>
 
+        <div class="card-body packages-container">
+          <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+            @if (isPackageLoading()) {
+            <div class="loading-container">
+              <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading packages...</p>
+              </div>
+            </div>
+            } @if (!isPackageLoading()) { @if (packageList().length == 0) {
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="bi bi-inbox"></i>
+              </div>
+              <h4 class="empty-state-title">No Packages Yet</h4>
+              <p class="empty-state-text">Get started by creating your first package</p>
+              <button
+                class="btn btn-primary mt-3"
+                data-bs-toggle="modal"
+                data-bs-target="#addPackageModal"
+              >
+                <i class="bi bi-plus-circle me-2"></i>Create First Package
+              </button>
+            </div>
+            } @if (packageList().length) {
+            <div class="row g-4">
+              @for (pkg of packageList(); track pkg.packageId) {
+              <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="package-card-modern">
+                  <div class="package-card-header">
+                    <div class="package-icon-wrapper">
+                      <i class="bi bi-box-seam"></i>
+                    </div>
+                    <h5 class="package-name">{{ pkg.packageName }}</h5>
+                  </div>
+
+                  <div class="package-card-body">
+                    <div class="pricing-section">
+                      <div class="price-item">
+                        <span class="price-label">One-Time</span>
+                        <span class="price-value">₹{{ pkg.oneTimeTotalCost }}</span>
+                      </div>
+                      <div class="price-divider"></div>
+                      <div class="price-item">
+                        <span class="price-label">EMI</span>
+                        <span class="price-value">₹{{ pkg.emiTotalCost }}</span>
+                      </div>
+                    </div>
+
+                    <div class="features-section">
+                      <div class="feature-item">
+                        <i class="bi bi-building feature-icon"></i>
+                        <div class="feature-content">
+                          <span class="feature-label">Branches</span>
+                          <span class="feature-value">{{ pkg.maxBranches }}</span>
+                        </div>
+                      </div>
+                      <div class="feature-item">
+                        <i class="bi bi-people-fill feature-icon"></i>
+                        <div class="feature-content">
+                          <span class="feature-label">Students</span>
+                          <span class="feature-value">{{ pkg.maxStudents }}</span>
+                        </div>
+                      </div>
+                      <div class="feature-item">
+                        <i class="bi bi-chat-dots-fill feature-icon"></i>
+                        <div class="feature-content">
+                          <span class="feature-label">SMS Alert</span>
+                          <span
+                            class="feature-badge"
+                            [class.badge-success]="pkg.isSmsAlert"
+                            [class.badge-danger]="!pkg.isSmsAlert"
+                          >
+                            {{ pkg.isSmsAlert ? 'Enabled' : 'Disabled' }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="package-card-footer">
+                    <button
+                      class="btn-action btn-edit"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addPackageModal"
+                      (click)="editPackage(pkg)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                      <span>Edit</span>
+                    </button>
+                    <button class="btn-action btn-delete" (click)="deletePackage(pkg.packageId)">
+                      <i class="bi bi-trash-fill"></i>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+            } }
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<!-- Modal for Add / Update Package -->
-<div class="modal fade modal-lg" id="addPackageModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="addPackageModalModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form [formGroup]="packageForm" (ngSubmit)="createPackage()">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addPackageModalLabel">{{ pacakgeMasterId ? 'Update' : 'Add' }}
-                        Package</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label class="form-label">Package Name:</label>
-                                <input type="text" class="form-control" formControlName="packageName"
-                                    placeholder="Enter package name">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label class="form-label">One Time Total Cost:</label>
-                                <input type="number" class="form-control" formControlName="oneTimeTotalCost"
-                                    placeholder="Enter one-time cost">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label class="form-label">EMI Total Cost:</label>
-                                <input type="text" class="form-control" formControlName="emiTotalCost"
-                                    placeholder="Enter EMI total cost">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label class="form-label">Max Branches:</label>
-                                <input type="number" class="form-control" formControlName="maxBranches"
-                                    placeholder="Enter max branches">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label class="form-label">Max Students:</label>
-                                <input type="number" class="form-control" formControlName="maxStudents"
-                                    placeholder="Enter max students">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" formControlName="isSmsAlert" id="smsAlert">
-                        <label class="form-check-label" for="smsAlert">Enable SMS Alert</label>
-                    </div>
-                </div>
-
-                @if (isAddUpdatePkgLoader()) {
-                <div class="text-center my-3">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-                }
-
-                <div class="modal-footer d-flex justify-content-between mt-3">
-                    <!-- <div class=""> -->
-                    <button class="btn btn-sm" [disabled]="packageForm.invalid || isAddUpdatePkgLoader()"
-                        [ngClass]="{ 'btn-success': !pacakgeMasterId, 'btn-warning': pacakgeMasterId }" type="submit">
-                        <i class="bi" [ngClass]="{ 'bi-plus-circle-fill': !pacakgeMasterId, 'bi-pencil-square': pacakgeMasterId }"></i>
-                        {{ pacakgeMasterId ? 'Update Package' : 'Add Package' }}
-                    </button>
-
-                    @if (pacakgeMasterId) {
-                    <button class="btn btn-primary btn-sm" [disabled]="isAddUpdatePkgLoader()" type="button" (click)="cancelEdit()">
-                        <i class="bi bi-x-circle-fill"></i> Cancel</button>
-                    }
-                    <!-- </div> -->
-                </div>
-            </form>
+<!-- Enhanced Modal for Add / Update Package -->
+<div
+  class="modal fade modal-lg"
+  id="addPackageModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addPackageModalModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-modern">
+      <form [formGroup]="packageForm" (ngSubmit)="createPackage()">
+        <div class="modal-header modal-header-modern">
+          <div>
+            <h5 class="modal-title" id="addPackageModalLabel">
+              <i
+                class="bi me-2"
+                [ngClass]="{
+                  'bi-plus-circle-fill': !pacakgeMasterId,
+                  'bi-pencil-square': pacakgeMasterId
+                }"
+              ></i>
+              {{ pacakgeMasterId ? 'Update' : 'Add New' }} Package
+            </h5>
+            <p class="modal-subtitle mb-0">
+              {{
+                pacakgeMasterId
+                  ? 'Modify package details'
+                  : 'Fill in the details to create a new package'
+              }}
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn-close-modern"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="cancelEdit()"
+          >
+            <i class="bi bi-x-lg"></i>
+          </button>
         </div>
+        <div class="modal-body modal-body-modern">
+          <div class="form-section">
+            <h6 class="section-title"><i class="bi bi-info-circle me-2"></i>Basic Information</h6>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="form-group-modern">
+                  <label class="form-label-modern">
+                    <i class="bi bi-tag me-2"></i>Package Name
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control-modern"
+                    formControlName="packageName"
+                    placeholder="e.g., Premium Plan, Enterprise Suite"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h6 class="section-title"><i class="bi bi-currency-rupee me-2"></i>Pricing Details</h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-modern">
+                  <label class="form-label-modern">One Time Total Cost</label>
+                  <div class="input-group-modern">
+                    <span class="input-group-text">₹</span>
+                    <input
+                      type="number"
+                      class="form-control-modern"
+                      formControlName="oneTimeTotalCost"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-modern">
+                  <label class="form-label-modern">EMI Total Cost</label>
+                  <div class="input-group-modern">
+                    <span class="input-group-text">₹</span>
+                    <input
+                      type="text"
+                      class="form-control-modern"
+                      formControlName="emiTotalCost"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h6 class="section-title"><i class="bi bi-sliders me-2"></i>Capacity Limits</h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-modern">
+                  <label class="form-label-modern">
+                    <i class="bi bi-building me-2"></i>Maximum Branches
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control-modern"
+                    formControlName="maxBranches"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-modern">
+                  <label class="form-label-modern">
+                    <i class="bi bi-people me-2"></i>Maximum Students
+                  </label>
+                  <input
+                    type="number"
+                    class="form-control-modern"
+                    formControlName="maxStudents"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h6 class="section-title"><i class="bi bi-toggles me-2"></i>Features</h6>
+            <div class="form-check-modern">
+              <input
+                class="form-check-input-modern"
+                type="checkbox"
+                formControlName="isSmsAlert"
+                id="smsAlert"
+              />
+              <label class="form-check-label-modern" for="smsAlert">
+                <i class="bi bi-chat-dots me-2"></i>Enable SMS Alert Notifications
+                <small class="d-block text-muted mt-1"
+                  >Students will receive SMS notifications for important updates</small
+                >
+              </label>
+            </div>
+          </div>
+        </div>
+
+        @if (isAddUpdatePkgLoader()) {
+        <div class="modal-loading">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 mb-0">Processing...</p>
+        </div>
+        }
+
+        <div class="modal-footer modal-footer-modern">
+          @if (pacakgeMasterId) {
+          <button
+            class="btn btn-cancel-modern"
+            [disabled]="isAddUpdatePkgLoader()"
+            type="button"
+            (click)="cancelEdit()"
+          >
+            <i class="bi bi-x-circle me-2"></i>Cancel
+          </button>
+          }
+          <button
+            class="btn btn-submit-modern"
+            [disabled]="packageForm.invalid || isAddUpdatePkgLoader()"
+            [ngClass]="{ 'btn-update': pacakgeMasterId }"
+            type="submit"
+          >
+            <i
+              class="bi me-2"
+              [ngClass]="{
+                'bi-plus-circle-fill': !pacakgeMasterId,
+                'bi-check-circle-fill': pacakgeMasterId
+              }"
+            ></i>
+            {{ pacakgeMasterId ? 'Update Package' : 'Create Package' }}
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>

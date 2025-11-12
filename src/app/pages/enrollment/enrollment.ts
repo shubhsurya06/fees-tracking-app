@@ -6,7 +6,7 @@ import { CommonService } from '../../core/services/common/common-service';
 import { IInstituteModel } from '../../core/model/institute-model';
 import { UserService } from '../../core/services/user/user-service';
 import { EnrollmentService } from '../../core/services/enrollment/enrollment-service';
-import { DatePipe, NgIf, NgFor } from '@angular/common';
+import { DatePipe, NgIf, NgFor, NgClass } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ICourses } from '../../core/model/course-model';
 import { IMaster } from '../../core/model/master-model';
@@ -17,7 +17,7 @@ import { APP_CONSTANT } from '../../core/constant/appConstant';
 
 @Component({
   selector: 'app-enrollment',
-  imports: [AlertBox, DatePipe, ReactiveFormsModule, NgIf, NgFor],
+  imports: [AlertBox, DatePipe, ReactiveFormsModule, NgClass, NgIf, NgFor],
   templateUrl: './enrollment.html',
   styleUrl: './enrollment.scss'
 })

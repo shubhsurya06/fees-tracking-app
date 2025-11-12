@@ -1,109 +1,143 @@
 <div class="p-tb">
-    @if (isShowAlert()) {
-    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
-    }
+  @if (isShowAlert()) {
+  <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+  }
 
-    <div class="row">
-        <!-- List Header -->
-        <div class="col">
-            <div class="card shadow-sm mb-3">
-                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3">
-                    <div>
-                        <h5 class="mb-0 text-primary fw-bold">Course List</h5>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center"
-                        data-bs-toggle="modal" data-bs-target="#courseModal">
-                        <i class="bi bi-plus-circle-fill me-2"></i>
-                        <span>Add Course</span>
-                    </button>
+  <div class="row">
+    <div class="col">
+      <div class="card shadow-premium border-0 h-100">
+        <div class="card-header-premium d-flex justify-content-between align-items-center">
+          <div class="header-content">
+            <h5 class="mb-1 header-title"><i class="bi bi-book me-2"></i>Course Management</h5>
+            <p class="header-subtitle mb-0">Manage courses and their details</p>
+          </div>
+          <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#courseModal">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>Add Course</span>
+          </button>
+        </div>
+
+        <div class="card-body packages-container">
+          <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+            @if (isCourseListLoading()) {
+            <div class="loading-container">
+              <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
                 </div>
+                <p class="mt-3 text-muted">Loading courses...</p>
+              </div>
+            </div>
+            } @if (!isCourseListLoading()) { @if (courseList().length == 0) {
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="bi bi-book"></i>
+              </div>
+              <h4 class="empty-state-title">No Courses Yet</h4>
+              <p class="empty-state-text">Get started by creating your first course</p>
+              <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#courseModal">
+                <i class="bi bi-plus-circle me-2"></i>Create First Course
+              </button>
+            </div>
+            } @if (courseList().length) {
+            <div class="row g-4">
+              @for (course of courseList(); track course.courseId) {
+              <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card package-card-modern h-100">
+                  <div class="card-body d-flex flex-column">
+                    <div class="package-card-header">
+                      <div class="package-icon-wrapper">
+                        <i class="bi bi-book-fill"></i>
+                      </div>
+                      <h5 class="package-name">{{ course.courseName }}</h5>
+                    </div>
 
-                <div class="card-body p-0">
-                    <div class="list-viewport cd-ht-b" style="max-height: calc(100vh - 156px);">
-                        @if (isCourseListLoading()) {
-                        <div class="text-center mt-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+                    <div class="package-card-body flex-grow-1">
+                      <div class="pricing-section">
+                        <div class="price-item">
+                          <span class="price-label">Course Fee</span>
+                          <span class="price-value">₹{{ course.courseCost }}</span>
                         </div>
-                        }
+                      </div>
 
-                        @if (!isCourseListLoading()) {
-                        <div class="row g-3">
-
-                            @for (course of courseList(); track course.courseId) {
-                            <div class="col-md-3">
-                                <div class="card branch-card shadow-sm h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h6 class="card-title mb-0 text-primary fw-bold">{{ course.courseName }}
-                                            </h6>
-                                        </div>
-
-                                        <div class="text-muted small mb-1">
-                                            <div><i class="bi bi-currency-rupee me-1"></i> <strong>{{
-                                                    course.courseCost }}</strong></div>
-                                            <div><i class="bi bi-hourglass-split me-1"></i> {{ course.duration }}</div>
-                                        </div>
-
-                                        <ul class="list-unstyled small mb-3">
-
-                                            <li><i class="bi bi-calendar-event me-2"></i>{{ course.creratedDate | date
-                                                }}
-                                            </li>
-                                            <li><i class="bi bi-info-circle me-2"></i>{{ course.courseDescription }}
-                                            </li>
-                                            <li><i class="bi bi-card-heading me-2"></i>
-                                                <span
-                                                    [ngClass]="{'text-success': course.isActive, 'text-danger': !course.isActive}">
-                                                    <i>{{ course.isActive ? 'Active' : 'Not Active'}}</i></span>
-                                            </li>
-                                        </ul>
-
-                                        <div class="d-flex justify-content-between align-items-center mt-auto">
-                                            <button class="btn btn-outline-warning btn-sm" (click)="editCourse(course)"
-                                                data-bs-toggle="modal" data-bs-target="#courseModal">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button class="btn btn-outline-danger btn-sm"
-                                                (click)="deleteCourse(course.courseId)">
-                                                <i class="bi bi-trash-fill"></i> Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            }
+                      <div class="features-section">
+                        <div class="feature-item">
+                          <i class="bi bi-clock feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Duration</span>
+                            <span class="feature-value">{{ course.duration }}</span>
+                          </div>
                         </div>
-                        }
+                        <div class="feature-item">
+                          <i class="bi bi-info-circle feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Description</span>
+                            <span class="feature-value">{{ course.courseDescription }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-toggle-on feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-label">Status</span>
+                            <span
+                              class="feature-badge"
+                              [class.badge-success]="course.isActive"
+                              [class.badge-danger]="!course.isActive"
+                            >
+                              {{ course.isActive ? 'Active' : 'Inactive' }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="package-card-footer mt-auto">
+                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#courseModal" (click)="editCourse(course)">
+                        <i class="bi bi-pencil-square"></i>
+                        <span>Edit</span>
+                      </button>
+                      <button class="btn-action btn-delete" (click)="deleteCourse(course.courseId)">
+                        <i class="bi bi-trash-fill"></i>
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+            } }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- The Modal -->
-    <!-- Modal -->
-    <!-- Modal -->
+    <!-- Enhanced Modal -->
     <div class="modal fade modal-xl" id="courseModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="courseModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form [formGroup]="courseForm" (ngSubmit)="addEditCourse()">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="courseModalLabel">Add / Update Course</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            (click)="cancelEdit()"></button>
+                    <div class="modal-header modal-header-modern">
+                        <div>
+                            <h5 class="modal-title" id="courseModalLabel">
+                                <i class="bi me-2" [ngClass]="courseForm.get('courseId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                                {{ courseForm.get('courseId')?.value ? 'Update' : 'Add New' }} Course
+                            </h5>
+                            <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
+                                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new course' }}
+                            </p>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label">Course Name</label>
+                                <label class="form-label"><i class="bi bi-book me-2"></i>Course Name</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i
-                                            class="bi bi-briefcase-fill text-primary"></i></span>
-                                    <input type="text" class="form-control" formControlName="courseName"
-                                        placeholder="Course name">
+                                    <span class="input-group-text"><i class="bi bi-book"></i></span>
+                                    <input type="text" class="form-control" formControlName="courseName" placeholder="Enter course name">
                                 </div>
                                 @if (courseForm.get('courseName')?.invalid && courseForm.get('courseName')?.touched) {
                                 <small class="text-danger">Course name is required</small>
@@ -111,116 +145,90 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label">Course Cost</label>
+                                <label class="form-label"><i class="bi bi-currency-rupee me-2"></i>Course Cost</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i
-                                            class="bi bi-currency-rupee text-primary"></i></span>
-                                    <input type="text" class="form-control" formControlName="courseCost"
-                                        placeholder="Enter course cost">
+                                    <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
+                                    <input type="text" class="form-control" formControlName="courseCost" placeholder="Enter amount">
                                 </div>
                                 @if (courseForm.get('courseCost')?.invalid && courseForm.get('courseCost')?.touched) {
                                 <small class="text-danger">Course cost is required</small>
                                 }
                             </div>
+
                             @if (userService.loggedInUser().role !== instituteAdminRole) {
                             <div class="col-md-4">
-                                <label class="form-label">Institute</label>
+                                <label class="form-label"><i class="bi bi-building me-2"></i>Institute</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i
-                                            class="bi bi-building text-primary"></i></span>
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
                                     <select class="form-select" formControlName="instituteId" required>
                                         <option value="">Select Institute</option>
                                         @for (institute of instituteList(); track institute.instituteId) {
                                         <option [value]="institute.instituteId">{{ institute.name }}</option>
                                         }
                                     </select>
-                                    <div class="">
-                                        @if (courseForm.get('instituteId')?.invalid &&
-                                        courseForm.get('instituteId')?.touched) {
-                                        <small class="text-danger">
-                                            @if (courseForm.get('instituteId')?.errors?.['required']) {
-                                            Please select an institute.
-                                            }
-                                        </small>
-                                        }
-                                    </div>
                                 </div>
+                                @if (courseForm.get('instituteId')?.invalid && courseForm.get('instituteId')?.touched) {
+                                <small class="text-danger">Please select an institute</small>
+                                }
                             </div>
                             }
 
                             <div class="col-md-4">
-                                <label class="form-label">Course Active</label>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="isActiveYes"
-                                            formControlName="isActive" [value]="true" />
-                                        <label class="form-check-label" for="isActiveYes">Yes</label>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="isActiveNo"
-                                            formControlName="isActive" [value]="false" />
-                                        <label class="form-check-label" for="isActiveNo">No</label>
-                                    </div>
+                                <label class="form-label"><i class="bi bi-hourglass-split me-2"></i>Course Duration</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-hourglass-split"></i></span>
+                                    <input type="text" class="form-control" formControlName="duration" placeholder="e.g., 6 months">
                                 </div>
+                                @if (courseForm.get('duration')?.invalid && courseForm.get('duration')?.touched) {
+                                <small class="text-danger">Duration is required</small>
+                                }
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label">Course Duration</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><i
-                                            class="bi bi-hourglass-split text-primary"></i></span>
-                                    <input type="email" class="form-control" formControlName="duration"
-                                        placeholder="Enter course duration">
+                                <label class="form-label"><i class="bi bi-toggle-on me-2"></i>Course Status</label>
+                                <div class="d-flex align-items-center gap-3 mt-2">
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="isActiveYes" formControlName="isActive" [value]="true" />
+                                        <label class="form-check-label" for="isActiveYes">Active</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="isActiveNo" formControlName="isActive" [value]="false" />
+                                        <label class="form-check-label" for="isActiveNo">Inactive</label>
+                                    </div>
                                 </div>
-                                @if (courseForm.get('duration')?.invalid && courseForm.get('duration')?.touched) {
-                                <small class="text-danger">
-                                    @if (courseForm.get('duration')?.errors?.['required']) {
-                                    Course duration is required
-                                    }
-                                </small>
-                                }
                             </div>
 
                             <div class="col-md-8">
-                                <label class="form-label">Course Details</label>
+                                <label class="form-label"><i class="bi bi-info-circle me-2"></i>Course Description</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white align-self-start pt-2"><i
-                                            class="bi bi-info-circle text-primary"></i></span>
-                                    <textarea class="form-control" formControlName="courseDescription" rows="2"
-                                        placeholder="Enter course details"></textarea>
+                                    <span class="input-group-text align-self-start pt-3"><i class="bi bi-info-circle"></i></span>
+                                    <textarea class="form-control" formControlName="courseDescription" rows="2" placeholder="Enter course details"></textarea>
                                 </div>
-                                @if (courseForm.get('courseDescription')?.invalid &&
-                                courseForm.get('courseDescription')?.touched) {
-                                <small class="text-danger">Course details is required</small>
+                                @if (courseForm.get('courseDescription')?.invalid && courseForm.get('courseDescription')?.touched) {
+                                <small class="text-danger">Course description is required</small>
                                 }
-                            </div>
-
-                            <div class="col-md-4 d-flex align-items-start">
-                                <!-- spacer or future fields (keeps 3-column rhythm). -->
                             </div>
                         </div>
 
                         @if (isAddEditCourseLoader()) {
-                        <div class="text-center my-3">
+                        <div class="text-center my-4">
                             <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">Processing...</span>
                             </div>
+                            <p class="mt-2 mb-0 text-muted">Processing...</p>
                         </div>
                         }
-
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-sm d-flex align-items-center"
+                        <button type="submit" class="btn d-flex align-items-center"
                             [ngClass]="courseForm.get('courseId')?.value ? 'btn-warning' : 'btn-success'"
                             [disabled]="courseForm.invalid || isAddEditCourseLoader()">
-                            <i class="bi me-2"
-                                [ngClass]="courseForm.get('courseId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
-                            <span>{{ courseForm.get('courseId')?.value ? 'Update Course' : 'Add Course' }}</span>
+                            <i class="bi me-2" [ngClass]="courseForm.get('courseId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+                            <span>{{ courseForm.get('courseId')?.value ? 'Update Course' : 'Create Course' }}</span>
                         </button>
-
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
