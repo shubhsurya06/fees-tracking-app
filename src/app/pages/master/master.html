@@ -12,23 +12,13 @@
         <p class="header-subtitle mb-0">Configure payment modes and reference types</p>
       </div>
       <div class="d-flex align-items-center gap-3">
-        <select
-          class="form-select form-select-sm"
-          style="min-width: 180px"
-          [(ngModel)]="selectedFilter"
-          (change)="onTrackByChange($event)"
-        >
+        <select class="form-select form-select-sm" [(ngModel)]="selectedFilter" (change)="onTrackByChange($event)">
           <option value="">All Masters</option>
           @for (trackBy of masterForList; track $index) {
           <option [value]="trackBy">{{ trackBy | titlecase }}</option>
           }
         </select>
-        <button
-          type="button"
-          class="btn btn-add-package"
-          data-bs-toggle="modal"
-          data-bs-target="#masterModal"
-        >
+        <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#masterModal">
           <i class="bi bi-plus-lg me-2"></i>
           <span>Add Master</span>
         </button>
