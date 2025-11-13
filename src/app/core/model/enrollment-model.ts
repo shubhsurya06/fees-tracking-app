@@ -20,4 +20,8 @@ export interface IEnrollment {
   familyDetails: string;
   aadharCard: string;
   profilePhotoName: string;
+  enrollmentId?: number;
+  studentName?: string;
+  courseName?: string;
+  enrollmentName?: string;
 }

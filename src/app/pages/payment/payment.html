@@ -1,0 +1,202 @@
+<div class="p-tb">
+    @if (isShowAlert()) {
+    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+    }
+
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-premium border-0 h-100">
+                <div class="card-header-premium d-flex justify-content-between align-items-center">
+                    <div class="header-content">
+                        <h5 class="mb-1 header-title"><i class="bi bi-box-seam me-2"></i>Payment Management</h5>
+                        <p class="header-subtitle mb-0">Create and manage payments</p>
+                    </div>
+                    <button class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        <span>Add Payment</span>
+                    </button>
+                </div>
+
+                <div class="card-body packages-container">
+                    <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+                        @if (isPaymentLoading()) {
+                        <div class="loading-container">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-3 text-muted">Loading packages...</p>
+                            </div>
+                        </div>
+                        } @if (!isPaymentLoading()) { @if (paymentList().length == 0) {
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="bi bi-inbox"></i>
+                            </div>
+                            <h4 class="empty-state-title">No Payments Yet</h4>
+                            <p class="empty-state-text">Get started by creating your first payment</p>
+                            <button class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                data-bs-target="#addPackageModal">
+                                <i class="bi bi-plus-circle me-2"></i>Create First Package
+                            </button>
+                        </div>
+                        } @if (paymentList().length) {
+                        <div class="row g-4">
+                            @for (payment of paymentList(); track payment.paymentId) {
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="package-card-modern">
+                                    <div class="package-card-header">
+                                        <div class="package-icon-wrapper">
+                                            <i class="bi bi-box-seam"></i>
+                                        </div>
+                                        <h5 class="package-name">{{ payment.enrollmentName }}</h5>
+                                    </div>
+
+                                    <div class="package-card-body">
+                                        <div class="pricing-section">
+                                            <div class="price-item">
+                                                <span class="price-label">One-Time</span>
+                                                <span class="price-value">₹{{ payment.paymentAmount }}</span>
+                                            </div>
+                                            <div class="price-divider"></div>
+                                            <div class="price-item">
+                                                <span class="price-label">Payment Mode</span>
+                                                <span class="price-value">{{ payment.paymentModeName }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="features-section">
+                                            <div class="feature-item">
+                                                <i class="bi bi-building feature-icon"></i>
+                                                <div class="feature-content">
+                                                    <span class="feature-label">Date</span>
+                                                    <span class="feature-value">{{ payment.paymentDate | date }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="package-card-footer">
+                                        <button class="btn-action btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#addPackageModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span>Edit</span>
+                                        </button>
+                                        <button class="btn-action btn-delete"> <i class="bi bi-trash-fill"></i>
+                                            <span>Delete</span> </button>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        } }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Modal for Add / Update Package -->
+<div class="modal fade modal-xl" id="paymentModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form [formGroup]="paymentForm" (ngSubmit)="createPayment()">
+                <div class="modal-header modal-header-modern">
+                    <div>
+                        <h5 class="modal-title" id="paymentModalLabel">
+                            Add / Update Payment
+                        </h5>
+                        <!-- <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
+                            {{ paymentForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to create a new branch' }}
+                        </p> -->
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="cancelEdit()">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-building me-2"></i>Enrollment</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                <select class="form-select" formControlName="enrollmentId" required>
+                                    <option value="">Select Enrollment</option>
+                                    @for (enrll of enrollmentList(); track enrll.enrollmentId) {
+                                    <option [value]="enrll.enrollmentId">{{ enrll.enrollmentName }}</option>
+                                    }
+                                </select>
+                            </div>
+                            @if (paymentForm.get('enrollmentId')?.invalid && paymentForm.get('enrollmentId')?.touched) {
+                            <small class="text-danger">Please select an enrollment</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-hash me-2"></i>Payment Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input type="text" class="form-control" formControlName="paymentAmount"
+                                    placeholder="Enter amount">
+                            </div>
+                            @if (paymentForm.get('paymentAmount')?.invalid && paymentForm.get('paymentAmount')?.touched)
+                            {
+                            <small class="text-danger">Payment amount is required</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-building me-2"></i>Payment Mode</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                <select class="form-select" formControlName="paymentModeId" required>
+                                    <option value="">Select Payment mode</option>
+                                    @for (paymentMode of masterPaymentModeList(); track paymentMode.masterId) {
+                                    <option [value]="paymentMode.masterId">{{ paymentMode.masterValue }}</option>
+                                    }
+                                </select>
+                            </div>
+                            @if (paymentForm.get('enrollmentId')?.invalid && paymentForm.get('enrollmentId')?.touched) {
+                            <small class="text-danger">Please select an enrollment</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-hash me-2"></i>Payment Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input type="date" class="form-control" formControlName="paymentDate">
+                            </div>
+                            @if (paymentForm.get('paymentDate')?.invalid && paymentForm.get('paymentDate')?.touched)
+                            {
+                            <small class="text-danger">Payment date is required</small>
+                            }
+                        </div>
+                    </div>
+
+                    @if (isAddPaymentLoader()) {
+                    <div class="text-center my-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Processing...</span>
+                        </div>
+                        <p class="mt-2 mb-0 text-muted">Processing...</p>
+                    </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn d-flex align-items-center"
+                        [ngClass]="paymentForm.get('paymentId')?.value ? 'btn-warning' : 'btn-success'"
+                        [disabled]="paymentForm.invalid || isAddPaymentLoader()">
+                        <i class="bi me-2"
+                            [ngClass]="paymentForm.get('paymentId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+                        <span>{{ paymentForm.get('paymentId')?.value ? 'Update Payment' : 'Create Payment' }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
