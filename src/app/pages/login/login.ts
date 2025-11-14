@@ -4,6 +4,8 @@ import { AuthService } from '../../core/services/auth/auth-service';
 import { IUser } from '../../core/model/user-model';
 import { ReactiveFormsModule, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { UserService } from '../../core/services/user/user-service';
+import { APP_CONSTANT } from '../../core/constant/appConstant';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,7 @@ import { NgClass } from '@angular/common';
 })
 export class Login implements OnInit {
 
+  userService = inject(UserService);
   router = inject(Router);
   authService = inject(AuthService);
   loginLoader = signal(false);
@@ -75,6 +78,10 @@ export class Login implements OnInit {
 
   // after login success, redirect to master page
   redirectToMaster() {
+    if (this.userService.loggedInUser().role == APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN) {
+      this.router.navigateByUrl('/dashboard')  
+      return;
+    }
     this.router.navigate(['master'])
   }
 }

@@ -6,18 +6,17 @@ import { CommonService } from '../../core/services/common/common-service';
 import { IInstituteModel } from '../../core/model/institute-model';
 import { UserService } from '../../core/services/user/user-service';
 import { EnrollmentService } from '../../core/services/enrollment/enrollment-service';
-import { DatePipe, NgIf, NgFor, NgClass } from '@angular/common';
+import { DatePipe, NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ICourses } from '../../core/model/course-model';
 import { IMaster } from '../../core/model/master-model';
 import { CourseService } from '../../core/services/course/course-service';
 import { MasterService } from '../../core/services/master/master-service';
-import { IStudent } from '../../core/model/student-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 
 @Component({
   selector: 'app-enrollment',
-  imports: [AlertBox, DatePipe, ReactiveFormsModule, NgClass, NgIf, NgFor],
+  imports: [AlertBox, DatePipe, ReactiveFormsModule, NgIf, NgFor],
   templateUrl: './enrollment.html',
   styleUrl: './enrollment.scss'
 })
@@ -37,11 +36,9 @@ export class Enrollment implements OnInit {
   courseList = signal<ICourses[]>([]);
   refByMasterList = signal<IMaster[]>([]);
   enrollmentList = signal<any[]>([]);
-  studentList = signal<IStudent[]>([]);
   enrollmentForm!: FormGroup;
   editEnrollmentForm!: FormGroup;
   submitted = false;
-  
 
   constructor(private fb: FormBuilder) {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -71,8 +68,11 @@ export class Enrollment implements OnInit {
       aadharCard: ['', [Validators.required, Validators.pattern(/^[0-9]{12}$/)]],
       profilePhotoName: ['', Validators.required]
     });
-    if(this.userService.loggedInUser().role !== "SuperAdmin") {
-      this.enrollmentForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId)
+
+    this.enrollmentForm.controls['enrollmentDoneByUserId'].setValue(this.userService.loggedInUser().userId);
+    this.enrollmentForm.controls['discountApprovedByUserId'].setValue(this.userService.loggedInUser().userId);
+    if (this.userService.loggedInUser().role === APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN) {
+      this.enrollmentForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId);
     }
 
     this.editEnrollmentForm = this.fb.group({
@@ -92,7 +92,6 @@ export class Enrollment implements OnInit {
   ngOnInit(): void {
     console.log('current logged in user:', this.userService.loggedInUser());
     this.getAllInstitutes();
-    this.getStudentByInstitute();
     this.getAllCourse();
     this.getMasterByReference();
     this.getInstituteEnrollments();
@@ -119,16 +118,6 @@ export class Enrollment implements OnInit {
         console.error('Some error while loading course List in enrollments:', err);
       }
     })
-  }
-
-  /**
-   * get all students from commonService on page load
-   */
-  async getStudentByInstitute() {
-    let instituteId: number | undefined = this.userService.loggedInUser().instituteId;
-    let list = await this.commonService.returnAllStudents(instituteId);
-    this.studentList.set(list);
-    console.log('student list in enrollments page:', this.studentList());
   }
 
   /**
@@ -218,10 +207,11 @@ export class Enrollment implements OnInit {
 
     this.isAddEditEnrollment.set(true);
 
+    if (this.userService.loggedInUser().role == APP_CONSTANT.USER_ROLES.SYSTEM_ADMIN) {
+      this.enrollmentForm.controls['instituteId'].setValue(Number(this.enrollmentForm.value.instituteId));
+    }
+
     this.enrollmentForm.patchValue({
-      discountApprovedByUserId: this.userService.loggedInUser().userId,
-      enrollmentDoneByUserId: this.userService.loggedInUser().userId,
-      insitituteId: Number(this.enrollmentForm.value.insitituteId),
       refrenceById: Number(this.enrollmentForm.value.refrenceById)
     });
 
@@ -278,11 +268,10 @@ export class Enrollment implements OnInit {
    */
   editEnrollment(enrollment: any) {
     let course: any = this.courseList().find(c => c.courseName === enrollment.courseName);
-    let student: any = this.studentList().find(s => s.name === enrollment.studentName);
 
     this.editEnrollmentForm.patchValue({
       enrollmentId: enrollment.enrollmentId,
-      studentId: student.studentId,
+      studentId: enrollment.studentId,
       courseId: course.courseId,
       enrollmentDoneByUserId: enrollment.enrollmentDoneByUserId,
       enrollmentDate: enrollment.enrollmentDate ? enrollment.enrollmentDate.split('T')[0] : '',

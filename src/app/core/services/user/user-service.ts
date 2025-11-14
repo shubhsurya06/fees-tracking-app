@@ -10,13 +10,11 @@ export class UserService {
   loggedInUser = signal<IUser>({});
 
   constructor() {
-    debugger;
     this.getLoggedInUser();
   }
 
   // get logged in user details from localStorage & set in loggedInUser
   getLoggedInUser() {
-     debugger;
     let user = localStorage.getItem(APP_CONSTANT.USER_DATA.USER_DETAILS);
     if (user != null) {
       this.loggedInUser.set(JSON.parse(user));

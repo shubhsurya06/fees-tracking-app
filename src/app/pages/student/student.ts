@@ -51,10 +51,6 @@ export class Student implements OnInit {
   async getStudentByInstitute() {
     let instituteId: number | undefined = this.userService.loggedInUser().instituteId;
 
-    let list = await this.commonService.returnAllStudents(instituteId);
-    this.studentList.set(list);
-    console.log('student list in enrollments page:', this.studentList());
-
     let id = this.userService.loggedInUser().instituteId;
 
     this.isStudentListLoading.set(true);
