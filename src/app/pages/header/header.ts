@@ -3,6 +3,8 @@ import { AuthService } from '../../core/services/auth/auth-service';
 import { Router, RouterLink, RouterLinkActive, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user/user-service';
 import { NgClass } from '@angular/common';
+import { IUser } from '../../core/model/user-model';
+
 
 @Component({
   selector: 'app-header',
@@ -17,8 +19,10 @@ export class Header {
   userService = inject(UserService);
 
   id: string = '0';
+  loggedUserData!: IUser;
 
   constructor() {
+    this.loggedUserData = this.userService.loggedInUser();
     // Listen to router events to get the current route parameters
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id') || '0';

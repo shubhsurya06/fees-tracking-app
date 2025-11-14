@@ -35,7 +35,8 @@
               </div>
               <h4 class="empty-state-title">No Enrollments Yet</h4>
               <p class="empty-state-text">Get started by enrolling your first student</p>
-              <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+              <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                data-bs-target="#enrollmentModal">
                 <i class="bi bi-plus-circle me-2"></i>Enroll First Student
               </button>
             </div>
@@ -72,7 +73,8 @@
                           <i class="bi bi-envelope-fill feature-icon"></i>
                           <div class="feature-content">
                             <span class="feature-label">Email</span>
-                            <span class="feature-value text-truncate">{{ enrollment.studentEmail || enrollment.email }}</span>
+                            <span class="feature-value text-truncate">{{ enrollment.studentEmail || enrollment.email
+                              }}</span>
                           </div>
                         </div>
                         <div class="feature-item">
@@ -86,18 +88,17 @@
                           <i class="bi bi-calendar-check feature-icon"></i>
                           <div class="feature-content">
                             <span class="feature-label">Enrolled</span>
-                            <span class="feature-value">{{ enrollment.enrolledDate || enrollment.enrollmentDate | date:'dd MMM yyyy' }}</span>
+                            <span class="feature-value">{{ enrollment.enrolledDate || enrollment.enrollmentDate |
+                              date:'dd MMM yyyy' }}</span>
                           </div>
                         </div>
                         <div class="feature-item">
                           <i class="bi bi-toggle-on feature-icon"></i>
                           <div class="feature-content">
                             <span class="feature-label">Status</span>
-                            <span
-                              class="feature-badge"
+                            <span class="feature-badge"
                               [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
-                              [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted"
-                            >
+                              [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
                               {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
                             </span>
                           </div>
@@ -106,7 +107,8 @@
                     </div>
 
                     <div class="package-card-footer mt-auto">
-                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#enrollmentModal" (click)="editEnrollment(enrollment)">
+                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#enrollmentModal"
+                        (click)="editEnrollment(enrollment)">
                         <i class="bi bi-pencil-square"></i>
                         <span>Edit</span>
                       </button>
@@ -136,7 +138,7 @@
           Add / Edit Enrollment
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="bi bi-x-lg"></i> 
+          <i class="bi bi-x-lg"></i>
         </button>
       </div>
 
@@ -384,7 +386,8 @@
         </div>
         }
         <div class="modal-footer">
-          <button type="submit" class="btn btn-warning btn-sm" [disabled]="editEnrollmentForm.invalid || isAddEditEnrollment()">
+          <button type="submit" class="btn btn-warning btn-sm"
+            [disabled]="editEnrollmentForm.invalid || isAddEditEnrollment()">
             <i class="bi me-2 bi-pencil-square"></i> Update Enrollment</button>
         </div>
       </form>

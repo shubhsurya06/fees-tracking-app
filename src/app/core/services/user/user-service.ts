@@ -9,6 +9,10 @@ export class UserService {
 
   loggedInUser = signal<IUser>({});
 
+  constructor() {
+    this.getLoggedInUser();
+  }
+
   // get logged in user details from localStorage & set in loggedInUser
   getLoggedInUser() {
     let user = localStorage.getItem(APP_CONSTANT.USER_DATA.USER_DETAILS);
