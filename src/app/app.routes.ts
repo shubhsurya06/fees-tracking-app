@@ -8,6 +8,7 @@ import { Branch } from './pages/branch/branch';
 import { Courses } from './pages/courses/courses';
 import { roleCheckGuard } from './core/services/auth/role-check-guard';
 import { RoleError } from './pages/role-error/role-error';
+import { Activation } from './pages/activation/activation';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: Dashboard, title: 'Dashboard | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
     { path: 'master', component: Master, title: 'Master | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
     { path: 'package-master', component: PackageMaster, title: 'Package Master | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
+    { path: 'activation', component: Activation, title: 'Activation | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
     {
         path: 'institute',
         loadChildren: () =>

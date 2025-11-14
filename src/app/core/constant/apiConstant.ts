@@ -8,7 +8,8 @@ export const API_CONSTANT = {
         COURSE: 'Course',
         ENROLLMENT: 'Enrollments',
         STUDENT: 'Student',
-        PAYMENT: 'Payments'
+        PAYMENT: 'Payments',
+        ACTIVATION: 'Activations'
     },
     MASTER_APIS: {
         GET_ALL_MASTER: '/get-all-masters',
@@ -59,6 +60,13 @@ export const API_CONSTANT = {
         UPDATE_PAYMENT: '/updatePayment',
         DELETE_PAYMENT: '/deletePayment',
         FILTER_PAYMENTS: '/filterPayments'
+    },
+    ACTIVATION_APIS: {
+        CREATE_ACTIVATION: 'create-activation',
+        GET_ALL_ACTIVATION: 'get-all-activations',
+        UPDATE_ACTIVATION: 'update-activation',
+        DELETE_ACTIVATION: 'delete-activation',
+        GET_ACTIVATION_BY_ID: 'get-activation-by-id'
     },
     STUDENT_APIS: {
         GET_STUDENT_BY_INSTITUTE: '/institute'
