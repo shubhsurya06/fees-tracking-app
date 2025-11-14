@@ -5,6 +5,7 @@ import { Courses } from "../courses/courses";
 import { Branch } from "../branch/branch";
 import { Enrollment } from "../enrollment/enrollment";
 import { Payment } from "../payment/payment";
+import { Student } from "../student/student";
 
 export const INSTITUTE_ROUTES: Route[] = [
     { path: '', redirectTo: 'list', pathMatch: 'full'},
@@ -14,4 +15,5 @@ export const INSTITUTE_ROUTES: Route[] = [
     { path: 'course', component: Courses, title: 'Institute Course | Fees Tracking App'},
     { path: 'enrollment', component: Enrollment, title: 'Institute Enrollments | Fees Tracking App'},
     { path: 'payment', component: Payment, title: 'Institute Payments | Fees Tracking App'},
+    { path: 'student', component: Student, title: 'Institute Students | Fees Tracking App'},
 ]
