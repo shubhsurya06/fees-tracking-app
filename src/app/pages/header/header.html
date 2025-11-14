@@ -12,13 +12,16 @@
 
             <!-- Nav links beside logo -->
             <ul class="navbar-nav flex-row main-nav">
-                <li class="nav-item">
+                @if(loggedUserData.role == 'SuperAdmin' || loggedUserData.role == 'InstituteAdmin') {
+                     <li class="nav-item">
                     <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
                         <i class="bi bi-speedometer2 me-1"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                }
+                @if (loggedUserData.role == 'SuperAdmin' ) {
+                     <li class="nav-item">
                     <a class="nav-link" routerLink="/master" routerLinkActive="active">
                         <i class="bi bi-gear-fill me-1"></i>
                         <span>Master</span>
@@ -30,8 +33,62 @@
                         <span>Packages</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/package-master" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Activations</span>
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/list" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Institute List</span>
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/form" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>New Institute</span>
+                    </a>
+                </li>
+                } 
+
+                @if (loggedUserData.role == 'InstituteAdmin') {
+                     <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/branch" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Branchs</span>
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/course" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Courses</span>
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/enrollment" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Enrollment</span>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/payment" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Payment</span>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" routerLink="/institute/student" routerLinkActive="active">
+                        <i class="bi bi-box-seam me-1"></i>
+                        <span>Student</span>
+                    </a>
+                </li>
+                }
+               
+               
                 <!-- Dropdown for Institute -->
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="instituteDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-building me-1"></i>
@@ -76,7 +133,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
 

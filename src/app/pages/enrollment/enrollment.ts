@@ -41,6 +41,7 @@ export class Enrollment implements OnInit {
   enrollmentForm!: FormGroup;
   editEnrollmentForm!: FormGroup;
   submitted = false;
+  
 
   constructor(private fb: FormBuilder) {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -70,6 +71,9 @@ export class Enrollment implements OnInit {
       aadharCard: ['', [Validators.required, Validators.pattern(/^[0-9]{12}$/)]],
       profilePhotoName: ['', Validators.required]
     });
+    if(this.userService.loggedInUser().role !== "SuperAdmin") {
+      this.enrollmentForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId)
+    }
 
     this.editEnrollmentForm = this.fb.group({
       enrollmentId: [0],

@@ -6,18 +6,21 @@ import { PackageMaster } from './pages/package-master/package-master';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Branch } from './pages/branch/branch';
 import { Courses } from './pages/courses/courses';
+import { roleCheckGuard } from './core/services/auth/role-check-guard';
+import { RoleError } from './pages/role-error/role-error';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: Login, title: 'Login | Fees Tracking App' },
-    { path: 'dashboard', component: Dashboard, title: 'Dashboard | Fees Tracking App', canActivate: [authGuard] },
-    { path: 'master', component: Master, title: 'Master | Fees Tracking App', canActivate: [authGuard] },
-    { path: 'package-master', component: PackageMaster, title: 'Package Master | Fees Tracking App', canActivate: [authGuard] },
+    { path: 'roleerror', component: RoleError, title: 'Login | Fees Tracking App' },
+    { path: 'dashboard', component: Dashboard, title: 'Dashboard | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
+    { path: 'master', component: Master, title: 'Master | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
+    { path: 'package-master', component: PackageMaster, title: 'Package Master | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
     {
         path: 'institute',
         loadChildren: () =>
             import('../app/pages/institute/institute.routes').then((m) => m.INSTITUTE_ROUTES),
-        canActivate: [authGuard]
+        canActivate: [authGuard,roleCheckGuard]
     },
     // { path: 'branch', component: Branch, title: 'Branch | Fees Tracking app', canActivate: [authGuard] },
     // { path: 'course', component: Courses, title: 'Course | Fees Tracking app', canActivate: [authGuard] },
