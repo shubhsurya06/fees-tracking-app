@@ -37,7 +37,6 @@ export class Enrollment implements OnInit {
   courseList = signal<ICourses[]>([]);
   refByMasterList = signal<IMaster[]>([]);
   enrollmentList = signal<any[]>([]);
-  studentList = signal<IStudent[]>([]);
   enrollmentForm!: FormGroup;
   editEnrollmentForm!: FormGroup;
   submitted = false;
@@ -71,6 +70,12 @@ export class Enrollment implements OnInit {
       profilePhotoName: ['', Validators.required]
     });
 
+    this.enrollmentForm.controls['enrollmentDoneByUserId'].setValue(this.userService.loggedInUser().userId);
+    this.enrollmentForm.controls['discountApprovedByUserId'].setValue(this.userService.loggedInUser().userId);
+    if (this.userService.loggedInUser().role === APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN) {
+      this.enrollmentForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId);
+    }
+
     this.editEnrollmentForm = this.fb.group({
       enrollmentId: [0],
       studentId: [0],
@@ -88,7 +93,6 @@ export class Enrollment implements OnInit {
   ngOnInit(): void {
     console.log('current logged in user:', this.userService.loggedInUser());
     this.getAllInstitutes();
-    this.getStudentByInstitute();
     this.getAllCourse();
     this.getMasterByReference();
     this.getInstituteEnrollments();
@@ -115,16 +119,6 @@ export class Enrollment implements OnInit {
         console.error('Some error while loading course List in enrollments:', err);
       }
     })
-  }
-
-  /**
-   * get all students from commonService on page load
-   */
-  async getStudentByInstitute() {
-    let instituteId: number | undefined = this.userService.loggedInUser().instituteId;
-    let list = await this.commonService.returnAllStudents(instituteId);
-    this.studentList.set(list);
-    console.log('student list in enrollments page:', this.studentList());
   }
 
   /**
@@ -214,10 +208,11 @@ export class Enrollment implements OnInit {
 
     this.isAddEditEnrollment.set(true);
 
+    if (this.userService.loggedInUser().role == APP_CONSTANT.USER_ROLES.SYSTEM_ADMIN) {
+      this.enrollmentForm.controls['instituteId'].setValue(Number(this.enrollmentForm.value.instituteId));
+    }
+
     this.enrollmentForm.patchValue({
-      discountApprovedByUserId: this.userService.loggedInUser().userId,
-      enrollmentDoneByUserId: this.userService.loggedInUser().userId,
-      insitituteId: Number(this.enrollmentForm.value.insitituteId),
       refrenceById: Number(this.enrollmentForm.value.refrenceById)
     });
 
@@ -274,11 +269,10 @@ export class Enrollment implements OnInit {
    */
   editEnrollment(enrollment: any) {
     let course: any = this.courseList().find(c => c.courseName === enrollment.courseName);
-    let student: any = this.studentList().find(s => s.name === enrollment.studentName);
 
     this.editEnrollmentForm.patchValue({
       enrollmentId: enrollment.enrollmentId,
-      studentId: student.studentId,
+      studentId: enrollment.studentId,
       courseId: course.courseId,
       enrollmentDoneByUserId: enrollment.enrollmentDoneByUserId,
       enrollmentDate: enrollment.enrollmentDate ? enrollment.enrollmentDate.split('T')[0] : '',

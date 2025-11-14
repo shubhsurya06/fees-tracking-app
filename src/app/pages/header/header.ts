@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth/auth-service';
 import { Router, RouterLink, RouterLinkActive, ActivatedRoute } from '@angular/router';
-
+import { UserService } from '../../core/services/user/user-service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, NgClass],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
@@ -13,6 +14,7 @@ export class Header {
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  userService = inject(UserService);
 
   id: string = '0';
 
@@ -21,6 +23,10 @@ export class Header {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id') || '0';
     });
+
+    if (!this.userService.loggedInUser()) {
+      this.userService.getLoggedInUser()
+    }
   }
 
   logout() {

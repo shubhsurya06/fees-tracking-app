@@ -263,15 +263,17 @@
                       <small class="text-danger" *ngIf="showError('refrenceById')">Reference required</small>
                     </div>
 
-                    <div class="col-md-6">
-                      <label class="form-label">Institute</label>
-                      <select class="form-select" formControlName="instituteId">
-                        <option value="">Select Institute</option>
-                        <option *ngFor="let i of instituteList()" [value]="i.instituteId">{{i.name}}
-                        </option>
-                      </select>
-                      <small class="text-danger" *ngIf="showError('instituteId')">Institute required</small>
-                    </div>
+                    @if (userService.loggedInUser().role == 'SuperAdmin') {
+                      <div class="col-md-6">
+                        <label class="form-label">Institute</label>
+                        <select class="form-select" formControlName="instituteId">
+                          <option value="">Select Institute</option>
+                          <option *ngFor="let i of instituteList()" [value]="i.instituteId">{{i.name}}
+                          </option>
+                        </select>
+                        <small class="text-danger" *ngIf="showError('instituteId')">Institute required</small>
+                      </div>
+                    }
 
                     <div class="col-md-6">
                       <label class="form-label">Enrollment Date</label>

@@ -24,4 +24,5 @@ export interface IEnrollment {
   studentName?: string;
   courseName?: string;
   enrollmentName?: string;
+  studentId?: number;
 }
