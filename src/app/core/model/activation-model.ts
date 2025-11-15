@@ -4,8 +4,8 @@ export interface IActivation {
     instituteId: number;
     activatedBy: number;
     isActive: number;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     packageName?: string;
     instituteName?: string;
 }
