@@ -35,4 +35,9 @@ export class ActivationService {
     let url = `${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.ACTIVATION}${APP_CONSTANT.SLASH_CONST}${API_CONSTANT.ACTIVATION_APIS.CREATE_ACTIVATION}`;
     return this.http.post(url, activation)
   }
+
+
+  deleteActivation(id: number) {
+    return this.http.delete(`${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.ACTIVATION}${APP_CONSTANT.SLASH_CONST}${API_CONSTANT.ACTIVATION_APIS.DELETE_ACTIVATION}${APP_CONSTANT.SLASH_CONST}${id}`);
+  }
 }

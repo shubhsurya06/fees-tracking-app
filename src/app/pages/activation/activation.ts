@@ -191,11 +191,43 @@ export class Activation implements OnInit {
   }
 
   editActivation(Act: IActivation) {
-
+    this.activationForm.patchValue({
+      activationId: Act.activationId,
+      packageId: Act.packageId,
+      instituteId: Act.instituteId,
+      activatedBy: Act.activatedBy,
+      isActive: Act.isActive,
+      startDate: Act.startDate,
+      endDate: Act.endDate
+    })
   }
 
+  /**
+   * delete activation details from here
+   * @param id 
+   * @returns 
+   */
   deleteActivation(id: number) {
-
+    if (!confirm('Are you sure you want to delete this activation?')) {
+      return;
+    }
+    this.activationService.deleteActivation(id).subscribe({
+      next: (res: any) => {
+        this.activationList.update(list => list.filter(item => item.activationId !== id));
+        // this.isSuccessAlert.set(true);
+        // this.alertObj.set({
+        //   type: 'success',
+        //   message: 'Enrollment deleted successfully'
+        // });
+        // this.isShowAlert.set(true);
+        alert('Activation has been deleted successfully!')
+        // setTimeout(() => {
+        //   this.isShowAlert.set(false);
+        // }, APP_CONSTANT.TIMEOUT);
+      }, error: (error: any) => {
+        console.error('Some error while deleting activation:', error);
+      }
+    })
   }
 
   cancelEdit() {
