@@ -1,0 +1,88 @@
+<div class="enrol-adv-container">
+    <h2>Enrollment Advanced Search</h2>
+
+    <form class="filter-form row g-3 mb-4" (ngSubmit)="applyFilter()" #f="ngForm">
+        <div class="col-md-3">
+            <label for="studentId" class="form-label">Student ID</label>
+            <input type="number" class="form-control" id="studentId" name="studentId" [(ngModel)]="filter.studentId" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="courseId" class="form-label">Course ID</label>
+            <input type="number" class="form-control" id="courseId" name="courseId" [(ngModel)]="filter.courseId" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="fromDate" class="form-label">From Date</label>
+            <input type="date" class="form-control" id="fromDate" name="fromDate" [(ngModel)]="filter.fromDate" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="toDate" class="form-label">To Date</label>
+            <input type="date" class="form-control" id="toDate" name="toDate" [(ngModel)]="filter.toDate" />
+        </div>
+
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" (click)="applyFilter()">Apply</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="clearFilters()">Clear</button>
+        </div>
+    </form>
+    --- {{enrollments.length}}
+    <div class="table-wrap table-responsive">
+        <table class="table table-striped table-hover enrol-table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Enrollment ID</th>
+                    <th (click)="addSorintField('studentId')">Student</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th >Course</th>
+                    <th>Course Cost</th>
+                    <th (click)="addSorintField('enrollmentDate')">Enrollment Date</th>
+                    <th>Final Amount</th>
+                    <th>Discount</th>
+                    <th>Confirmed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (e of enrollments; track $index) {
+                <tr>
+                    <td>{{ e.enrollmentId }}</td>
+                    <td>{{ e.studentName }} ({{ e.studentId }})</td>
+                    <td>{{ e.studentContact }}</td>
+                    <td>{{ e.studentEmail }}</td>
+                    <td>{{ e.courseName }} (ID: {{ e.courseId }})</td>
+                    <td>{{ e.courseCost }}</td>
+                    <td>{{ e.enrollmentDate | date: 'yyyy-MM-dd' }}</td>
+                    <td>{{ e.finalAmount }}</td>
+                    <td>{{ e.discountGiven }}</td>
+                    <td>{{ e.isConfirmed ? 'Yes' : 'No' }}</td>
+                </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <div class="rpw">
+            <div class="col-3">
+                <select [(ngModel)]="filter.pageSize" (change)="getEnrollmentNByFilter()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="col-9">
+                <div class="pagination">
+                    @for (page of pageNumbers; track page) {
+                    <button class="btn btn-sm" [class.btn-primary]="filter.pageNumber === page"
+                        [class.btn-outline-secondary]="filter.pageNumber !== page" (click)="goToPage(page)">
+                        {{ page }}
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

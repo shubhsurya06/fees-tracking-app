@@ -10,4 +10,5 @@ export const role_allowed_routes = [
     { path: 'master', rolesAllowed: ['SuperAdmin'] },
     { path: 'package-master', rolesAllowed: ['SuperAdmin'] },
     { path: 'activation', rolesAllowed: ['SuperAdmin'] },
+    { path: 'institute/enrollist', rolesAllowed: ['InstituteAdmin'] },
 ]
