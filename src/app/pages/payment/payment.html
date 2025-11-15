@@ -49,7 +49,7 @@
                                         <div class="package-icon-wrapper">
                                             <i class="bi bi-box-seam"></i>
                                         </div>
-                                        <h5 class="package-name">{{ payment.enrollmentName }}</h5>
+                                        <h5 class="package-name">{{ payment.studentName }} {{payment.courseName}}</h5>
                                     </div>
 
                                     <div class="package-card-body">
@@ -166,7 +166,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label class="form-label"><i class="bi bi-hash me-2"></i>Payment Amount</label>
+                            <label class="form-label"><i class="bi bi-hash me-2"></i>Payment Date</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-hash"></i></span>
                                 <input type="date" class="form-control" formControlName="paymentDate">

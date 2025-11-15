@@ -85,7 +85,7 @@ export class Payment implements OnInit {
    */
   getInstituteEnrollments() {
     let id = this.userService.loggedInUser().instituteId;
-    this.enrollmentService.getInstituteEnrollments(id).subscribe({
+    this.enrollmentService.getPendingEnrollments(id).subscribe({
       next: (res: any) => {
         res.data.map((enrll: IEnrollment) => {
           enrll.enrollmentName = enrll.studentName + ', ' + enrll?.courseName;
@@ -118,15 +118,12 @@ export class Payment implements OnInit {
    * @param res 
    */
   onPaymentSuccess(res: any) {
-    res.data.map((payment: IPayment) => {
-      // add enrollmentName and paymentModeName
-      const enrll = this.enrollmentList().find((inst: IEnrollment) => inst.enrollmentId === payment.enrollmentId);
-      payment.enrollmentName = enrll ? enrll.studentName + ', ' + enrll?.courseName : 'N/A';
+    // res.data.map((payment: IPayment) => {
+    //   const payMode = this.masterPaymentModeList().find((mode: IMaster) => mode.masterId === payment.paymentModeId);
+    //   payment.paymentModeName = payMode ? payMode.masterValue : 'N/A';
 
-      const payMode = this.masterPaymentModeList().find((mode: IMaster) => mode.masterId === payment.paymentModeId);
-      payment.paymentModeName = payMode ? payMode.masterValue : 'N/A';
-      return payment;
-    });
+    //   return payment;
+    // });
 
     this.paymentList.set(res.data);
   }
@@ -135,8 +132,9 @@ export class Payment implements OnInit {
    * Get all payments
    */
   getAllPayments() {
+    let id = this.userService.loggedInUser().instituteId;
     this.isPaymentLoading.set(true);
-    this.paymentService.getAllPayments().subscribe({
+    this.paymentService.getAllPayments(id).subscribe({
       next: (res: any) => {
         this.isPaymentLoading.set(false);
         this.onPaymentSuccess(res);
