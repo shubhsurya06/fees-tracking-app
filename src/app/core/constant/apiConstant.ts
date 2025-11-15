@@ -47,6 +47,7 @@ export const API_CONSTANT = {
     },
     ENROLLMENT_APIS: {
         GET_ALL_ENROLLMENT: '/getAllEnrollments',
+        GET_ALL_PENDING: '/getAllPendingEnrollments',
         GET_ENROLLMENT_BY_ID: '/getAllEnrollmentById',
         CREATE_ENROLLMENT: '/createStudentEnrollment',
         UPDATE_ENROLLMENT: '/updateEnrollment',

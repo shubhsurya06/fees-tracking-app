@@ -5,6 +5,7 @@ export interface IPayment {
   receivedByUserId: number;
   paymentModeId: number;
   paymentDate: string;
-  enrollmentName?: string;
   paymentModeName?: string;
+  studentName?: string;
+  courseName?: string;
 }

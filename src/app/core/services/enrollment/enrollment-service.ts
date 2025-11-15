@@ -25,6 +25,13 @@ export class EnrollmentService {
     );
   }
 
+  getPendingEnrollments(id: number | undefined) {
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT + API_CONSTANT.ENROLLMENT_APIS.GET_ALL_PENDING + APP_CONSTANT.SLASH_CONST + id;
+    return this.http.get(url).pipe(
+      delay(1000)
+    );
+  }
+
   /**
    * Call createCourse API from here and create course
    * @param courseData 
