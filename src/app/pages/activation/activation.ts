@@ -73,7 +73,7 @@ export class Activation implements OnInit {
     return this.activationForm.get('activationId')?.value;
   }
 
-    // V3 Validation: show error if touched OR form submitted
+  // V3 Validation: show error if touched OR form submitted
   showError(controlName: string): boolean {
     const control = this.activationForm.get(controlName);
     return !!control && control.invalid && (control.touched);
@@ -150,12 +150,14 @@ export class Activation implements OnInit {
 
     this.activationForm.reset();
 
+    // store institute name in activation data
+    let institute = this.instituteList().find(inst => inst.instituteId === act.instituteId);
+    act.instituteName = institute?.name;
+
     let index = this.activationList().findIndex((item: IActivation) => item.activationId === act.activationId);
     if (index === -1) {
       this.activationList().push(act);
     } else {
-      let institute = this.instituteList().find(inst => inst.instituteId === act.instituteId);
-      act.instituteName = institute?.name;
       this.activationList()[index] = act;
     }
   }
