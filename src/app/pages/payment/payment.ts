@@ -135,8 +135,9 @@ export class Payment implements OnInit {
    * Get all payments
    */
   getAllPayments() {
+    let id = this.userService.loggedInUser().instituteId;
     this.isPaymentLoading.set(true);
-    this.paymentService.getAllPayments().subscribe({
+    this.paymentService.getAllPayments(id).subscribe({
       next: (res: any) => {
         this.isPaymentLoading.set(false);
         this.onPaymentSuccess(res);
