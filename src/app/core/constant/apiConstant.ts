@@ -62,11 +62,11 @@ export const API_CONSTANT = {
         FILTER_PAYMENTS: '/filterPayments'
     },
     ACTIVATION_APIS: {
-        CREATE_ACTIVATION: 'create-activation',
-        GET_ALL_ACTIVATION: 'get-all-activations',
-        UPDATE_ACTIVATION: 'update-activation',
-        DELETE_ACTIVATION: 'delete-activation',
-        GET_ACTIVATION_BY_ID: 'get-activation-by-id'
+        CREATE_ACTIVATION: '/create-activation',
+        GET_ALL_ACTIVATION: '/get-all-activations',
+        UPDATE_ACTIVATION: '/update-activation',
+        DELETE_ACTIVATION: '/delete-activation',
+        GET_ACTIVATION_BY_ID: '/get-activation-by-id'
     },
     STUDENT_APIS: {
         GET_STUDENT_BY_INSTITUTE: '/institute'
