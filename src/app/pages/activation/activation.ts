@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PackageMasterModel } from '../../core/model/package-master-model';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
@@ -10,10 +10,11 @@ import { CommonService } from '../../core/services/common/common-service';
 import { ActivationService } from '../../core/services/activation/activation-service';
 import { IActivation } from '../../core/model/activation-model';
 import { IInstituteModel } from '../../core/model/institute-model';
+import { UserService } from '../../core/services/user/user-service';
 
 @Component({
   selector: 'app-activation',
-  imports: [DatePipe],
+  imports: [DatePipe, ReactiveFormsModule, NgClass, NgFor, NgIf],
   templateUrl: './activation.html',
   styleUrl: './activation.scss'
 })
@@ -31,6 +32,7 @@ export class Activation implements OnInit {
   instituteList = signal<IInstituteModel[]>([]);
   commonService = inject(CommonService);
 
+  userService = inject(UserService);
 
   // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
   @Output() isSuccessAlert = signal<boolean>(false);
@@ -38,14 +40,43 @@ export class Activation implements OnInit {
   isShowAlert = signal<boolean>(false);
 
   constructor() {
+    if (!Object.keys(this.userService.loggedInUser()).length) {
+      this.userService.getLoggedInUser();
+    }
+
     this.getAllInstitutes();
     this.getAllPackages();
+
+    this.activationForm = this.fb.group({
+      activationId: [0, Validators.required],
+      packageId: [0, Validators.required],
+      instituteId: [0, Validators.required],
+      activatedBy: [0, Validators.required],
+      isActive: [0],
+      startDate: [new Date(), Validators.required],
+      endDate: [new Date(), Validators.required],
+    })
+
+    this.activationForm.controls['activatedBy'].setValue(this.userService.loggedInUser().userId);
   }
 
   ngOnInit(): void {
     // setTimeout(() => {
     // }, 3000)
     this.getAllActivations();
+  }
+
+  /**
+ * return packageId from packageForm if available
+ */
+  get activationId() {
+    return this.activationForm.get('activationId')?.value;
+  }
+
+    // V3 Validation: show error if touched OR form submitted
+  showError(controlName: string): boolean {
+    const control = this.activationForm.get(controlName);
+    return !!control && control.invalid && (control.touched);
   }
 
   /**
@@ -78,14 +109,14 @@ export class Activation implements OnInit {
       if (institute) {
         act.instituteName = institute.name;
       }
-      
+
       // set package master name in response of get list of activation
       let pkg = this.packageMasterList().find(pckg => pckg.packageId === act.packageId);
       if (pkg) {
         act.packageName = pkg.packageName;
-      }   
+      }
     })
-    
+
     this.activationList.set(res);
   }
 
@@ -108,11 +139,78 @@ export class Activation implements OnInit {
     });
   }
 
+  /**
+   * do some activity after activation gets added and updated sucessfully
+   * @param res 
+   */
+  onAddEditActivationSuccess(res: any) {
+    this.closeModal();
+    const act: IActivation = res.data;
+    this.addUpdateLoader.set(false);
+
+    this.activationForm.reset();
+
+    let index = this.activationList().findIndex((item: IActivation) => item.activationId === act.activationId);
+    if (index === -1) {
+      this.activationList().push(act);
+    } else {
+      let institute = this.instituteList().find(inst => inst.instituteId === act.instituteId);
+      act.instituteName = institute?.name;
+      this.activationList()[index] = act;
+    }
+  }
+
+  /**
+   * Create and Update activation details from here
+   * @returns 
+   */
+  createActivation() {
+    if (this.activationForm.invalid) {
+      alert('Form is not valid. Please enter all details.')
+      return;
+    }
+
+    this.addUpdateLoader.set(true);
+
+    let activation: IActivation = this.activationForm.value;
+
+    console.log('✅ Enrollment Form Submitted:', activation);
+
+    // TODO: API CALL HERE
+    this.activationService.createActivation(activation).subscribe({
+      next: (res: any) => {
+        this.onAddEditActivationSuccess(res);
+      }, error: (error: any) => {
+        this.addUpdateLoader.set(false);
+        console.error('Some error while adding activation data:', error);
+      }
+    })
+
+  }
+
   editActivation(Act: IActivation) {
 
   }
 
   deleteActivation(id: number) {
 
+  }
+
+  cancelEdit() {
+    this.activationForm.reset();
+  }
+
+  private closeModal() {
+    const modalEl = document.getElementById('addActivationModal');
+    if (!modalEl) return;
+    const bootstrap = (window as any).bootstrap;
+    if (bootstrap && bootstrap.Modal) {
+      const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      inst.hide();
+      return;
+    }
+    // fallback: click close button if modal API not found
+    const closeBtn = modalEl.querySelector('.btn-close') as HTMLElement | null;
+    closeBtn?.click();
   }
 }

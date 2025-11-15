@@ -30,4 +30,9 @@ export class ActivationService {
       delay(1000)
     );
   }
+
+  createActivation(activation: IActivation) {
+    let url = `${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.ACTIVATION}${APP_CONSTANT.SLASH_CONST}${API_CONSTANT.ACTIVATION_APIS.CREATE_ACTIVATION}`;
+    return this.http.post(url, activation)
+  }
 }
