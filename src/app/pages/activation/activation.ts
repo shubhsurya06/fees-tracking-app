@@ -163,6 +163,25 @@ export class Activation implements OnInit {
   }
 
   /**
+   * update actvation details from here
+   * @param activation 
+   */
+  updateActivation(activation: IActivation) {
+    this.activationService.updateActivation(activation).subscribe({
+      next: (res: any) => {
+        console.log('Package updated successfully:', res);
+        this.onAddEditActivationSuccess(res);
+      },
+      error: (err: any) => {
+        this.addUpdateLoader.set(false);
+        alert(err.message);
+        console.error('Error updating activation:', err);
+        // this.onAddUpdatePackageError(err);
+      }
+    });
+  }
+
+  /**
    * Create and Update activation details from here
    * @returns 
    */
@@ -176,7 +195,12 @@ export class Activation implements OnInit {
 
     let activation: IActivation = this.activationForm.value;
 
-    console.log('✅ Enrollment Form Submitted:', activation);
+    console.log('✅ Activation Form Submitted:', activation);
+
+    if (this.activationId) {
+      this.updateActivation(activation);
+      return;
+    }
 
     // TODO: API CALL HERE
     this.activationService.createActivation(activation).subscribe({
@@ -197,8 +221,8 @@ export class Activation implements OnInit {
       instituteId: Act.instituteId,
       activatedBy: Act.activatedBy,
       isActive: Act.isActive,
-      startDate: Act.startDate,
-      endDate: Act.endDate
+      startDate: new Date(Act.startDate).toISOString().substring(0, 10),
+      endDate: new Date(Act.endDate).toISOString().substring(0, 10)
     })
   }
 
@@ -214,16 +238,7 @@ export class Activation implements OnInit {
     this.activationService.deleteActivation(id).subscribe({
       next: (res: any) => {
         this.activationList.update(list => list.filter(item => item.activationId !== id));
-        // this.isSuccessAlert.set(true);
-        // this.alertObj.set({
-        //   type: 'success',
-        //   message: 'Enrollment deleted successfully'
-        // });
-        // this.isShowAlert.set(true);
         alert('Activation has been deleted successfully!')
-        // setTimeout(() => {
-        //   this.isShowAlert.set(false);
-        // }, APP_CONSTANT.TIMEOUT);
       }, error: (error: any) => {
         console.error('Some error while deleting activation:', error);
       }
@@ -232,6 +247,7 @@ export class Activation implements OnInit {
 
   cancelEdit() {
     this.activationForm.reset();
+    this.closeModal()
   }
 
   private closeModal() {
