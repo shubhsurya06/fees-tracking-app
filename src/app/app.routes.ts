@@ -9,9 +9,11 @@ import { Courses } from './pages/courses/courses';
 import { roleCheckGuard } from './core/services/auth/role-check-guard';
 import { RoleError } from './pages/role-error/role-error';
 import { Activation } from './pages/activation/activation';
+import { Home } from './pages/home/home';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: Home, title: 'Fees-Tracking' },
     { path: 'login', component: Login, title: 'Login | Fees Tracking App' },
     { path: 'roleerror', component: RoleError, title: 'Login | Fees Tracking App' },
     { path: 'dashboard', component: Dashboard, title: 'Dashboard | Fees Tracking App', canActivate: [authGuard,roleCheckGuard] },
