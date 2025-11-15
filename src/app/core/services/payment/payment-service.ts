@@ -18,8 +18,8 @@ export class PaymentService {
    * get all packages
    * @returns 
    */
-  getAllPayments() {
-    let url = `${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.PAYMENT}${API_CONSTANT.PAYMENT_APIS.GET_ALL_PAYMENTS}`;
+  getAllPayments(id: any) {
+    let url = `${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.PAYMENT}${API_CONSTANT.PAYMENT_APIS.GET_ALL_PAYMENTS}?instituteid=${id}`;
     return this.http.get(url).pipe(
       map((res: any) => {
         let obj = {

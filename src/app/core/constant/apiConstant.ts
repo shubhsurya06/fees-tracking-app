@@ -54,7 +54,7 @@ export const API_CONSTANT = {
         FILTER_ENROLLMENTS: '/filterEnrollments'
     },
     PAYMENT_APIS: {
-        GET_ALL_PAYMENTS: '/getAllPayments',
+        GET_ALL_PAYMENTS: '/getAllPaymentsByInstituteId',
         GET_PAYMENT_BY_ID: '/getPaymentById',
         CREATE_PAYMENT: '/createPayment',
         UPDATE_PAYMENT: '/updatePayment',
