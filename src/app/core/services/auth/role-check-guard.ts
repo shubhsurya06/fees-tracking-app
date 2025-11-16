@@ -2,11 +2,18 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../user/user-service';
 import { role_allowed_routes } from '../../constant/route.constant';
+import { AuthService } from './auth-service';
 
 export const roleCheckGuard: CanActivateFn = (route, state) => {
   const userSrv = inject(UserService);
+  const authSer = inject(AuthService);
   const roueter = inject(Router);
   const role = userSrv.loggedInUser().role;
+
+  if (!authSer.isAuthenticated()) {
+    return false;
+  }
+
   if (role != undefined) {
     const routeName = state.url.slice(1);
     const roleRoute = role_allowed_routes.find(m => m.path == routeName);
