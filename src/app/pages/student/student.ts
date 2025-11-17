@@ -36,6 +36,7 @@ export class Student implements OnInit {
   studentForm!: FormGroup;
   fb = inject(FormBuilder);
   isAddEditStudentLoader = signal<boolean>(false);
+  isShowCardView = signal<boolean>(false);
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -67,6 +68,11 @@ export class Student implements OnInit {
   ngOnInit(): void {
     this.getMasterByReference();
     this.getStudentByInstitute();
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**
