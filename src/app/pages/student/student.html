@@ -6,20 +6,77 @@
 
     <div class="row">
         <div class="col">
-            <div class="card shadow-premium border-0 h-100">
+            <div class="card shadow-premium border-0">
                 <div class="card-header-premium d-flex justify-content-between align-items-center">
                     <div class="header-content">
-                        <h5 class="mb-1 header-title"><i class="bi bi-building me-2"></i>Studnet Management</h5>
-                        <p class="header-subtitle mb-0">Manage Studnets from Institutes</p>
+                        <h5 class="mb-1 header-title"><i class="bi bi-building me-2"></i>Student Management</h5>
+                        <p class="header-subtitle mb-0">Manage Students from Institutes</p>
                     </div>
-                    <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#studentModalId">
-                        <i class="bi bi-plus-lg me-2"></i>
-                        <span>Add Studnet</span>
-                    </button>
+                    <div style="display: flex; justify-content: space-between;">
+                        <button class="btn btn-outline-light btn" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+                            (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+                            <i class="bi"
+                                [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+                        </button> &nbsp;&nbsp;
+                        <button type="button" class="btn btn-add-package" data-bs-toggle="modal"
+                            data-bs-target="#studentModalId">
+                            <i class="bi bi-plus-lg me-2"></i>
+                            <span>Add Student</span>
+                        </button>
+                    </div>
                 </div>
 
+                @if (!isShowCardView()) {
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Qualification</th>
+                            <th>College Name, City</th>
+                            <th>Address</th>
+                            <th>Aadhar Card</th>
+                            <th>Reference By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (stu of studentList(); track stu.studentId) {
+                        <tr>
+                            <td>{{stu.name}}</td>
+                            <td>{{stu.email}}</td>
+                            <td>{{stu.contactNo}}</td>
+                            <td>{{stu.qualification}}</td>
+                            <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
+                            <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
+                            <td>{{stu.aadharCard}}</td>
+                            <td>
+                                @for (item of refByMasterList(); track item.masterId) {
+                                    @if (item.masterId === stu.refrenceById) {
+                                        {{item.masterValue}}
+                                    }
+                                }
+                            </td>
+                            <td style="display: flex; justify-content: space-between;">
+                                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#studentModalId" (click)="editStudent(stu)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-outline btn-sm"
+                                    (click)="deleteStudent(stu.studentId)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+
+                @if (isShowCardView()) {
                 <div class="card-body packages-container">
-                    <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+                    <div class="list-viewport" style="max-height: calc(100vh - 130px)">
                         @if (isStudentListLoading()) {
                         <div class="loading-container">
                             <div class="loading-spinner">
@@ -36,7 +93,8 @@
                             </div>
                             <h4 class="empty-state-title">No Students Yet</h4>
                             <p class="empty-state-text">Get started by creating your first student</p>
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#studentModalId">
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                data-bs-target="#studentModalId">
                                 <i class="bi bi-plus-circle me-2"></i>Create First Student
                             </button>
                         </div>
@@ -44,59 +102,35 @@
                         <div class="row g-4">
                             @for (student of studentList(); track student.studentId) {
                             <div class="col-xl-3 col-lg-4 col-md-6">
-                                <div class="card package-card-modern h-100">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="package-card-header">
-                                            <div class="package-icon-wrapper">
-                                                <i class="bi bi-building-fill"></i>
-                                            </div>
-                                            <h5 class="package-name">{{ student.name }}</h5>
-                                        </div>
-
-                                        <div class="package-card-body flex-grow-1">
-                                            <div class="features-section">
-                                                <div class="feature-item">
-                                                    <i class="bi bi-geo-alt-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <!-- <span class="feature-label">Location</span> -->
-                                                        <span class="feature-value">{{ student.city }}, {{ student.state }}, {{student.pincode}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="feature-item">
-                                                    <i class="bi bi-telephone-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <!-- <span class="feature-label">Contact</span> -->
-                                                        <span class="feature-value">{{ student.contactNo }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="feature-item">
-                                                    <i class="bi bi-envelope-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <!-- <span class="feature-label">Email</span> -->
-                                                        <span class="feature-value text-truncate">{{ student.email }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="feature-item">
-                                                    <i class="bi bi-building-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <!-- <span class="feature-label">Email</span> -->
-                                                        <span class="feature-value text-truncate">{{ student.collegeName }}, {{ student.collegeCity }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="package-card-footer mt-auto">
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#studentModalId" 
-                                            (click)="editStudent(student)">
-                                                <i class="bi bi-pencil-square"></i>
-                                                <span>Edit</span>
-                                            </button>
-                                            <button class="btn-action btn-delete" (click)="deleteStudent(student.studentId)">
-                                                <i class="bi bi-trash-fill"></i>
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ student.name }}
+                                    </div>
+                                    <div class="card-body" style="padding: 10px;">
+                                        <p>
+                                            <i class="bi bi-geo-alt-fill feature-icon"></i>
+                                            {{ student.city }}, {{ student.state }}, {{student.pincode}}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-telephone-fill feature-icon"></i> {{ student.contactNo }}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-envelope-fill feature-icon"></i> {{ student.email }}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-building-fill feature-icon"></i>
+                                            {{ student.collegeName }}, {{ student.collegeCity }}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer" style="display: flex; justify-content: space-between;">
+                                        <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#studentModalId" (click)="editStudent(student)">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-outline btn-sm"
+                                            (click)="deleteStudent(student.studentId)">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -105,6 +139,7 @@
                         } }
                     </div>
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -119,14 +154,17 @@
                 <div class="modal-header modal-header-modern">
                     <div>
                         <h5 class="modal-title" id="studentModalIdLabel">
-                            <i class="bi me-2" [ngClass]="studentForm.get('studentId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                            <i class="bi me-2"
+                                [ngClass]="studentForm.get('studentId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
                             {{ studentForm.get('studentId')?.value ? 'Update' : 'Add New' }} Student
                         </h5>
                         <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                            {{ studentForm.get('studentId')?.value ? 'Modify student details' : 'Fill in the details to create a new student' }}
+                            {{ studentForm.get('studentId')?.value ? 'Modify student details' : 'Fill in the details to
+                            create a new student' }}
                         </p>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="cancelEdit()">
                         <i class="bi bi-plus-lg"></i>
                     </button>
                 </div>
@@ -136,7 +174,8 @@
                             <label class="form-label"><i class="bi bi-briefcase-fill me-2"></i>Student Name</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-briefcase-fill"></i></span>
-                                <input type="text" class="form-control" formControlName="name" placeholder="Enter student name">
+                                <input type="text" class="form-control" formControlName="name"
+                                    placeholder="Enter student name">
                             </div>
                             @if (studentForm.get('name')?.invalid && studentForm.get('name')?.touched) {
                             <small class="text-danger">Student name is required</small>
@@ -147,7 +186,8 @@
                             <label class="form-label"><i class="bi bi-telephone me-2"></i>Contact Number</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="text" class="form-control" formControlName="contactNo" placeholder="10 digit number">
+                                <input type="text" class="form-control" formControlName="contactNo"
+                                    placeholder="10 digit number">
                             </div>
                             @if (studentForm.get('contactNo')?.invalid && studentForm.get('contactNo')?.touched) {
                             <small class="text-danger">
@@ -165,7 +205,8 @@
                             <label class="form-label"><i class="bi bi-envelope me-2"></i>Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" formControlName="email" placeholder="email@example.com">
+                                <input type="email" class="form-control" formControlName="email"
+                                    placeholder="email@example.com">
                             </div>
                             @if (studentForm.get('email')?.invalid && studentForm.get('email')?.touched) {
                             <small class="text-danger">
@@ -195,7 +236,8 @@
                             <label class="form-label"><i class="bi bi-map me-2"></i>State</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                <input type="text" class="form-control" formControlName="state" placeholder="Enter state">
+                                <input type="text" class="form-control" formControlName="state"
+                                    placeholder="Enter state">
                             </div>
                             @if (studentForm.get('state')?.invalid && studentForm.get('state')?.touched) {
                             <small class="text-danger">State is required</small>
@@ -206,14 +248,16 @@
                             <label class="form-label"><i class="bi bi-postcard me-2"></i>Pincode</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-postcard"></i></span>
-                                <input type="text" class="form-control" formControlName="pincode" placeholder="6 digits" maxlength="6">
+                                <input type="text" class="form-control" formControlName="pincode" placeholder="6 digits"
+                                    maxlength="6">
                             </div>
                             @if (studentForm.get('pincode')?.invalid && studentForm.get('pincode')?.touched) {
                             <small class="text-danger">
                                 @if (studentForm.get('pincode')?.errors?.['required']) {
                                 Pincode is required
                                 }
-                                @if (studentForm.get('pincode')?.errors?.['pattern'] || studentForm.get('pincode')?.errors?.['minlength']) {
+                                @if (studentForm.get('pincode')?.errors?.['pattern'] ||
+                                studentForm.get('pincode')?.errors?.['minlength']) {
                                 Must be exactly 6 numbered digits
                                 }
                             </small>
@@ -226,9 +270,11 @@
                             <label class="form-label"><i class="bi bi-geo-alt me-2"></i>Qualification</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                <input type="text" class="form-control" formControlName="qualification" placeholder="Enter Qualification">
+                                <input type="text" class="form-control" formControlName="qualification"
+                                    placeholder="Enter Qualification">
                             </div>
-                            @if (studentForm.get('qualification')?.invalid && studentForm.get('qualification')?.touched) {
+                            @if (studentForm.get('qualification')?.invalid && studentForm.get('qualification')?.touched)
+                            {
                             <small class="text-danger">Qualification is required</small>
                             }
                         </div>
@@ -237,7 +283,8 @@
                             <label class="form-label"><i class="bi bi-map me-2"></i>College Name</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                <input type="text" class="form-control" formControlName="collegeName" placeholder="Enter College Name">
+                                <input type="text" class="form-control" formControlName="collegeName"
+                                    placeholder="Enter College Name">
                             </div>
                             @if (studentForm.get('collegeName')?.invalid && studentForm.get('collegeName')?.touched) {
                             <small class="text-danger">College Name is required</small>
@@ -265,9 +312,11 @@
                             <label class="form-label"><i class="bi bi-geo-alt me-2"></i>Family Details</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                <input type="text" class="form-control" formControlName="familyDetails" placeholder="Enter Family Details">
+                                <input type="text" class="form-control" formControlName="familyDetails"
+                                    placeholder="Enter Family Details">
                             </div>
-                            @if (studentForm.get('familyDetails')?.invalid && studentForm.get('familyDetails')?.touched) {
+                            @if (studentForm.get('familyDetails')?.invalid && studentForm.get('familyDetails')?.touched)
+                            {
                             <small class="text-danger">Family Details is required</small>
                             }
                         </div>
@@ -276,7 +325,8 @@
                             <label class="form-label"><i class="bi bi-map me-2"></i>Aadhar Card</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                <input type="text" class="form-control" formControlName="aadharCard" placeholder="Enter Aadhar Card">
+                                <input type="text" class="form-control" formControlName="aadharCard"
+                                    placeholder="Enter Aadhar Card">
                             </div>
                             @if (studentForm.get('aadharCard')?.invalid && studentForm.get('aadharCard')?.touched) {
                             <small class="text-danger">Aadhar Card is required</small>
@@ -289,7 +339,8 @@
                                 <span class="input-group-text"><i class="bi bi-postcard"></i></span>
                                 <input type="text" class="form-control" formControlName="profilePhotoName">
                             </div>
-                            @if (studentForm.get('profilePhotoName')?.invalid && studentForm.get('profilePhotoName')?.touched) {
+                            @if (studentForm.get('profilePhotoName')?.invalid &&
+                            studentForm.get('profilePhotoName')?.touched) {
                             <small class="text-danger">
                                 @if (studentForm.get('profilePhotoName')?.errors?.['required']) {
                                 Profile Photo Name is required
@@ -326,7 +377,8 @@
                     <button type="submit" class="btn d-flex align-items-center"
                         [ngClass]="studentForm.get('studentId')?.value ? 'btn-warning' : 'btn-success'"
                         [disabled]="studentForm.invalid || isAddEditStudLoader()">
-                        <i class="bi me-2" [ngClass]="studentForm.get('studentId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+                        <i class="bi me-2"
+                            [ngClass]="studentForm.get('studentId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
                         <span>{{ studentForm.get('studentId')?.value ? 'Update Student' : 'Add Student' }}</span>
                     </button>
                 </div>
