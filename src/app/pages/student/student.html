@@ -12,7 +12,7 @@
                         <h5 class="mb-1 header-title"><i class="bi bi-building me-2"></i>Studnet Management</h5>
                         <p class="header-subtitle mb-0">Manage Studnets from Institutes</p>
                     </div>
-                    <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#studentModalId">
                         <i class="bi bi-plus-lg me-2"></i>
                         <span>Add Studnet</span>
                     </button>
@@ -26,7 +26,7 @@
                                 <div class="spinner-border text-primary" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
-                                <p class="mt-3 text-muted">Loading branches...</p>
+                                <p class="mt-3 text-muted">Loading Students...</p>
                             </div>
                         </div>
                         } @if (!isStudentListLoading()) { @if (studentList().length == 0) {
@@ -34,10 +34,10 @@
                             <div class="empty-state-icon">
                                 <i class="bi bi-building"></i>
                             </div>
-                            <h4 class="empty-state-title">No Branches Yet</h4>
-                            <p class="empty-state-text">Get started by creating your first branch</p>
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                <i class="bi bi-plus-circle me-2"></i>Create First Branch
+                            <h4 class="empty-state-title">No Students Yet</h4>
+                            <p class="empty-state-text">Get started by creating your first student</p>
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#studentModalId">
+                                <i class="bi bi-plus-circle me-2"></i>Create First Student
                             </button>
                         </div>
                         } @if (studentList().length) {
@@ -87,7 +87,7 @@
                                         </div>
 
                                         <div class="package-card-footer mt-auto">
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop" 
+                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#studentModalId" 
                                             (click)="editStudent(student)">
                                                 <i class="bi bi-pencil-square"></i>
                                                 <span>Edit</span>
@@ -111,19 +111,19 @@
 </div>
 
 <!-- Enhanced Modal -->
-<!-- <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade modal-xl" id="studentModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="studentModalIdLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form [formGroup]="branchForm" (ngSubmit)="createBranch()">
+            <form [formGroup]="studentForm" (ngSubmit)="createStudent()">
                 <div class="modal-header modal-header-modern">
                     <div>
-                        <h5 class="modal-title" id="staticBackdropLabel">
-                            <i class="bi me-2" [ngClass]="branchForm.get('branchId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
-                            {{ branchForm.get('branchId')?.value ? 'Update' : 'Add New' }} Branch
+                        <h5 class="modal-title" id="studentModalIdLabel">
+                            <i class="bi me-2" [ngClass]="studentForm.get('studentId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                            {{ studentForm.get('studentId')?.value ? 'Update' : 'Add New' }} Student
                         </h5>
                         <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                            {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to create a new branch' }}
+                            {{ studentForm.get('studentId')?.value ? 'Modify student details' : 'Fill in the details to create a new student' }}
                         </p>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
@@ -133,57 +133,28 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label"><i class="bi bi-briefcase-fill me-2"></i>Branch Name</label>
+                            <label class="form-label"><i class="bi bi-briefcase-fill me-2"></i>Student Name</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-briefcase-fill"></i></span>
-                                <input type="text" class="form-control" formControlName="branchName" placeholder="Enter branch name">
+                                <input type="text" class="form-control" formControlName="name" placeholder="Enter student name">
                             </div>
-                            @if (branchForm.get('branchName')?.invalid && branchForm.get('branchName')?.touched) {
-                            <small class="text-danger">Branch name is required</small>
+                            @if (studentForm.get('name')?.invalid && studentForm.get('name')?.touched) {
+                            <small class="text-danger">Student name is required</small>
                             }
                         </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label"><i class="bi bi-hash me-2"></i>Branch Code</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                <input type="text" class="form-control" formControlName="branchCode" placeholder="Enter code">
-                            </div>
-                            @if (branchForm.get('branchCode')?.invalid && branchForm.get('branchCode')?.touched) {
-                            <small class="text-danger">Branch code is required</small>
-                            }
-                        </div>
-
-                        @if (userService.loggedInUser().role !== instituteAdminRole) {
-                        <div class="col-md-4">
-                            <label class="form-label"><i class="bi bi-building me-2"></i>Institute</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                <select class="form-select" formControlName="instituteId" required>
-                                    <option value="">Select Institute</option>
-                                    @for (institute of instituteList(); track institute.instituteId) {
-                                    <option [value]="institute.instituteId">{{ institute.name }}</option>
-                                    }
-                                </select>
-                            </div>
-                            @if (branchForm.get('instituteId')?.invalid && branchForm.get('instituteId')?.touched) {
-                            <small class="text-danger">Please select an institute</small>
-                            }
-                        </div>
-                        }
 
                         <div class="col-md-4">
                             <label class="form-label"><i class="bi bi-telephone me-2"></i>Contact Number</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="text" class="form-control" formControlName="branchContactNo" placeholder="10 digit number">
+                                <input type="text" class="form-control" formControlName="contactNo" placeholder="10 digit number">
                             </div>
-                            @if (branchForm.get('branchContactNo')?.invalid && branchForm.get('branchContactNo')?.touched) {
+                            @if (studentForm.get('contactNo')?.invalid && studentForm.get('contactNo')?.touched) {
                             <small class="text-danger">
-                                @if (branchForm.get('branchContactNo')?.errors?.['required']) {
+                                @if (studentForm.get('contactNo')?.errors?.['required']) {
                                 Contact number is required
                                 }
-                                @if (branchForm.get('branchContactNo')?.errors?.['pattern']) {
+                                @if (studentForm.get('contactNo')?.errors?.['pattern']) {
                                 Must be exactly 10 digits
                                 }
                             </small>
@@ -194,27 +165,28 @@
                             <label class="form-label"><i class="bi bi-envelope me-2"></i>Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" formControlName="branchEmail" placeholder="email@example.com">
+                                <input type="email" class="form-control" formControlName="email" placeholder="email@example.com">
                             </div>
-                            @if (branchForm.get('branchEmail')?.invalid && branchForm.get('branchEmail')?.touched) {
+                            @if (studentForm.get('email')?.invalid && studentForm.get('email')?.touched) {
                             <small class="text-danger">
-                                @if (branchForm.get('branchEmail')?.errors?.['required']) {
+                                @if (studentForm.get('email')?.errors?.['required']) {
                                 Email is required
                                 }
-                                @if (branchForm.get('branchEmail')?.errors?.['email']) {
+                                @if (studentForm.get('email')?.errors?.['email']) {
                                 Enter a valid email
                                 }
                             </small>
                             }
                         </div>
-
+                    </div>
+                    <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label"><i class="bi bi-geo-alt me-2"></i>City</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
                                 <input type="text" class="form-control" formControlName="city" placeholder="Enter city">
                             </div>
-                            @if (branchForm.get('city')?.invalid && branchForm.get('city')?.touched) {
+                            @if (studentForm.get('city')?.invalid && studentForm.get('city')?.touched) {
                             <small class="text-danger">City is required</small>
                             }
                         </div>
@@ -225,7 +197,7 @@
                                 <span class="input-group-text"><i class="bi bi-map"></i></span>
                                 <input type="text" class="form-control" formControlName="state" placeholder="Enter state">
                             </div>
-                            @if (branchForm.get('state')?.invalid && branchForm.get('state')?.touched) {
+                            @if (studentForm.get('state')?.invalid && studentForm.get('state')?.touched) {
                             <small class="text-danger">State is required</small>
                             }
                         </div>
@@ -236,31 +208,112 @@
                                 <span class="input-group-text"><i class="bi bi-postcard"></i></span>
                                 <input type="text" class="form-control" formControlName="pincode" placeholder="6 digits" maxlength="6">
                             </div>
-                            @if (branchForm.get('pincode')?.invalid && branchForm.get('pincode')?.touched) {
+                            @if (studentForm.get('pincode')?.invalid && studentForm.get('pincode')?.touched) {
                             <small class="text-danger">
-                                @if (branchForm.get('pincode')?.errors?.['required']) {
+                                @if (studentForm.get('pincode')?.errors?.['required']) {
                                 Pincode is required
                                 }
-                                @if (branchForm.get('pincode')?.errors?.['pattern'] || branchForm.get('pincode')?.errors?.['minlength']) {
-                                Must be exactly 6 digits
+                                @if (studentForm.get('pincode')?.errors?.['pattern'] || studentForm.get('pincode')?.errors?.['minlength']) {
+                                Must be exactly 6 numbered digits
                                 }
                             </small>
                             }
                         </div>
+                    </div>
 
-                        <div class="col-md-8">
-                            <label class="form-label"><i class="bi bi-pin-map me-2"></i>Full Address</label>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-geo-alt me-2"></i>Qualification</label>
                             <div class="input-group">
-                                <span class="input-group-text align-self-start pt-3"><i class="bi bi-pin-map"></i></span>
-                                <textarea class="form-control" formControlName="location" rows="2" placeholder="Enter complete address"></textarea>
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" class="form-control" formControlName="qualification" placeholder="Enter Qualification">
                             </div>
-                            @if (branchForm.get('location')?.invalid && branchForm.get('location')?.touched) {
-                            <small class="text-danger">Location is required</small>
+                            @if (studentForm.get('qualification')?.invalid && studentForm.get('qualification')?.touched) {
+                            <small class="text-danger">Qualification is required</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-map me-2"></i>College Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                <input type="text" class="form-control" formControlName="collegeName" placeholder="Enter College Name">
+                            </div>
+                            @if (studentForm.get('collegeName')?.invalid && studentForm.get('collegeName')?.touched) {
+                            <small class="text-danger">College Name is required</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-postcard me-2"></i>College City</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-postcard"></i></span>
+                                <input type="text" class="form-control" formControlName="collegeCity">
+                            </div>
+                            @if (studentForm.get('collegeCity')?.invalid && studentForm.get('collegeCity')?.touched) {
+                            <small class="text-danger">
+                                @if (studentForm.get('collegeCity')?.errors?.['required']) {
+                                College City is required
+                                }
+                            </small>
                             }
                         </div>
                     </div>
 
-                    @if (isAddEditBranchLoader()) {
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-geo-alt me-2"></i>Family Details</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" class="form-control" formControlName="familyDetails" placeholder="Enter Family Details">
+                            </div>
+                            @if (studentForm.get('familyDetails')?.invalid && studentForm.get('familyDetails')?.touched) {
+                            <small class="text-danger">Family Details is required</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-map me-2"></i>Aadhar Card</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                <input type="text" class="form-control" formControlName="aadharCard" placeholder="Enter Aadhar Card">
+                            </div>
+                            @if (studentForm.get('aadharCard')?.invalid && studentForm.get('aadharCard')?.touched) {
+                            <small class="text-danger">Aadhar Card is required</small>
+                            }
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"><i class="bi bi-postcard me-2"></i>Profile Photo Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-postcard"></i></span>
+                                <input type="text" class="form-control" formControlName="profilePhotoName">
+                            </div>
+                            @if (studentForm.get('profilePhotoName')?.invalid && studentForm.get('profilePhotoName')?.touched) {
+                            <small class="text-danger">
+                                @if (studentForm.get('profilePhotoName')?.errors?.['required']) {
+                                Profile Photo Name is required
+                                }
+                            </small>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Reference By</label>
+                            <select class="form-select" formControlName="refrenceById">
+                                <option value="0">Select Reference</option>
+                                <option *ngFor="let r of refByMasterList()" [value]="r.masterId">{{r.masterValue}}
+                                </option>
+                            </select>
+                            @if (studentForm.get('refrenceById')?.invalid && studentForm.get('refrenceById')?.touched) {
+                            <small class="text-danger">Reference By is required</small>
+                            }
+                        </div>
+                    </div>
+
+                    @if (isAddEditStudLoader()) {
                     <div class="text-center my-4">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Processing...</span>
@@ -271,13 +324,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn d-flex align-items-center"
-                        [ngClass]="branchForm.get('branchId')?.value ? 'btn-warning' : 'btn-success'"
-                        [disabled]="branchForm.invalid || isAddEditBranchLoader()">
-                        <i class="bi me-2" [ngClass]="branchForm.get('branchId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
-                        <span>{{ branchForm.get('branchId')?.value ? 'Update Branch' : 'Create Branch' }}</span>
+                        [ngClass]="studentForm.get('studentId')?.value ? 'btn-warning' : 'btn-success'"
+                        [disabled]="studentForm.invalid || isAddEditStudLoader()">
+                        <i class="bi me-2" [ngClass]="studentForm.get('studentId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+                        <span>{{ studentForm.get('studentId')?.value ? 'Update Student' : 'Add Student' }}</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-</div> -->
+</div>
