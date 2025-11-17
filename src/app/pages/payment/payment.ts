@@ -118,13 +118,6 @@ export class Payment implements OnInit {
    * @param res 
    */
   onPaymentSuccess(res: any) {
-    // res.data.map((payment: IPayment) => {
-    //   const payMode = this.masterPaymentModeList().find((mode: IMaster) => mode.masterId === payment.paymentModeId);
-    //   payment.paymentModeName = payMode ? payMode.masterValue : 'N/A';
-
-    //   return payment;
-    // });
-
     this.paymentList.set(res.data);
   }
 
