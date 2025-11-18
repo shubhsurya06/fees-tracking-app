@@ -52,7 +52,7 @@ export const API_CONSTANT = {
         CREATE_ENROLLMENT: '/createStudentEnrollment',
         UPDATE_ENROLLMENT: '/updateEnrollment',
         DELETE_ENROLLMENT: '/deleteEnrollment',
-        FILTER_ENROLLMENTS: '/filterEnrollments'
+        FILTER_ENROLLMENTS: '/filterEnrollmentsPaged'
     },
     PAYMENT_APIS: {
         GET_ALL_PAYMENTS: '/getAllPaymentsByInstituteId',
