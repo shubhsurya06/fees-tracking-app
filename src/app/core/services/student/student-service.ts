@@ -16,7 +16,9 @@ export class StudentService {
 
   getStudentByInstitute(id: number | undefined) {
     let url = `${this.baseUrl}${API_CONSTANT.CONTROLLER_TYPES.STUDENT}${API_CONSTANT.STUDENT_APIS.GET_STUDENT_BY_INSTITUTE}`;
-    return this.http.get(url + APP_CONSTANT.SLASH_CONST + id);
+    return this.http.get(url + APP_CONSTANT.SLASH_CONST + id).pipe(
+      delay(1500)
+    );
   }
 
   createStudent(student: IStudent) {

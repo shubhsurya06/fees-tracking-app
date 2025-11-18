@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { EnrollmentService } from '../../core/services/enrollment/enrollment-service';
 
 @Component({
   selector: 'app-enrol-adv', 
@@ -10,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./enrol-adv.scss']
 })
 export class EnrolAdv  implements OnInit{
+  enrollSer = inject(EnrollmentService);
   filter = {
     studentId: 0,
     courseId: 0,
@@ -42,7 +44,7 @@ export class EnrolAdv  implements OnInit{
   }
 
   getEnrollmentNByFilter() {
-    this.http.post("https://localhost:7030/api/Enrollments/filterEnrollmentsPaged",this.filter).subscribe({
+    this.enrollSer.getEnrollmentNByFilter(this.filter).subscribe({
       next:(result:any)=>{
         this.enrollments = result.data;
         this.totalRecords = result.totalRecords;

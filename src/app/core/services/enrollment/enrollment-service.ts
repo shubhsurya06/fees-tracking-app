@@ -32,6 +32,13 @@ export class EnrollmentService {
     );
   }
 
+  getEnrollmentNByFilter(filter: any) {
+    let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.ENROLLMENT + API_CONSTANT.ENROLLMENT_APIS.FILTER_ENROLLMENTS;
+    return this.http.post(url, filter).pipe(
+      delay(1000)
+    );
+  }
+
   /**
    * Call createCourse API from here and create course
    * @param courseData 

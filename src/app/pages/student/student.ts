@@ -36,7 +36,7 @@ export class Student implements OnInit {
   studentForm!: FormGroup;
   fb = inject(FormBuilder);
   isAddEditStudentLoader = signal<boolean>(false);
-  isShowCardView = signal<boolean>(false);
+  isShowCardView = signal<boolean>(true);
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
