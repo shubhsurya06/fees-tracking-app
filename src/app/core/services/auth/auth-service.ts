@@ -16,7 +16,6 @@ export class AuthService {
   userService = inject(UserService);
 
   // added logged in user in subject, so that  we can subscribe it on App.ts component, to show header/NAVBAR
-  loggedInSubject = new BehaviorSubject(false);
 
   private baseUrl = environment.API_URL;
 
@@ -35,7 +34,6 @@ export class AuthService {
     // set user data in userService.loggedInUser(), so that it will be accessible throughout the application
     this.userService.getLoggedInUser();
 
-    this.loggedInSubject.next(true);
   }
 
   // get token from local storage
@@ -54,7 +52,6 @@ export class AuthService {
     localStorage.removeItem(APP_CONSTANT.USER_DATA.TOKEN);
     localStorage.removeItem(APP_CONSTANT.USER_DATA.USER_DETAILS);
     this.userService.removeUser();
-    this.loggedInSubject.next(false);
   }
 
 }
