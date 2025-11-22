@@ -10,19 +10,9 @@ import { NgIf } from '@angular/common';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('fees-tracking-app');
   authService = inject(AuthService);
-  isLoggedId = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.authService.loggedInSubject.subscribe({
-      next: (flag: boolean) => {
-        this.isLoggedId.set(flag);
-      }, error: (err: any) => {
-        console.log('Error while logged in');
-      }
-    })
-  }
-
+  
 }
