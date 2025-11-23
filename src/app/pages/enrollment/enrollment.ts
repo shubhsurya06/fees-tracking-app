@@ -41,6 +41,24 @@ export class Enrollment implements OnInit {
   submitted = false;
   isShowCardView = signal<boolean>(false);
 
+  // filter related changes starts
+  filter = {
+    studentId: 0,
+    courseId: 0,
+    fromDate: "",
+    toDate: "",
+    pageNumber: 1,
+    pageSize: 5,
+    sortBy: "",
+    sortDirection: ""
+  }
+
+  totalRecords: number = 0;
+  totalPages: number = 0;
+  pageNumbers: number[] = [];
+  isPaginationLoader = signal<boolean>(false);
+  // filter related changes ends
+
   constructor(private fb: FormBuilder) {
     if (!Object.keys(this.userService.loggedInUser()).length) {
       this.userService.getLoggedInUser();
@@ -95,12 +113,13 @@ export class Enrollment implements OnInit {
     this.getAllInstitutes();
     this.getAllCourse();
     this.getMasterByReference();
-    this.getInstituteEnrollments();
+    // this.getInstituteEnrollments();
+    this.getEnrollmentNByFilter()
   }
 
   get f() { return this.enrollmentForm.controls; }
 
-    // toggle between card and table view
+  // toggle between card and table view
   toggleView(flag: boolean) {
     this.isShowCardView.set(flag);
   }
@@ -158,6 +177,7 @@ export class Enrollment implements OnInit {
     })
   }
 
+  // get all pending enrollments whose payments has not been completed
   getPendingEnrollments() {
     let id = this.userService.loggedInUser().instituteId;
     this.isEnrollmentListLoading.set(true);
@@ -175,6 +195,33 @@ export class Enrollment implements OnInit {
         console.log('Error while fetching enrollments', err);
       }
     });
+  }
+
+  getEnrollmentNByFilter(isPaginated: boolean = false) {
+
+    isPaginated ? this.isPaginationLoader.set(true) : this.isEnrollmentListLoading.set(true);
+
+    this.enrollmentService.getEnrollmentNByFilter(this.filter).subscribe({
+      next: (result: any) => {
+        isPaginated ? this.isPaginationLoader.set(false) : this.isEnrollmentListLoading.set(false);
+
+        this.enrollmentList.update(old => [...old, ...result.data]);
+
+        this.totalRecords = result.totalRecords;
+        this.totalPages = Math.ceil(this.totalRecords / this.filter.pageSize);
+        this.pageNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+      },
+      error: (error: any) => {
+        console.error('Error fetching enrollments:', error);
+      }
+    })
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber > 0 && pageNumber <= this.totalPages) {
+      this.filter.pageNumber = pageNumber;
+      this.getEnrollmentNByFilter(true);
+    }
   }
 
   // Returns yyyy-MM-dd (for input type="date")
