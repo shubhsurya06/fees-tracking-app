@@ -126,6 +126,8 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   .card-body {
     background: $bg-light;
     padding: 5px;
+    gap: 0.2rem;
+    padding: 0.5rem;
   }
 
   &:hover {
@@ -135,7 +137,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
     transition: 0.3s;
 
     .card-header {
-      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%) ;
+      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
     }
   }
 }
