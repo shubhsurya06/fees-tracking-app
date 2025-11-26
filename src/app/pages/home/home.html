@@ -1,474 +1,532 @@
- <!-- Hero Section -->
-  <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-graduation-cap me-2"></i>InstituteManager Pro
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#features">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#packages">Packages</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <button class="btn btn-login" routerLink="/login" >
-                            <i class="fas fa-sign-in-alt me-2"></i>Login
-                        </button>
-                    </li>
+<!-- Hero Section -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-graduation-cap me-2"></i>InstituteManager Pro
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#packages">Packages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <button class="btn btn-login" routerLink="/login">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="hero-title">InstituteManager Pro</h1>
+                <p class="hero-subtitle">
+                    Complete institute management solution for fees, courses, students, and branches.
+                    Streamline your operations with our powerful and intuitive platform.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#register" class="btn btn-light-custom btn-custom">
+                        Get Started <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#packages" class="btn btn-outline-custom btn-custom">
+                        View Packages
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
+                <div class="text-center">
+                    <i class="fas fa-graduation-cap" style="font-size: 15rem; color: rgba(255,255,255,0.9);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Active Institutes</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Students Managed</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5" style="padding: 5rem 0;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="text-muted mt-4 fs-5">Everything you need to manage your institute efficiently</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Fees Management</h3>
+                    <p class="text-muted">
+                        Complete fee collection, tracking, and reporting system. Generate receipts, manage payment
+                        schedules, and track outstanding dues effortlessly.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Student Enrollment</h3>
+                    <p class="text-muted">
+                        Streamline student admissions and course enrollments. Manage student profiles, documents, and
+                        payment records in one place.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Multi-Branch Support</h3>
+                    <p class="text-muted">
+                        Manage multiple branches from a single dashboard. Track performance, students, and finances
+                        across all locations.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Course Management</h3>
+                    <p class="text-muted">
+                        Create and manage courses, batches, schedules, and curriculum. Track student progress and
+                        performance effectively.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sms"></i>
+                    </div>
+                    <h3 class="h4 mb-3">SMS & WhatsApp Alerts</h3>
+                    <p class="text-muted">
+                        Send automated notifications for fees, attendance, and important updates via SMS and WhatsApp to
+                        students and parents.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Reports & Analytics</h3>
+                    <p class="text-muted">
+                        Generate comprehensive reports and gain insights with powerful analytics. Make data-driven
+                        decisions for your institute.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Packages Section -->
+<section id="packages" class="py-5"
+    style="background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%); padding: 5rem 0;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Choose Your Package</h2>
+            <p class="text-muted mt-4 fs-5">Flexible plans designed for institutes of all sizes</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="package-card">
+                    <h3 class="package-title">Starter</h3>
+                    <p class="text-muted">Perfect for small institutes</p>
+                    <div class="package-price">
+                        ₹4,999<small>/year</small>
+                    </div>
+                    <div class="my-4">
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Up to 100 Students
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            1 Branch
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Basic Fee Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Course Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Email Support
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-times text-muted me-2"></i>
+                            SMS Alerts
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-times text-muted me-2"></i>
+                            WhatsApp Alerts
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-primary w-100 btn-lg" style="border-radius: 12px;">
+                        Choose Plan
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="package-card package-popular">
+                    <span class="badge-custom">Most Popular</span>
+                    <h3 class="package-title">Professional</h3>
+                    <p>Ideal for growing institutes</p>
+                    <div class="package-price">
+                        ₹9,999<small>/year</small>
+                    </div>
+                    <div class="my-4">
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Up to 500 Students
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Up to 3 Branches
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Advanced Fee Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Course & Batch Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            SMS Alerts (1000/month)
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Reports & Analytics
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check me-2"></i>
+                            Priority Support
+                        </div>
+                    </div>
+                    <button class="btn btn-light w-100 btn-lg" style="border-radius: 12px;">
+                        Choose Plan
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="package-card">
+                    <h3 class="package-title">Enterprise</h3>
+                    <p class="text-muted">For large institutes</p>
+                    <div class="package-price">
+                        ₹19,999<small>/year</small>
+                    </div>
+                    <div class="my-4">
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Unlimited Students
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Unlimited Branches
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Complete Fee Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Advanced Course Management
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Unlimited SMS Alerts
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            WhatsApp Integration
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check text-success me-2"></i>
+                            24/7 Dedicated Support
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 btn-lg" style="border-radius: 12px;">
+                        Choose Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Registration Form Section -->
+<section id="register" class="form-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container" data-aos="fade-up">
+                    <div class="text-center mb-4">
+                        <h2 class="section-title">Register Your Institute</h2>
+                        <p class="text-muted mt-4">Fill in the details below to get started with InstituteManager Pro
+                        </p>
+                    </div>
+
+                    <form [formGroup]="registerForm" (ngSubmit)="registerInstitute()" id="registrationForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="instituteName" class="form-label">Institute Name *</label>
+                                <input type="text" class="form-control" formControlName="name" id="instituteName"
+                                    required>
+                                @if (instForm['name']?.invalid && instForm['name']?.touched) {
+                                <small class="text-danger">Institute name is required</small>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ownerName" class="form-label">Owner Name *</label>
+                                <input type="text" class="form-control" formControlName="ownerName" id="ownerName" required>
+                                @if (instForm['ownerName']?.invalid && instForm['ownerName']?.touched) {
+                                <small class="text-danger">Owner name is required</small>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="contactNo" class="form-label">Contact Number *</label>
+                                <input type="tel" class="form-control" formControlName="conatctNo" id="contactNo" required>
+                                @if (instForm['conatctNo']?.invalid && instForm['conatctNo']?.touched) {
+                                <small class="text-danger">Contact no is required.</small>
+                                }
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="emailId" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" formControlName="emailId" id="emailId" required>
+                                @if (instForm['emailId']?.invalid && instForm['emailId']?.touched) {
+                                    @if (instForm['emailId'].errors?.['required']) {
+                                        <small class="text-danger">Email is required</small>
+                                    }
+
+                                    @if (instForm['emailId'].errors?.['email']) {
+                                        <small class="text-danger">Please enter valid email id.</small>
+                                    }
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" formControlName="city" id="city" required>
+                                @if (instForm['city']?.invalid && instForm['city']?.touched) {
+                                <small class="text-danger">Please enter city.</small>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="state" class="form-label">State *</label>
+                                <select class="form-select" id="state" formControlName="state" required>
+                                    <option value="">Select State</option>
+                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                    <option value="Assam">Assam</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                    <option value="Goa">Goa</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="Haryana">Haryana</option>
+                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                    <option value="Jharkhand">Jharkhand</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Kerala">Kerala</option>
+                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Manipur">Manipur</option>
+                                    <option value="Meghalaya">Meghalaya</option>
+                                    <option value="Mizoram">Mizoram</option>
+                                    <option value="Nagaland">Nagaland</option>
+                                    <option value="Odisha">Odisha</option>
+                                    <option value="Punjab">Punjab</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Sikkim">Sikkim</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Tripura">Tripura</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="Uttarakhand">Uttarakhand</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                </select>
+                                @if (instForm['state']?.invalid && instForm['state']?.touched) {
+                                <small class="text-danger">Please select state.</small>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="pincode" class="form-label">Pincode *</label>
+                                <input type="text" class="form-control" formControlName="pincode" id="pincode" required>
+                                @if (instForm['pincode']?.invalid && instForm['pincode']?.touched) {
+                                <small class="text-danger">Pincode is required</small>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="gstNo" class="form-label">GST Number</label>
+                                <input type="text" class="form-control" formControlName="gstNo" id="gstNo">
+                                @if (instForm['gstNo']?.invalid && instForm['gstNo']?.touched) {
+                                <small class="text-danger">Please enter GST No.</small>
+                                }
+                            </div>
+
+                            <div class="col-12">
+                                <label for="location" class="form-label">Location/Address *</label>
+                                <textarea class="form-control" formControlName="location" id="location" rows="2" required></textarea>
+                                    @if (instForm['location']?.invalid && instForm['location']?.touched) {
+                                <small class="text-danger">Location is required</small>
+                                }
+                            </div>
+
+                            @if (isAddRegLoader()) {
+                            <div class="text-center my-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Processing...</span>
+                                </div>
+                                <p class="mt-2 mb-0 text-muted">Institute getting registered...</p>
+                            </div>
+                            }
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 gradient-bg"
+                                    [disabled]="isAddRegLoader()" style="border: none; border-radius: 12px;">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Submit Registration
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    @if(isInstituteReg()){
+                    <div id="successMessage" class="alert alert-success mt-4 d-none" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Success!</strong> Your registration has been submitted. We'll contact you shortly.
+                    </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <h4 class="mb-3">InstituteManager Pro</h4>
+                <p class="text-muted">
+                    Your complete solution for institute management. Streamline operations, boost efficiency, and focus
+                    on what matters most - education.
+                </p>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="#packages" class="text-muted text-decoration-none">Packages</a></li>
+                    <li class="mb-2"><a href="#register" class="text-muted text-decoration-none">Register</a></li>
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Contact</a></li>
                 </ul>
             </div>
-        </div>
-    </nav>
-
-    <section class="hero-section">
-        <div class="container hero-content">
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <h1 class="hero-title">InstituteManager Pro</h1>
-                    <p class="hero-subtitle">
-                        Complete institute management solution for fees, courses, students, and branches.
-                        Streamline your operations with our powerful and intuitive platform.
-                    </p>
-                    <div class="d-flex gap-3 flex-wrap">
-                        <a href="#register" class="btn btn-light-custom btn-custom">
-                            Get Started <i class="fas fa-arrow-right ms-2"></i>
-                        </a>
-                        <a href="#packages" class="btn btn-outline-custom btn-custom">
-                            View Packages
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
-                    <div class="text-center">
-                        <i class="fas fa-graduation-cap" style="font-size: 15rem; color: rgba(255,255,255,0.9);"></i>
-                    </div>
+            <div class="col-lg-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-2">
+                        <i class="fas fa-envelope me-2"></i>
+                        info@institutemanager.com
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-phone me-2"></i>
+                        +91 98765 43210
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        India
+                    </li>
+                </ul>
+                <div class="mt-3">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Active Institutes</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="stat-item">
-                        <div class="stat-number">50K+</div>
-                        <div class="stat-label">Students Managed</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="stat-item">
-                        <div class="stat-number">99.9%</div>
-                        <div class="stat-label">Uptime</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Support</div>
-                    </div>
-                </div>
-            </div>
+        <hr class="my-4 bg-secondary">
+        <div class="text-center text-muted">
+            <p class="mb-0">&copy; 2025 InstituteManager Pro. All rights reserved.</p>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-5" style="padding: 5rem 0;">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Powerful Features</h2>
-                <p class="text-muted mt-4 fs-5">Everything you need to manage your institute efficiently</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Fees Management</h3>
-                        <p class="text-muted">
-                            Complete fee collection, tracking, and reporting system. Generate receipts, manage payment schedules, and track outstanding dues effortlessly.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Student Enrollment</h3>
-                        <p class="text-muted">
-                            Streamline student admissions and course enrollments. Manage student profiles, documents, and payment records in one place.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Multi-Branch Support</h3>
-                        <p class="text-muted">
-                            Manage multiple branches from a single dashboard. Track performance, students, and finances across all locations.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Course Management</h3>
-                        <p class="text-muted">
-                            Create and manage courses, batches, schedules, and curriculum. Track student progress and performance effectively.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-sms"></i>
-                        </div>
-                        <h3 class="h4 mb-3">SMS & WhatsApp Alerts</h3>
-                        <p class="text-muted">
-                            Send automated notifications for fees, attendance, and important updates via SMS and WhatsApp to students and parents.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Reports & Analytics</h3>
-                        <p class="text-muted">
-                            Generate comprehensive reports and gain insights with powerful analytics. Make data-driven decisions for your institute.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Packages Section -->
-    <section id="packages" class="py-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%); padding: 5rem 0;">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Choose Your Package</h2>
-                <p class="text-muted mt-4 fs-5">Flexible plans designed for institutes of all sizes</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="package-card">
-                        <h3 class="package-title">Starter</h3>
-                        <p class="text-muted">Perfect for small institutes</p>
-                        <div class="package-price">
-                            ₹4,999<small>/year</small>
-                        </div>
-                        <div class="my-4">
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Up to 100 Students
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                1 Branch
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Basic Fee Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Course Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Email Support
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-times text-muted me-2"></i>
-                                SMS Alerts
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-times text-muted me-2"></i>
-                                WhatsApp Alerts
-                            </div>
-                        </div>
-                        <button class="btn btn-outline-primary w-100 btn-lg" style="border-radius: 12px;">
-                            Choose Plan
-                        </button>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="package-card package-popular">
-                        <span class="badge-custom">Most Popular</span>
-                        <h3 class="package-title">Professional</h3>
-                        <p>Ideal for growing institutes</p>
-                        <div class="package-price">
-                            ₹9,999<small>/year</small>
-                        </div>
-                        <div class="my-4">
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Up to 500 Students
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Up to 3 Branches
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Advanced Fee Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Course & Batch Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                SMS Alerts (1000/month)
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Reports & Analytics
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check me-2"></i>
-                                Priority Support
-                            </div>
-                        </div>
-                        <button class="btn btn-light w-100 btn-lg" style="border-radius: 12px;">
-                            Choose Plan
-                        </button>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="package-card">
-                        <h3 class="package-title">Enterprise</h3>
-                        <p class="text-muted">For large institutes</p>
-                        <div class="package-price">
-                            ₹19,999<small>/year</small>
-                        </div>
-                        <div class="my-4">
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Unlimited Students
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Unlimited Branches
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Complete Fee Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Advanced Course Management
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Unlimited SMS Alerts
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                WhatsApp Integration
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-check text-success me-2"></i>
-                                24/7 Dedicated Support
-                            </div>
-                        </div>
-                        <button class="btn btn-primary w-100 btn-lg" style="border-radius: 12px;">
-                            Choose Plan
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Registration Form Section -->
-    <section id="register" class="form-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="form-container" data-aos="fade-up">
-                        <div class="text-center mb-4">
-                            <h2 class="section-title">Register Your Institute</h2>
-                            <p class="text-muted mt-4">Fill in the details below to get started with InstituteManager Pro</p>
-                        </div>
-
-                        <form id="registrationForm">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="instituteName" class="form-label">Institute Name *</label>
-                                    <input type="text" class="form-control" id="instituteName" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="ownerName" class="form-label">Owner Name *</label>
-                                    <input type="text" class="form-control" id="ownerName" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="contactNo" class="form-label">Contact Number *</label>
-                                    <input type="tel" class="form-control" id="contactNo" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="emailId" class="form-label">Email Address *</label>
-                                    <input type="email" class="form-control" id="emailId" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="city" class="form-label">City *</label>
-                                    <input type="text" class="form-control" id="city" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="state" class="form-label">State *</label>
-                                    <select class="form-select" id="state" required>
-                                        <option value="">Select State</option>
-                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                        <option value="Assam">Assam</option>
-                                        <option value="Bihar">Bihar</option>
-                                        <option value="Chhattisgarh">Chhattisgarh</option>
-                                        <option value="Goa">Goa</option>
-                                        <option value="Gujarat">Gujarat</option>
-                                        <option value="Haryana">Haryana</option>
-                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                        <option value="Jharkhand">Jharkhand</option>
-                                        <option value="Karnataka">Karnataka</option>
-                                        <option value="Kerala">Kerala</option>
-                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                        <option value="Maharashtra">Maharashtra</option>
-                                        <option value="Manipur">Manipur</option>
-                                        <option value="Meghalaya">Meghalaya</option>
-                                        <option value="Mizoram">Mizoram</option>
-                                        <option value="Nagaland">Nagaland</option>
-                                        <option value="Odisha">Odisha</option>
-                                        <option value="Punjab">Punjab</option>
-                                        <option value="Rajasthan">Rajasthan</option>
-                                        <option value="Sikkim">Sikkim</option>
-                                        <option value="Tamil Nadu">Tamil Nadu</option>
-                                        <option value="Telangana">Telangana</option>
-                                        <option value="Tripura">Tripura</option>
-                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                        <option value="Uttarakhand">Uttarakhand</option>
-                                        <option value="West Bengal">West Bengal</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="pincode" class="form-label">Pincode *</label>
-                                    <input type="text" class="form-control" id="pincode" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="gstNo" class="form-label">GST Number</label>
-                                    <input type="text" class="form-control" id="gstNo">
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="location" class="form-label">Location/Address *</label>
-                                    <textarea class="form-control" id="location" rows="3" required></textarea>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100 gradient-bg" style="border: none; border-radius: 12px;">
-                                        <i class="fas fa-paper-plane me-2"></i>
-                                        Submit Registration
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <div id="successMessage" class="alert alert-success mt-4 d-none" role="alert">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Success!</strong> Your registration has been submitted. We'll contact you shortly.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <h4 class="mb-3">InstituteManager Pro</h4>
-                    <p class="text-muted">
-                        Your complete solution for institute management. Streamline operations, boost efficiency, and focus on what matters most - education.
-                    </p>
-                </div>
-                <div class="col-lg-4">
-                    <h5 class="mb-3">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">About Us</a></li>
-                        <li class="mb-2"><a href="#packages" class="text-muted text-decoration-none">Packages</a></li>
-                        <li class="mb-2"><a href="#register" class="text-muted text-decoration-none">Register</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <h5 class="mb-3">Contact Us</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2">
-                            <i class="fas fa-envelope me-2"></i>
-                            info@institutemanager.com
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-phone me-2"></i>
-                            +91 98765 43210
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            India
-                        </li>
-                    </ul>
-                    <div class="mt-3">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4 bg-secondary">
-            <div class="text-center text-muted">
-                <p class="mb-0">&copy; 2025 InstituteManager Pro. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    </div>
+</footer>
