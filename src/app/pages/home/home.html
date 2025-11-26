@@ -349,7 +349,8 @@
 
                             <div class="col-md-6">
                                 <label for="ownerName" class="form-label">Owner Name *</label>
-                                <input type="text" class="form-control" formControlName="ownerName" id="ownerName" required>
+                                <input type="text" class="form-control" formControlName="ownerName" id="ownerName"
+                                    required>
                                 @if (instForm['ownerName']?.invalid && instForm['ownerName']?.touched) {
                                 <small class="text-danger">Owner name is required</small>
                                 }
@@ -357,24 +358,33 @@
 
                             <div class="col-md-6">
                                 <label for="contactNo" class="form-label">Contact Number *</label>
-                                <input type="tel" class="form-control" formControlName="conatctNo" id="contactNo" required>
+                                <input type="tel" class="form-control" placeholder="10 digit number"
+                                    formControlName="conatctNo" id="contactNo" maxlength="10" required>
                                 @if (instForm['conatctNo']?.invalid && instForm['conatctNo']?.touched) {
-                                <small class="text-danger">Contact no is required.</small>
+                                <small class="text-danger">
+                                    @if (instForm['conatctNo']?.errors?.['required']) {
+                                    Contact number is required
+                                    }
+                                    @if (instForm['conatctNo']?.errors?.['pattern']) {
+                                    Must be exactly 10 digits
+                                    }
+                                </small>
                                 }
 
                             </div>
 
                             <div class="col-md-6">
                                 <label for="emailId" class="form-label">Email Address *</label>
-                                <input type="email" class="form-control" formControlName="emailId" id="emailId" required>
+                                <input type="email" class="form-control" formControlName="emailId" id="emailId"
+                                    required>
                                 @if (instForm['emailId']?.invalid && instForm['emailId']?.touched) {
-                                    @if (instForm['emailId'].errors?.['required']) {
-                                        <small class="text-danger">Email is required</small>
-                                    }
+                                @if (instForm['emailId'].errors?.['required']) {
+                                <small class="text-danger">Email is required</small>
+                                }
 
-                                    @if (instForm['emailId'].errors?.['email']) {
-                                        <small class="text-danger">Please enter valid email id.</small>
-                                    }
+                                @if (instForm['emailId'].errors?.['email']) {
+                                <small class="text-danger">Please enter valid email id.</small>
+                                }
                                 }
                             </div>
 
@@ -426,9 +436,17 @@
 
                             <div class="col-md-6">
                                 <label for="pincode" class="form-label">Pincode *</label>
-                                <input type="text" class="form-control" formControlName="pincode" id="pincode" required>
+                                <input type="text" class="form-control" formControlName="pincode" id="pincode" 
+                                placeholder="6 digits" maxlength="6" required>
                                 @if (instForm['pincode']?.invalid && instForm['pincode']?.touched) {
-                                <small class="text-danger">Pincode is required</small>
+                                <small class="text-danger">
+                                    @if (instForm['pincode']?.errors?.['required']) {
+                                    Pincode is required
+                                    }
+                                    @if (instForm['pincode']?.errors?.['pattern'] || instForm['pincode']?.errors?.['minlength']) {
+                                    Must be exactly 6 digits
+                                    }
+                                </small>
                                 }
                             </div>
 
@@ -442,8 +460,9 @@
 
                             <div class="col-12">
                                 <label for="location" class="form-label">Location/Address *</label>
-                                <textarea class="form-control" formControlName="location" id="location" rows="2" required></textarea>
-                                    @if (instForm['location']?.invalid && instForm['location']?.touched) {
+                                <textarea class="form-control" formControlName="location" id="location" rows="2"
+                                    required></textarea>
+                                @if (instForm['location']?.invalid && instForm['location']?.touched) {
                                 <small class="text-danger">Location is required</small>
                                 }
                             </div>
@@ -468,7 +487,7 @@
                     </form>
 
                     @if(isInstituteReg()){
-                    <div id="successMessage" class="alert alert-success mt-4 d-none" role="alert">
+                    <div id="successMessage" class="alert alert-success mt-4" role="alert">
                         <i class="fas fa-check-circle me-2"></i>
                         <strong>Success!</strong> Your registration has been submitted. We'll contact you shortly.
                     </div>

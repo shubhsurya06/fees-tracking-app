@@ -21,10 +21,10 @@ export class Home implements OnInit {
     this.registerForm = this.fb.group({
       instituteId: [0],
       name: ['', [Validators.required]],
-      conatctNo: ['', [Validators.required]],
+      conatctNo: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       emailId: ['', [Validators.required, Validators.email]],
       city: ['', [Validators.required]],
-      pincode: ['', [Validators.required]],
+      pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
       state: ['', [Validators.required]],
       location: ['', [Validators.required]],
       ownerName: ['', [Validators.required]],
