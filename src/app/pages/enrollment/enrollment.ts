@@ -113,8 +113,8 @@ export class Enrollment implements OnInit {
     this.getAllInstitutes();
     this.getAllCourse();
     this.getMasterByReference();
-    // this.getInstituteEnrollments();
-    this.getEnrollmentNByFilter()
+    this.getInstituteEnrollments();
+    // this.getEnrollmentNByFilter()
   }
 
   get f() { return this.enrollmentForm.controls; }
