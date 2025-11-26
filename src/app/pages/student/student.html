@@ -38,97 +38,106 @@
                 </div>
                 }
 
+                @if (!isStudentListLoading() && studentList().length == 0) { 
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="bi bi-inbox"></i>
+                    </div>
+                    <h4 class="empty-state-title">No Students Added</h4>
+                </div>
+                }
+
                 @if (!isStudentListLoading() && studentList().length) {
-                    @if (!isShowCardView()) {
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Contact</th>
-                                <th>Qualification</th>
-                                <th>College Name, City</th>
-                                <th>Address</th>
-                                <th>Aadhar Card</th>
-                                <th>Reference By</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (stu of studentList(); track stu.studentId) {
-                            <tr>
-                                <td>{{stu.name}}</td>
-                                <td>{{stu.email}}</td>
-                                <td>{{stu.contactNo}}</td>
-                                <td>{{stu.qualification}}</td>
-                                <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
-                                <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
-                                <td>{{stu.aadharCard}}</td>
-                                <td>
-                                    @for (item of refByMasterList(); track item.masterId) {
-                                    @if (item.masterId === stu.refrenceById) {
-                                    {{item.masterValue}}
-                                    }
-                                    }
-                                </td>
-                                <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
-                                    <button class="btn btn-action btn-edit" data-bs-toggle="modal"
-                                        data-bs-target="#studentModalId" (click)="editStudent(stu)">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                    <button class="btn btn-action btn-delete" (click)="deleteStudent(stu.studentId)">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                    }
-    
-                    @if (isShowCardView()) {
-                    <div class="card-body packages-container">
-                        <div class="list-viewport" style="max-height: calc(100vh - 150px); padding: 10px;">
-                            <div class="row g-4">
-                                @for (student of studentList(); track student.studentId) {
-                                <div class="col-xl-3 col-lg-4 col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            {{ student.name }}
-                                        </div>
-                                        <div class="card-body" style="padding: 10px;">
-                                            <p>
-                                                <i class="bi bi-geo-alt-fill feature-icon"></i>
-                                                {{ student.city }}, {{ student.state }}, {{student.pincode}}
-                                            </p>
-                                            <p>
-                                                <i class="bi bi-telephone-fill feature-icon"></i> {{ student.contactNo }}
-                                            </p>
-                                            <p>
-                                                <i class="bi bi-envelope-fill feature-icon"></i> {{ student.email }}
-                                            </p>
-                                            <p>
-                                                <i class="bi bi-building-fill feature-icon"></i>
-                                                {{ student.collegeName }}, {{ student.collegeCity }}
-                                            </p>
-                                        </div>
-                                        <div class="card-footer branch-card-footer" >
-                                            <button class="btn btn-action btn-edit" data-bs-toggle="modal"
-                                                data-bs-target="#studentModalId" (click)="editStudent(student)">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button class="btn btn-action btn-delete"
-                                                (click)="deleteStudent(student.studentId)">
-                                                <i class="bi bi-trash-fill"></i> Delete
-                                            </button>
-                                        </div>
+                @if (!isShowCardView()) {
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Qualification</th>
+                            <th>College Name, City</th>
+                            <th>Address</th>
+                            <th>Aadhar Card</th>
+                            <th>Reference By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (stu of studentList(); track stu.studentId) {
+                        <tr>
+                            <td>{{stu.name}}</td>
+                            <td>{{stu.email}}</td>
+                            <td>{{stu.contactNo}}</td>
+                            <td>{{stu.qualification}}</td>
+                            <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
+                            <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
+                            <td>{{stu.aadharCard}}</td>
+                            <td>
+                                @for (item of refByMasterList(); track item.masterId) {
+                                @if (item.masterId === stu.refrenceById) {
+                                {{item.masterValue}}
+                                }
+                                }
+                            </td>
+                            <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
+                                <button class="btn btn-action btn-edit" data-bs-toggle="modal"
+                                    data-bs-target="#studentModalId" (click)="editStudent(stu)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-action btn-delete" (click)="deleteStudent(stu.studentId)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+
+                @if (isShowCardView()) {
+                <div class="card-body packages-container">
+                    <div class="list-viewport" style="max-height: calc(100vh - 150px); padding: 10px;">
+                        <div class="row g-4">
+                            @for (student of studentList(); track student.studentId) {
+                            <div class="col-xl-3 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ student.name }}
+                                    </div>
+                                    <div class="card-body" style="padding: 10px;">
+                                        <p>
+                                            <i class="bi bi-geo-alt-fill feature-icon"></i>
+                                            {{ student.city }}, {{ student.state }}, {{student.pincode}}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-telephone-fill feature-icon"></i> {{ student.contactNo }}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-envelope-fill feature-icon"></i> {{ student.email }}
+                                        </p>
+                                        <p>
+                                            <i class="bi bi-building-fill feature-icon"></i>
+                                            {{ student.collegeName }}, {{ student.collegeCity }}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer branch-card-footer">
+                                        <button class="btn btn-action btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#studentModalId" (click)="editStudent(student)">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+                                        <button class="btn btn-action btn-delete"
+                                            (click)="deleteStudent(student.studentId)">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
                                     </div>
                                 </div>
-                                }
                             </div>
+                            }
                         </div>
                     </div>
-                    }
+                </div>
+                }
                 }
 
             </div>
