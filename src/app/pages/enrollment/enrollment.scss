@@ -34,7 +34,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+  //sanjita background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
   padding: 5px 10px;
   border-bottom: none;
   position: relative;
@@ -118,7 +118,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: $card-shadow;
   border: 1px solid $border-color;
-  border-left: 4px solid $primary-color;
+  // border-left: 4px solid $primary-color;
 
   &:hover {
     transform: translateY(-8px);
@@ -127,7 +127,8 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
     transition: 0.3s;
 
     .card-header {
-      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%) ;
+      //sanjita background: linear-gradient(135deg, $primary-color 60%, $primary-dark 100%) ;
+      background: #2a5298;
     }
   }
 
@@ -137,7 +138,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   .card-header {
-    background: linear-gradient(135deg, $primary-light 0%, lighten($primary-light, 3%) 100%);
+   // sanjita background: linear-gradient(135deg, $primary-light 0%, lighten($primary-light, 3%) 100%);
     border-bottom: 1px solid $border-color;
     padding: 1rem 1.5rem;
 
@@ -640,7 +641,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 
     &.badge-danger {
       background: rgba(239, 68, 68, 0.1);
-      color: $danger-color;
+      color: $primary-light;
     }
   }
 }
@@ -730,4 +731,192 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   .empty-state {
     padding: 2rem 1rem;
   }
+}
+
+@media (max-width: 800px) {
+  .column {
+    flex: 46%;
+    max-width: 46%;
+  }
+}
+
+// .card {
+//   opacity: 0.8;
+//   filter: alpha(opacity=60);
+// }
+// .card-title {
+//   font-weight:bold;
+//   text-align: center;
+// }
+// .card-text {
+//   text-align: justify;
+// }
+
+// .modal-header {
+//   background-image: linear-gradient(#7FDBFF,white);
+// }
+// .modal-footer {
+//   background-image: linear-gradient(white,#7FDBFF);
+// }
+// #left-panel-link {
+//   position: relative;
+//   left: 5%;
+//   background-color: #555;
+//   color: white;
+//   font-size: 16px;
+//   padding: 12px 20px;
+//   border: none;
+//   cursor: pointer;
+//   border-radius: 5px;
+// }
+// #right-panel-link {
+//   position: absolute;
+//   right: 10%;
+//   background-color: #555;
+//   color: white;
+//   font-size: 16px;
+//   padding: 12px 20px;
+//   border: none;
+//   cursor: pointer;
+//   border-radius: 5px;
+// }
+// .sep {
+//   height: 25px;
+// }
+.profile-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transition: 0.3s;
+  color: white;
+  font-size: 22px;
+}
+
+.profile-container:hover .profile-overlay {
+  opacity: 1;
+}
+
+.note-card {
+  width: 250px;
+  padding: 25px;
+  border-radius: 6px;
+  color: #444;
+  text-align: center;
+  box-shadow: 6px 6px 12px rgba(0,0,0,0.15);
+  margin: 15px;
+  background: #d1ecff;
+  font-family: Arial, sans-serif;
+}
+
+/* Blue */
+.bg-blue {
+  background: #c8e4ea;
+}
+
+/* Green */
+.bg-green {
+  background: #d7f3c5;
+}
+
+/* Yellow */
+.bg-yellow {
+  background: #fde49c;
+}
+
+/* Brown */
+.bg-brown {
+  background: #d8c5b2;
+}
+
+/* Purple */
+.bg-purple {
+  background: #d5c7dd;
+}
+
+/* Orange */
+.bg-orange {
+  background: #ffb18a;
+}
+.text-w{width:150px;
+word-break: break-word;
+    overflow-wrap: break-word;
+};
+
+.status-success {
+  border: 1px solid #28a745;
+  color: #28a745;
+  background: #e8f6ed;
+  border-radius: 4px;
+  padding: 1px;
+}
+
+.status-danger {
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  background: #fdeceb;
+  border-radius: 4px;
+  padding: 1px;
+}
+//sanjita
+.table-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-header {
+  background: linear-gradient(to right, #0066aa, #003f66);
+}
+
+.search-box {
+  width: 220px;
+  border-radius: 30px;
+}
+
+.header-icons i {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.header-icons i:hover {
+  opacity: 0.8;
+}
+
+.table thead th {
+  background: transparent !important;
+  border-bottom: none;
+}
+
+.table tbody tr {
+  vertical-align: middle;
+}
+
+.status-pill {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.page-link {
+  border-radius: 50% !important;
+  width: 32px;
+  text-align: center;
 }

@@ -9,7 +9,6 @@
         <div class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
             <h5 class="mb-1 header-title"><i class="bi bi-person-plus me-2"></i>Student Enrollment Management</h5>
-            <p class="header-subtitle mb-0">Manage student enrollments and course registrations</p>
           </div>
           <ul class="nav nav-pills" style="background-color: #fff; padding: 5px;">
             <li class="nav-item">
@@ -32,18 +31,25 @@
             </button>
           </div>
         </div>
+        <div class="container my-5">
+          <div class="card shadow table-card">
+            <div class="card-header d-flex justify-content-between align-items-center table-header">
+              <h5 class="text-white m-0">Enrollment list</h5>
 
-        @if (isEnrollmentListLoading()) {
-        <div class="loading-container">
-          <div class="loading-spinner text-center">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+        <!-- <div class="d-flex align-items-center gap-3">
+                 <input type="text" class="form-control search-box" placeholder="Search"> 
+
+                <div class="d-flex gap-2 header-icons">
+                  <i class="bi bi-arrow-clockwise text-white"></i>
+                  <i class="bi bi-download text-white"></i>
+                  <i class="bi bi-table text-white"></i>
+                  <i class="bi bi-list text-white"></i>
+                </div>
+              </div> -->
             </div>
-            <p class="mt-3 text-muted">Loading enrollments...</p>
-          </div>
-        </div>
-        }
+            <div class="table-responsive">
 
+<<<<<<< Updated upstream
         @if (!isEnrollmentListLoading()) {
           @if (enrollmentList().length == 0) {
             <div class="empty-state">
@@ -182,6 +188,175 @@
 
         <div class="row">
           <!-- <div class="col-3">
+=======
+              @if (isEnrollmentListLoading()) {
+              <div class="loading-container">
+                <div class="loading-spinner text-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-3 text-muted">Loading enrollments...</p>
+                </div>
+              </div>
+              }
+
+
+
+
+
+              @if (!isEnrollmentListLoading() && enrollmentList ().length) {
+              @if (!isShowCardView()) {
+              <table class="table table-hover table-striped mb-0">
+                <thead class="text-white table-header">
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Course Name</th>
+                    <th>Course Cost</th>
+                    <th>Final Amount</th>
+                    <th>Discount</th>
+                    <th>Enrolled Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
+                  <tr>
+                    <td>{{enrollment.studentName}}</td>
+                    <td>{{enrollment.studentEmail}}</td>
+                    <td>{{enrollment.studentContact}}</td>
+                    <td>{{enrollment.courseName}}</td>
+                    <td>{{enrollment.courseCost}}</td>
+                    <td>{{enrollment.finalAmount}}</td>
+                    <td>{{enrollment.discountGiven}}</td>
+                    <td>{{enrollment.enrollmentDate | date: 'dd MMM yyyy'}}</td>
+                    <td class="feature-item">
+                      <span class="feature-content">
+                        <span class="feature-badge badge bg-danger status-pill"
+                          [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
+                          [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
+                          {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
+                        </span>
+                      </span>
+                    </td>
+                    <td >
+                      <span  data-bs-toggle="modal"
+                        data-bs-target="#editEnrollmentModal" (click)="editEnrollment(enrollment)">
+                        <i class="bi bi-pencil-square"></i>
+                    </span>
+                      <span  (click)="deleteEnrollment(enrollment.enrollmentId)">
+                        <i class="bi bi-trash-fill"></i>
+                      </span>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+              }
+              <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+              <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.js"></script>
+
+
+              @if (isShowCardView()) {
+              <div class="card-body packages-container">
+                <div class="list-viewport" style="max-height: calc(100vh - 150px); padding: 10px;">
+                  <div class="row g-4">
+                    @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                      <div class="card">
+
+                        <div class="d-flex align-items-center">
+
+                          <div class="team-card">
+                            <img src="https://i.pravatar.cc/100?img=12" alt="">
+                            <h5 class="mb-6 fw-bold">{{ enrollment.courseName }}</h5>
+
+                          </div>
+
+                          <div class="ms-3 text-w">
+                            <h5 class="mb-0 fw-bold">{{ enrollment.studentName || enrollment.name }}</h5>
+                            <small class="text-muted status-success">Status :{{ (enrollment.isActive ||
+                              enrollment.isFeesCompleted) ?
+                              'Active' : 'Inactive' }}</small>
+                          </div>
+                          <div class="float-lg-end">
+
+                            <div data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
+                              (click)="editEnrollment(enrollment)">
+                              <i class="bi bi-pencil-square"></i>
+                            </div>
+                            <div (click)="deleteEnrollment(enrollment.enrollmentId)">
+                              <i class="bi bi-trash-fill"></i>
+                            </div>
+                            <!-- <span class="mini-edit"><i class="bi bi-pencil-fill"></i></span>
+      <span class="mini-delete"><i class="bi bi-trash-fill"></i></span> -->
+                          </div>
+
+                        </div>
+
+
+                        <div class="card-body d-flex flex-column">
+                          <ul class="list-group">
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"
+                                style="font-size:20px;"></i> Course Fee:{{ enrollment.courseCost ||
+                              enrollment.finalAmount }}
+                            </li>
+
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"
+                                style="font-size:20px;"></i> Email:{{ enrollment.studentEmail ||
+                              enrollment.email}}</li>
+
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"
+                                style="font-size:20px;"></i>
+                              Enrolled:{{ enrollment.enrolledDate ||
+                              enrollment.enrollmentDate |
+                              date:'dd MMM yyyy' }} </li>
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"
+                                style="font-size:20px;"></i>contactNo: {{enrollment.studentEmail ||
+                              enrollment.email}}</li>
+                          </ul>
+
+
+                          <div class="package-card-footer mt-auto">
+                            <span data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
+                              (click)="editEnrollment(enrollment)">
+                              <i class="bi bi-pencil-square"></i>
+                              <span>Edit</span>
+                            </span>
+                            <span (click)="deleteEnrollment(enrollment.enrollmentId)">
+                              <i class="bi bi-trash-fill"></i>
+                              <span>Delete</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+
+              }
+    
+
+              @if (isPaginationLoader()) {
+              <div class="loading-spinner text-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading more enrollments...</p>
+              </div>
+              }
+              }
+              <div class="row">
+                <!-- <div class="col-3">
+>>>>>>> Stashed changes
             <select (change)="getEnrollmentNByFilter()">
               <option value="5">5</option>
               <option value="10">10</option>
@@ -189,6 +364,7 @@
               <option value="50">50</option>
             </select>
           </div> -->
+<<<<<<< Updated upstream
           <div class="col-7"></div>
           <div class="col-5">
             <ul class="pagination pagination-sm justify-content-end">
@@ -350,131 +526,301 @@
                       </select>
                       <small class="text-danger" *ngIf="showError('instituteId')">Institute required</small>
                     </div>
+=======
+                <div class="col-7"></div>
+                <div class="col-5">
+                  <ul class="pagination pagination-sm justify-content-end">
+                    @for (page of pageNumbers; track page) {
+                    <li class="page-item" [class.disabled]="filter.pageNumber === page">
+                      <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
+                    </li>
+>>>>>>> Stashed changes
                     }
-
-                    <div class="col-md-6">
-                      <label class="form-label">Enrollment Date</label>
-                      <input type="date" class="form-control" formControlName="enrollmentDate" />
-                      <small class="text-danger" *ngIf="showError('enrollmentDate')">Date required</small>
-                    </div>
-
-                    <div class="col-md-12 form-check mt-2" style="padding-left: 2rem;">
-                      <input type="checkbox" class="form-check-input" formControlName="isFeesCompleted" id="feesDone" />
-                      <label class="form-check-label" for="feesDone">Is Fees Completed?</label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Attachments Tab -->
-                <div class="tab-pane fade" id="tab-attach" role="tabpanel">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <label class="form-label">Qualification</label>
-                      <input type="text" class="form-control" formControlName="qualification" />
-                      <small class="text-danger" *ngIf="showError('qualification')">Qualification required</small>
-                    </div>
-
-                    <div class="col-md-6">
-                      <label class="form-label">College Name</label>
-                      <input type="text" class="form-control" formControlName="collegeName" />
-                      <small class="text-danger" *ngIf="showError('collegeName')">College required</small>
-                    </div>
-
-                    <div class="col-md-6">
-                      <label class="form-label">College City</label>
-                      <input type="text" class="form-control" formControlName="collegeCity" />
-                      <small class="text-danger" *ngIf="showError('collegeCity')">College City required</small>
-                    </div>
-                  </div>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        @if (isAddEditEnrollment()) {
-        <div class="text-center my-3">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-        }
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit" [disabled]="isAddEditEnrollment()">
-            <i class="bi bi-check2-circle"></i> Save Enrollment
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="editEnrollmentModal" tabindex="-1" aria-labelledby="editEnrollmentModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editEnrollmentModalLabel">Edit Enrollment</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal">
-          <i class="bi bi-x-lg"></i>
-        </button>
+       
       </div>
-      <form [formGroup]="editEnrollmentForm" (ngSubmit)="onEditEnrollment()">
-        <div class="modal-body">
-          <div class="row mb-3">
-            <div class="col-md-5">
-              <label class="form-label">Course</label>
-              <select class="form-select" formControlName="courseId">
-                <option value="">Select Course</option>
-                <option *ngFor="let c of courseList()" [value]="c.courseId">{{c.courseName}}</option>
-              </select>
-            </div>
-            <div class="col-md-5">
-              <label for="enrollmentDate" class="form-label">Enrollment Date</label>
-              <input type="date" id="enrollmentDate" class="form-control" formControlName="enrollmentDate">
-            </div>
-          </div>
 
-          <div class="row mb-3">
-            <div class="col-md-5">
-              <label for="finalAmount" class="form-label">Final Amount</label>
-              <input type="number" id="finalAmount" class="form-control" formControlName="finalAmount">
+      <div class="modal fade" id="enrollmentModal" tabindex="-1" aria-labelledby="enrollmentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold text-primary" id="enrollmentModalLabel">
+                Add / Edit Enrollment
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal">
+                <i class="bi bi-x-lg"></i>
+              </button>
             </div>
-            <div class="col-md-5">
-              <label for="discountGiven" class="form-label">Discount Given</label>
-              <input type="number" id="discountGiven" class="form-control" formControlName="discountGiven">
-            </div>
-          </div>
 
-          <div class="row mb-3">
-            <div class="col-md-5">
-              <div class="form-check">
-                <input type="checkbox" id="isFeesCompleted" class="form-check-input" formControlName="isFeesCompleted">
-                <label for="isFeesCompleted" class="form-check-label">Is Fees Completed</label>
+            <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()">
+              <div class="modal-body">
+                <div class="row g-3">
+                  <!-- Left Tabs -->
+                  <div class="col-3 border-end">
+                    <ul class="nav flex-column nav-pills" id="enrollTabs" role="tablist">
+                      <li class="nav-item mb-2">
+                        <button class="nav-link active" id="tab-student-tab" data-bs-toggle="pill"
+                          data-bs-target="#tab-student" type="button" role="tab">
+                          👤 Student Info
+                        </button>
+                      </li>
+                      <li class="nav-item mb-2">
+                        <button class="nav-link" id="tab-course-tab" data-bs-toggle="pill" data-bs-target="#tab-course"
+                          type="button" role="tab">
+                          🎓 Course & Enrollment
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="nav-link" id="tab-attach-tab" data-bs-toggle="pill" data-bs-target="#tab-attach"
+                          type="button" role="tab">
+                          📎 Attachments
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Right Side Form -->
+                  <div class="col-9">
+                    <div class="tab-content" id="enrollTabsContent" style="padding-left: 10px;">
+                      <!-- Student Info Tab -->
+                      <div class="tab-pane fade show active" id="tab-student" role="tabpanel">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" formControlName="name" />
+                            <small class="text-danger" *ngIf="showError('name')">Name is required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Contact No</label>
+                            <input type="text" class="form-control" formControlName="contactNo" />
+                            <small class="text-danger" *ngIf="showError('contactNo')">Contact is required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" formControlName="email" />
+                            <small class="text-danger" *ngIf="showError('email')">Valid Email is required</small>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" formControlName="city" />
+                            <small class="text-danger" *ngIf="showError('city')">City is required</small>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" formControlName="state" />
+                            <small class="text-danger" *ngIf="showError('state')">State is required</small>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label class="form-label">Pincode</label>
+                            <input type="text" class="form-control" formControlName="pincode" />
+                            <small class="text-danger" *ngIf="showError('pincode')">Pincode is required</small>
+                          </div>
+
+                          <div class="col-12">
+                            <label class="form-label">Family Details</label>
+                            <textarea class="form-control" rows="2" formControlName="familyDetails"></textarea>
+                            <small class="text-danger" *ngIf="showError('familyDetails')">Family details
+                              required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Aadhar Card</label>
+                            <input type="text" class="form-control" formControlName="aadharCard" />
+                            <small class="text-danger" *ngIf="showError('aadharCard')">Aadhar required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Profile Photo Name</label>
+                            <input type="text" class="form-control" formControlName="profilePhotoName" />
+                            <small class="text-danger" *ngIf="showError('profilePhotoName')">Profile Photo
+                              required</small>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Course & Enrollment Tab -->
+                      <div class="tab-pane fade" id="tab-course" role="tabpanel">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="form-label">Course</label>
+                            <select class="form-select" formControlName="courseId">
+                              <option value="">Select Course</option>
+                              <option *ngFor="let c of courseList()" [value]="c.courseId">{{c.courseName}}</option>
+                            </select>
+                            <small class="text-danger" *ngIf="showError('courseId')">Course required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Final Amount</label>
+                            <input type="number" class="form-control" formControlName="finalAmount" />
+                            <small class="text-danger" *ngIf="showError('finalAmount')">Final amount required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Discount Given</label>
+                            <input type="number" class="form-control" formControlName="discountGiven" />
+                            <small class="text-danger" *ngIf="showError('discountGiven')">Discount required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">Reference By</label>
+                            <select class="form-select" formControlName="refrenceById">
+                              <option value="">Select Reference</option>
+                              <option *ngFor="let r of refByMasterList()" [value]="r.masterId">{{r.masterValue}}
+                              </option>
+                            </select>
+                            <small class="text-danger" *ngIf="showError('refrenceById')">Reference required</small>
+                          </div>
+
+                          @if (userService.loggedInUser().role == 'SuperAdmin') {
+                          <div class="col-md-6">
+                            <label class="form-label">Institute</label>
+                            <select class="form-select" formControlName="instituteId">
+                              <option value="">Select Institute</option>
+                              <option *ngFor="let i of instituteList()" [value]="i.instituteId">{{i.name}}
+                              </option>
+                            </select>
+                            <small class="text-danger" *ngIf="showError('instituteId')">Institute required</small>
+                          </div>
+                          }
+
+                          <div class="col-md-6">
+                            <label class="form-label">Enrollment Date</label>
+                            <input type="date" class="form-control" formControlName="enrollmentDate" />
+                            <small class="text-danger" *ngIf="showError('enrollmentDate')">Date required</small>
+                          </div>
+
+                          <div class="col-md-12 form-check mt-2" style="padding-left: 2rem;">
+                            <input type="checkbox" class="form-check-input" formControlName="isFeesCompleted"
+                              id="feesDone" />
+                            <label class="form-check-label" for="feesDone">Is Fees Completed?</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Attachments Tab -->
+                      <div class="tab-pane fade" id="tab-attach" role="tabpanel">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="form-label">Qualification</label>
+                            <input type="text" class="form-control" formControlName="qualification" />
+                            <small class="text-danger" *ngIf="showError('qualification')">Qualification required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">College Name</label>
+                            <input type="text" class="form-control" formControlName="collegeName" />
+                            <small class="text-danger" *ngIf="showError('collegeName')">College required</small>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label">College City</label>
+                            <input type="text" class="form-control" formControlName="collegeCity" />
+                            <small class="text-danger" *ngIf="showError('collegeCity')">College City required</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-md-5">
-              <div class="form-check">
-                <input type="checkbox" id="isConfirmed" class="form-check-input" formControlName="isConfirmed">
-                <label for="isConfirmed" class="form-check-label">Is Confirmed</label>
+
+              @if (isAddEditEnrollment()) {
+              <div class="text-center my-3">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </div>
-            </div>
+              }
+              <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" [disabled]="isAddEditEnrollment()">
+                  <i class="bi bi-check2-circle"></i> Save Enrollment
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        @if (isAddEditEnrollment()) {
-        <div class="text-center my-3">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="editEnrollmentModal" tabindex="-1" aria-labelledby="editEnrollmentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editEnrollmentModalLabel">Edit Enrollment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <form [formGroup]="editEnrollmentForm" (ngSubmit)="onEditEnrollment()">
+              <div class="modal-body">
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label class="form-label">Course</label>
+                    <select class="form-select" formControlName="courseId">
+                      <option value="">Select Course</option>
+                      <option *ngFor="let c of courseList()" [value]="c.courseId">{{c.courseName}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-5">
+                    <label for="enrollmentDate" class="form-label">Enrollment Date</label>
+                    <input type="date" id="enrollmentDate" class="form-control" formControlName="enrollmentDate">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="finalAmount" class="form-label">Final Amount</label>
+                    <input type="number" id="finalAmount" class="form-control" formControlName="finalAmount">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="discountGiven" class="form-label">Discount Given</label>
+                    <input type="number" id="discountGiven" class="form-control" formControlName="discountGiven">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <div class="form-check">
+                      <input type="checkbox" id="isFeesCompleted" class="form-check-input"
+                        formControlName="isFeesCompleted">
+                      <label for="isFeesCompleted" class="form-check-label">Is Fees Completed</label>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="form-check">
+                      <input type="checkbox" id="isConfirmed" class="form-check-input" formControlName="isConfirmed">
+                      <label for="isConfirmed" class="form-check-label">Is Confirmed</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @if (isAddEditEnrollment()) {
+              <div class="text-center my-3">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              }
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-warning btn-sm"
+                  [disabled]="editEnrollmentForm.invalid || isAddEditEnrollment()">
+                  <i class="bi me-2 bi-pencil-square"></i> Update Enrollment</button>
+              </div>
+            </form>
           </div>
         </div>
-        }
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-warning btn-sm"
-            [disabled]="editEnrollmentForm.invalid || isAddEditEnrollment()">
-            <i class="bi me-2 bi-pencil-square"></i> Update Enrollment</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+      </div>
