@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, inject, signal } from '@angular/core';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
-import { DatePipe, NgClass, NgFor } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass, NgFor } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { IInstituteModel } from '../../core/model/institute-model';
@@ -11,10 +11,14 @@ import { IStudent } from '../../core/model/student-model';
 import { StudentService } from '../../core/services/student/student-service';
 import { IMaster } from '../../core/model/master-model';
 import { MasterService } from '../../core/services/master/master-service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { mastersByTypeSelector } from '../../store/master/selector';
+import { MasterActions } from '../../store/master/actions';
 
 @Component({
   selector: 'app-student',
-  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor],
+  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor, AsyncPipe],
   templateUrl: './student.html',
   styleUrl: './student.scss'
 })
@@ -37,6 +41,10 @@ export class Student implements OnInit {
   fb = inject(FormBuilder);
   isAddEditStudentLoader = signal<boolean>(false);
   isShowCardView = signal<boolean>(true);
+
+  // store related data for master
+  masterStore = inject(Store);
+  refByMaster$! : Observable<IMaster[]>;
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -63,10 +71,12 @@ export class Student implements OnInit {
 
     this.studentForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId);
 
+    this.refByMaster$ = this.masterStore.select(mastersByTypeSelector('Reference By'));
   }
 
   ngOnInit(): void {
-    this.getMasterByReference();
+    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Reference By' }));
+    // this.getMasterByReference();
     this.getStudentByInstitute();
   }
 
@@ -75,19 +85,19 @@ export class Student implements OnInit {
     this.isShowCardView.set(flag);
   }
 
-  /**
-   * get master list for 'Reference By' type from masterService on page load
-   */
-  getMasterByReference() {
-    this.masterService.getMasterByType('Reference By').subscribe({
-      next: (res: any) => {
-        this.refByMasterList.set(res?.data ?? []);
-      },
-      error: (error) => {
-        console.log('Some error while loading master by ref List in enrollments:', error);
-      }
-    });
-  }
+  // /**
+  //  * get master list for 'Reference By' type from masterService on page load
+  //  */
+  // getMasterByReference() {
+  //   this.masterService.getMasterByType('Reference By').subscribe({
+  //     next: (res: any) => {
+  //       this.refByMasterList.set(res?.data ?? []);
+  //     },
+  //     error: (error) => {
+  //       console.log('Some error while loading master by ref List in enrollments:', error);
+  //     }
+  //   });
+  // }
 
   /**
    * get all students from commonService on page load

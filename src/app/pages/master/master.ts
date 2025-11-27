@@ -2,14 +2,18 @@ import { Component, effect, inject, OnInit, Output, signal } from '@angular/core
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgClass, TitleCasePipe, NgStyle } from '@angular/common';
+import { NgClass, TitleCasePipe, NgStyle, AsyncPipe } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { IAlert } from '../../core/model/alert-model';
+import { Store, select } from '@ngrx/store';
+import { MasterActions } from '../../store/master/actions';
+import { loadingSelector, mastersSelector } from '../../store/master/selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-master',
-  imports: [ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox, AsyncPipe],
   templateUrl: './master.html',
   styleUrl: './master.scss'
 })
@@ -21,6 +25,10 @@ export class Master implements OnInit {
   isAddUpdateLoader = signal<boolean>(false);
   masterList = signal<IMaster[]>([]);
   masterForm: FormGroup;
+
+  masterStore = inject(Store);
+  masters$! : Observable<IMaster[]>;
+  isLoading$! : Observable<boolean>;
 
   // data related to alert box - showing on ADD/UPDATE - SUCCESS/ERROR
   @Output() isSuccessAlert = signal<boolean>(false);
@@ -35,11 +43,17 @@ export class Master implements OnInit {
       masterId: [0],
       masterFor: ['', Validators.required],
       masterValue: ['', Validators.required]
-    })
+    });
+
+    this.masters$ = this.masterStore.select(mastersSelector);
+    this.isLoading$ = this.masterStore.select(loadingSelector);
   }
 
   ngOnInit(): void {
-    this.getAllMasters();
+    // this.getAllMasters();
+    // this.masterStore.dispatch(MasterActions.loadMasters());
+
+    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
   }
 
   /**

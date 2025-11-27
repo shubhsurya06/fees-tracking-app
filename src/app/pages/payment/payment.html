@@ -155,7 +155,7 @@
                                 <span class="input-group-text"><i class="bi bi-building"></i></span>
                                 <select class="form-select" formControlName="paymentModeId" required>
                                     <option value="">Select Payment mode</option>
-                                    @for (paymentMode of masterPaymentModeList(); track paymentMode.masterId) {
+                                    @for (paymentMode of masters$ | async; track paymentMode.masterId) {
                                     <option [value]="paymentMode.masterId">{{ paymentMode.masterValue }}</option>
                                     }
                                 </select>

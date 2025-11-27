@@ -354,7 +354,7 @@
                             <label class="form-label">Reference By</label>
                             <select class="form-select" formControlName="refrenceById">
                                 <option value="0">Select Reference</option>
-                                <option *ngFor="let r of refByMasterList()" [value]="r.masterId">{{r.masterValue}}
+                                <option *ngFor="let r of refByMaster$ | async" [value]="r.masterId">{{r.masterValue}}
                                 </option>
                             </select>
                             @if (studentForm.get('refrenceById')?.invalid && studentForm.get('refrenceById')?.touched) {

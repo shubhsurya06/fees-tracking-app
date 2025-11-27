@@ -2,39 +2,44 @@ import { Component, inject, OnInit, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PaymentService } from '../../core/services/payment/payment-service';
 import { IPayment } from '../../core/model/payment-model';
-import { DatePipe, NgClass } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { UserService } from '../../core/services/user/user-service';
-import { MasterService } from '../../core/services/master/master-service';
 import { IEnrollment } from '../../core/model/enrollment-model';
 import { IMaster } from '../../core/model/master-model';
 import { EnrollmentService } from '../../core/services/enrollment/enrollment-service';
 import { StudentService } from '../../core/services/student/student-service';
 import { IStudent } from '../../core/model/student-model';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { mastersByTypeSelector } from '../../store/master/selector';
+import { MasterActions } from '../../store/master/actions';
 
 @Component({
   selector: 'app-payment',
-  imports: [ReactiveFormsModule, AlertBox, DatePipe, NgClass],
+  imports: [ReactiveFormsModule, AlertBox, DatePipe, NgClass, AsyncPipe],
   templateUrl: './payment.html',
   styleUrl: './payment.scss'
 })
 export class Payment implements OnInit {
   paymentService = inject(PaymentService);
   userService = inject(UserService);
-  masterService = inject(MasterService);
   enrollmentService = inject(EnrollmentService);
   studentService = inject(StudentService);
 
   paymentList = signal<IPayment[]>([]);
   enrollmentList = signal<IEnrollment[]>([]);
-  masterPaymentModeList = signal<IMaster[]>([]);
   studentList = signal<IStudent[]>([]);
 
   isPaymentLoading = signal<boolean>(false);
   isAddUpdatePaymentLoader = signal<boolean>(false);
   isAddPaymentLoader = signal<boolean>(false);
+
+  // store related data
+  masterStore = inject(Store);
+  masters$! : Observable<IMaster[]>;
 
   paymentForm!: FormGroup;
   fb = inject(FormBuilder);
@@ -59,11 +64,14 @@ export class Payment implements OnInit {
       paymentModeId: [0, Validators.required],
       paymentDate: [new Date(), Validators.required]
     });
+
+    this.masters$ = this.masterStore.select(mastersByTypeSelector('Payment Mode'));
   }
 
   ngOnInit(): void {
+    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
     this.getInstituteEnrollments();
-    this.getMasterPaymentModes();
+    // this.getMasterPaymentModes();
     this.getInstituteStudents();
     this.getAllPayments();
   }
@@ -95,20 +103,6 @@ export class Payment implements OnInit {
       },
       error: (err: any) => {
         console.log('Error while fetching enrollments', err);
-      }
-    });
-  }
-
-  /**
-   * Get master payment modes
-   */
-  getMasterPaymentModes() {
-    this.masterService.getMasterByType('Payment Mode').subscribe({
-      next: (res: any) => {
-        this.masterPaymentModeList.set(res.data);
-      },
-      error: (err: any) => {
-        console.log('Error while fetching payment modes', err);
       }
     });
   }
