@@ -13,6 +13,13 @@ export const mastersSelector = createSelector(
   (state: IMasterState) => state.masters
 );
 
+// SELECTOR for checking entire cache in effects
+export const allMastersByTypeSelector = createSelector(
+  selectorMasterState,
+  (state: IMasterState) => state.mastersByType
+);
+
+// SELECTOR for component usage
 export const mastersByTypeSelector = (masterType: string) => createSelector(
   selectorMasterState,
   (state: IMasterState) => state.mastersByType[masterType] || []

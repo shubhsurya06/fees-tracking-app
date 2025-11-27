@@ -9,6 +9,7 @@ export interface IMasterState {
   masters: IMaster[];
   mastersByType: { [key: string]: IMaster[] };
   isLoading: boolean;
+  error?: any;
 }
 
 export const initialState: IMasterState = {
@@ -40,20 +41,33 @@ export const MasterReducer = createReducer(
     isLoading: false
   })),
 
-  on(MasterActions.loadMastersByType, (state, { isForMaster }) => ({
+  on(MasterActions.loadMastersByType, (state) => ({
     ...state,
     isLoading: true
   })),
   
   // load masters by type success
-  on(MasterActions.loadMastersTypeSuccess, (state, {data, isForMaster}) => ({
-    ...state,
-    mastersByType: {
-      ...state.mastersByType,
-      [isForMaster]: data as IMaster[]
-    },
-    isLoading: false
-  })),
+  on(MasterActions.loadMastersTypeSuccess, (state, {data, isForMaster}) => {
+    console.log('Before state update', state);  // Log state before updating
+    console.log('Loaded Data:', data);          // Log the data being passed in
+    console.log('isForMaster:', isForMaster);    // Log the value of isForMaster
+
+    return {
+      ...state,
+      mastersByType: {
+        ...state.mastersByType,
+        [isForMaster]: data as IMaster[]
+      },
+      isLoading: false
+    }
+  }),
+
+  on(MasterActions.resetMasterState, (state) => {
+    console.log('Master state before reset:', state);
+    console.log('Master initial state:', initialState);
+    return initialState;
+  })
+
 
 );
 

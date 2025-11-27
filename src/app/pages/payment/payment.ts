@@ -69,7 +69,7 @@ export class Payment implements OnInit {
   }
 
   ngOnInit(): void {
-    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
+    // this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
     this.getInstituteEnrollments();
     // this.getMasterPaymentModes();
     this.getInstituteStudents();

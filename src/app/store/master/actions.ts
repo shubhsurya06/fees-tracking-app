@@ -10,5 +10,8 @@ export const MasterActions = createActionGroup({
 
     'LoadMasters By Type': props<{ isForMaster: string }>(),
     'LoadMasters Type Success': props<{ data: IMaster[], isForMaster: string }>(),
+    'Load Masters Type Failure': props<{ error: any }>(),
+
+    'Reset Master State': emptyProps()
   }
 });

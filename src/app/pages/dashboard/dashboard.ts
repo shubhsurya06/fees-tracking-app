@@ -20,8 +20,8 @@ export class Dashboard implements OnInit{
   }
 
   ngOnInit(): void {
-    // this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
-    // this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Reference By'}));
+    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Payment Mode' }));
+    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Reference By' }));
   }
 
 }

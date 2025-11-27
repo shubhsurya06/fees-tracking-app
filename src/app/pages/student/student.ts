@@ -75,7 +75,7 @@ export class Student implements OnInit {
   }
 
   ngOnInit(): void {
-    this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Reference By' }));
+    // this.masterStore.dispatch(MasterActions.loadMastersByType({ isForMaster: 'Reference By' }));
     // this.getMasterByReference();
     this.getStudentByInstitute();
   }
