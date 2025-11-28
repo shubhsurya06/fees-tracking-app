@@ -1,8 +1,8 @@
-import { Component, OnInit, Output, inject, signal } from '@angular/core';
+import { Component, OnInit, Output, inject, signal, computed, effect, OnDestroy } from '@angular/core';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { DatePipe, NgClass, NgFor } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, FormControl } from '@angular/forms';
 import { IInstituteModel } from '../../core/model/institute-model';
 import { CommonService } from '../../core/services/common/common-service';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
@@ -11,14 +11,15 @@ import { IStudent } from '../../core/model/student-model';
 import { StudentService } from '../../core/services/student/student-service';
 import { IMaster } from '../../core/model/master-model';
 import { MasterService } from '../../core/services/master/master-service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-student',
-  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor],
+  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor, FormsModule],
   templateUrl: './student.html',
   styleUrl: './student.scss'
 })
-export class Student implements OnInit {
+export class Student implements OnInit, OnDestroy {
   isShowAlert = signal<boolean>(false);
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
@@ -28,7 +29,15 @@ export class Student implements OnInit {
   studentService = inject(StudentService);
   isStudentListLoading = signal<boolean>(false);
   isAddEditStudLoader = signal<boolean>(false);
+
   studentList = signal<IStudent[]>([]);
+  debouncedSearchText = signal<string>('');
+  filteredStudentList = computed(() => {
+    return this.studentList().filter(student =>
+      student.name.toLowerCase().includes(this.debouncedSearchText().toLowerCase())
+    );
+  });
+
   instituteAdminRole = APP_CONSTANT.USER_ROLES.INSTITUTE_ADMIN;
   instituteList = signal<IInstituteModel[]>([]);
   refByMasterList = signal<IMaster[]>([]);
@@ -36,7 +45,11 @@ export class Student implements OnInit {
   studentForm!: FormGroup;
   fb = inject(FormBuilder);
   isAddEditStudentLoader = signal<boolean>(false);
-  isShowCardView = signal<boolean>(true);
+  isShowCardView = signal<boolean>(false);
+
+  searchText: string = '';
+  private searchSubject = new Subject<string>(); // Subject for debouncing
+  private searchSubscription: any;
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -68,6 +81,21 @@ export class Student implements OnInit {
   ngOnInit(): void {
     this.getMasterByReference();
     this.getStudentByInstitute();
+
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(searchText => {
+      this.debouncedSearchText.set(searchText);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription.destroy();
+  }
+
+  onSearchTextChange() {
+    this.searchSubject.next(this.searchText);
   }
 
   // toggle between card and table view

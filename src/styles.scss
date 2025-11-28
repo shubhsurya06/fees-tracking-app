@@ -1,6 +1,6 @@
 // ==========================================
 // GLOBAL ADMIN THEME VARIABLES
- 
+
 // Color Palette
 $primary-color: #1e60d4;
 $primary-dark: #164ba8;
@@ -60,13 +60,15 @@ body {
 }
 
 .shadow-premium {
-  box-shadow: $shadow-xl;
+  // box-shadow: $shadow-xl;
 }
 
 // ==========================================
 // HEADER SYSTEM (Consistent across all pages)
 // ==========================================
-
+.pd-10 {
+  padding: 10px;
+}
 .card-header-premium {
   // background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
   padding: 10px;

@@ -8,7 +8,7 @@
       <div class="card shadow-premium border-0 h-100">
         <div class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
-            <h5 class="mb-1"><i class="bi bi-book me-2"></i>Course Management</h5>
+            <h3 class="mb-1"><i class="bi bi-book me-2"></i>Course Management</h3>
           </div>
           <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#courseModal">
             <i class="bi bi-plus-lg me-2"></i>
@@ -16,8 +16,8 @@
           </button>
         </div>
 
-        <div class="card-body packages-container">
-          <div class="list-viewport">
+        <div class="packages-container">
+          <div class="list-viewport pd-10">
             @if (isCourseListLoading()) {
             <div class="loading-container">
               <div class="loading-spinner">
@@ -39,7 +39,7 @@
               </button>
             </div>
             } @if (courseList().length) {
-            <div class="row g-4">
+            <div class="row g-3">
               @for (course of courseList(); track course.courseId) {
               <div class="col-xl-3 col-lg-4 col-md-6">
                 <div class="card package-card-modern h-100">
@@ -48,7 +48,7 @@
                   </div>
                   <div class="card-body d-flex flex-column">
 
-                    <div class="package-card-body flex-grow-1">
+                    <div class="package-card-body flex-grow-1 mb-1">
                       <div class="features-section">
                         <div class="feature-item">
                           <i class="bi bi-currency-rupee feature-icon"></i>
@@ -118,8 +118,7 @@
                 {{ courseForm.get('courseId')?.value ? 'Update' : 'Add New' }} Course
               </h5>
               <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new
-                course' }}
+                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new course' }}
               </p>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
