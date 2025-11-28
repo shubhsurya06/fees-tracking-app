@@ -1,6 +1,6 @@
 // ==========================================
 // GLOBAL ADMIN THEME VARIABLES
- 
+
 // Color Palette
 $primary-color: #1e60d4;
 $primary-dark: #164ba8;
@@ -60,16 +60,18 @@ body {
 }
 
 .shadow-premium {
-  box-shadow: $shadow-xl;
+  // box-shadow: $shadow-xl;
 }
 
 // ==========================================
 // HEADER SYSTEM (Consistent across all pages)
 // ==========================================
-
+.pd-10 {
+  padding: 10px;
+}
 .card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-  padding: 1.75rem 2rem;
+  // background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+  padding: 10px;
   border-bottom: none;
   position: relative;
   overflow: hidden;
@@ -79,8 +81,8 @@ body {
     position: absolute;
     top: -50%;
     right: -10%;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
   }
@@ -91,8 +93,8 @@ body {
   }
 
   .header-title {
-    color: #ffffff;
-    font-size: 1.5rem;
+    // color: #ffffff;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
     display: flex;
@@ -104,7 +106,6 @@ body {
   }
 
   .header-subtitle {
-    color: rgba(255, 255, 255, 0.85);
     font-size: 0.875rem;
     font-weight: 400;
     margin-top: 0.25rem;
@@ -134,8 +135,7 @@ body {
 
 .btn-add-package,
 .btn-success {
-  background: #ffffff;
-  color: $primary-color;
+  // color: $primary-color;
   border: none;
   padding: 0.625rem 1.5rem;
   border-radius: 10px;
@@ -144,7 +144,7 @@ body {
   display: flex;
   align-items: center;
   transition: $transition-normal;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: relative;
   z-index: 1;
 
@@ -179,7 +179,7 @@ body {
 
 .card-body {
   // padding: 2rem;
-  background: $bg-light;
+  // background: $bg-light;
 }
 
 .list-viewport {

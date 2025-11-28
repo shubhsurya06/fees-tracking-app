@@ -35,7 +35,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
   padding: 5px 10px;
   border-bottom: none;
   position: relative;
@@ -58,8 +57,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   .header-title {
-    color: #ffffff;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
     display: flex;
@@ -78,67 +76,30 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 }
 
-.btn-add-package {
-  background: #ffffff;
-  color: $primary-color;
-  border: none;
-  padding: 0.625rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 1;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    background: #f8f9fa;
-    color: $primary-dark;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  i {
-    font-size: 1rem;
-  }
-}
-
 // ==========================================
 // CARD BODY STYLES
 // ==========================================
 .card {
   .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     text-align: center;
     position: relative;
-    color: #fff;
     font-weight: bold;
     transition: all 0.3s ease;
-
+    background-color: #fff;
+    border-bottom: none;
   }
 
   .card-body {
-    background: $bg-light;
     padding: 5px;
     gap: 0.2rem;
     padding: 0.5rem;
   }
 
   &:hover {
-    transform: translateY(-8px);
+    transform: translateY(-2px);
     box-shadow: $card-shadow-hover;
     border-color: $primary-color;
     transition: 0.3s;
-
-    .card-header {
-      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-    }
   }
 }
 
@@ -152,16 +113,16 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   &::-webkit-scrollbar-track {
-    background: #e5e7eb;
+    // background: #e5e7eb;
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #9ca3af;
+    // background: #9ca3af;
     border-radius: 10px;
 
     &:hover {
-      background: #6b7280;
+      // background: #6b7280;
     }
   }
 }
@@ -249,7 +210,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 .branch-card-footer {
   display: flex;
   gap: 0.5rem;
-  background: $bg-normal;
+  padding: 1rem;
 
   .btn-action {
     flex: 1;
@@ -413,8 +374,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // ==========================================
 .packages-container {
   //   padding: 2rem;
-  background: $bg-normal !important;
-  padding: 0px;
+  background: #fff !important;
 }
 
 // ==========================================

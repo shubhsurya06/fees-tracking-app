@@ -12,7 +12,7 @@ $navbar-bg-admin: linear-gradient(135deg, #2b2b2a 0%, #3c3d3b 100%);
 }
 .modern-navbar {
   background: $navbar-bg;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 0.75rem 0;
   position: sticky;
   top: 0;
@@ -58,7 +58,7 @@ $navbar-bg-admin: linear-gradient(135deg, #2b2b2a 0%, #3c3d3b 100%);
   // Main Navigation
   .main-nav {
     gap: 0.25rem;
-    
+
     .nav-item {
       position: relative;
 
@@ -85,8 +85,8 @@ $navbar-bg-admin: linear-gradient(135deg, #2b2b2a 0%, #3c3d3b 100%);
         }
 
         &.active {
-          color: #ffffff !important;
-          background: rgba(255, 255, 255, 0.15);
+          color: #676363 !important;
+          background: #fff;
           font-weight: 600;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
@@ -249,7 +249,7 @@ $navbar-bg-admin: linear-gradient(135deg, #2b2b2a 0%, #3c3d3b 100%);
 
     #navbarRight {
       margin-top: 1rem;
-      
+
       .btn-logout {
         width: 100%;
         justify-content: center;
