@@ -1,24 +1,25 @@
-import { Component, OnInit, signal, inject, Output } from '@angular/core';
+import { Component, OnInit, signal, inject, Output, computed, OnDestroy } from '@angular/core';
 import { IBranch } from '../../core/model/branch-model';
 import { BranchService } from '../../core/services/branch/branch-service';
 import { InstituteService } from '../../core/services/institute/institute-service';
 import { IInstituteModel } from '../../core/model/institute-model';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { CommonService } from '../../core/services/common/common-service';
 import { IAlert } from '../../core/model/alert-model';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 
 
 @Component({
   selector: 'app-branch',
-  imports: [ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox, FormsModule],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
-export class Branch implements OnInit {
+export class Branch implements OnInit, OnDestroy {
 
   branchService = inject(BranchService);
   userService = inject(UserService);
@@ -36,6 +37,18 @@ export class Branch implements OnInit {
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
   isShowAlert = signal<boolean>(false);
+  isShowCardView = signal<boolean>(false);
+
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription: any;
+  filteredSearchText = signal<string>('');
+
+  filteredBranchList = computed(() => {
+    return this.branchList().filter(branch => {
+      return branch.branchName.toLowerCase().includes(this.filteredSearchText().toLowerCase());
+    })
+  });
 
   constructor(private fb: FormBuilder) {
     this.branchForm = this.fb.group({
@@ -69,6 +82,21 @@ export class Branch implements OnInit {
     // }
     this.getAllInstitutes();
     this.getAllBranches();
+
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe((searchText) => {
+      this.filteredSearchText.set(searchText);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.destroy();
+  }
+
+  onSearchBranch() {
+    this.searchSubject.next(this.searchText);
   }
 
   /**
@@ -90,6 +118,11 @@ export class Branch implements OnInit {
       return branch;
     })
     this.branchList.set(res);
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**

@@ -1,18 +1,19 @@
-import { Component, OnInit, Output, inject, signal } from '@angular/core';
+import { Component, OnInit, Output, computed, inject, signal } from '@angular/core';
 import { ICourses } from '../../core/model/course-model';
 import { CourseService } from '../../core/services/course/course-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { DatePipe, NgClass } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule } from '@angular/forms';
 import { IInstituteModel } from '../../core/model/institute-model';
 import { CommonService } from '../../core/services/common/common-service';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
-  imports: [DatePipe, ReactiveFormsModule, NgClass, AlertBox],
+  imports: [DatePipe, ReactiveFormsModule, NgClass, AlertBox, FormsModule],
   templateUrl: './courses.html',
   styleUrl: './courses.scss'
 })
@@ -32,6 +33,18 @@ export class Courses implements OnInit {
   isShowAlert = signal<boolean>(false);
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
+
+  isShowCardView = signal<boolean>(false);
+  searchText: string = '';
+  searchSubject: Subject<string> = new Subject<string>();
+  finalSearchTerm = signal<string>('');
+  searchSubscription: any;
+
+  filteredCourseList = computed(() => {
+    return this.courseList().filter(course => {
+      return course.courseName.toLowerCase().includes(this.finalSearchTerm().toLowerCase())
+    })
+  })
 
   constructor(private fb: FormBuilder) {
 
@@ -60,6 +73,22 @@ export class Courses implements OnInit {
   ngOnInit(): void {
     this.getAllInstitutes();
     this.getAllCourses();
+
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(search => {
+      this.finalSearchTerm.set(search);
+    })
+  }
+
+  onSearchCourse() {
+    this.searchSubject.next(this.searchText);
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**
