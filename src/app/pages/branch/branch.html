@@ -11,10 +11,27 @@
                     <div class="header-content">
                         <h3><i class="bi bi-building me-2"></i>Branch Management</h3>
                     </div>
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <i class="bi bi-plus-lg me-2"></i>
-                        <span>Add Branch</span>
-                    </button>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter branch name" [(ngModel)]="searchText"
+                                (ngModelChange)="onSearchBranch()">
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <button class="btn btn-outline-dark"
+                            [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+                            (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+                            <i class="bi"
+                                [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+                        </button> &nbsp;&nbsp;
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <i class="bi bi-plus-lg me-2"></i>
+                            <span>Add Branch</span>
+                        </button>
+                    </div>
+
                 </div>
 
                 <div class="packages-container">
@@ -28,35 +45,76 @@
                                 <p class="mt-3 text-muted">Loading branches...</p>
                             </div>
                         </div>
-                        } @if (!isBranchLoading()) { @if (branchList().length == 0) {
+                        }
+                        @if (!isBranchLoading()) {
+                        @if (branchList().length == 0) {
                         <div class="empty-state">
                             <div class="empty-state-icon">
                                 <i class="bi bi-building"></i>
                             </div>
                             <h4 class="empty-state-title">No Branches Yet</h4>
                             <p class="empty-state-text">Get started by creating your first branch</p>
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">
                                 <i class="bi bi-plus-circle me-2"></i>Create First Branch
                             </button>
                         </div>
-                        } @if (branchList().length) {
+                        }
+                        @if (branchList().length) {
+                        @if (!isShowCardView()) {
+                        <!-- <div class="pd-10"> -->
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th></th>
+                                    <th>Branch Name</th>
+                                    <th>Branch Code</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (branch of filteredBranchList(); track branch.branchId) {
+                                <tr>
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{branch.branchName}}</td>
+                                    <td>{{branch.branchCode}}</td>
+                                    <td>{{branch.branchEmail}}</td>
+                                    <td>{{branch.branchContactNo}}</td>
+                                    <td>{{branch.location}}, {{branch.city}}-{{branch.pincode}}, {{branch.state}}</td>
+                                    <td class="branch-card-footer"
+                                        style="display: flex; justify-content: space-between;">
+                                        <button class="btn btn-action btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-action btn-delete" (click)="deleteBranch(branch.branchId)">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- </div> -->
+                        } @else {
                         <div class="row g-3">
-                            @for (branch of branchList(); track branch.branchId) {
+                            @for (branch of filteredBranchList(); track branch.branchId) {
                             <div class="col-xl-3 col-lg-4 col-md-6">
                                 <div class="card package-card-modern h-100">
                                     <div class="card-header text-center">
                                         <h5 class="package-name">{{ branch.branchName }}</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
-                                        <!-- <div class="package-card-header">
-                                        </div> -->
-
                                         <div class="package-card-body flex-grow-1">
                                             <div class="features-section">
                                                 <div class="feature-item">
                                                     <i class="bi bi-geo-alt-fill feature-icon"></i>
                                                     <div class="feature-content">
-                                                        <span class="feature-value">{{ branch.city }}, {{ branch.state }}</span>
+                                                        <span class="feature-value">{{ branch.city }}, {{ branch.state
+                                                            }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="feature-item">
@@ -68,18 +126,21 @@
                                                 <div class="feature-item">
                                                     <i class="bi bi-envelope-fill feature-icon"></i>
                                                     <div class="feature-content">
-                                                        <span class="feature-value text-truncate">{{ branch.branchEmail }}</span>
+                                                        <span class="feature-value text-truncate">{{ branch.branchEmail
+                                                            }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="package-card-footer mt-auto">
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
+                                            <button class="btn-action btn-edit" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
                                                 <i class="bi bi-pencil-square"></i>
                                                 <span>Edit</span>
                                             </button>
-                                            <button class="btn-action btn-delete" (click)="deleteBranch(branch.branchId)">
+                                            <button class="btn-action btn-delete"
+                                                (click)="deleteBranch(branch.branchId)">
                                                 <i class="bi bi-trash-fill"></i>
                                                 <span>Delete</span>
                                             </button>
@@ -89,7 +150,9 @@
                             </div>
                             }
                         </div>
-                        } }
+                        }
+                        }
+                        }
                     </div>
                 </div>
             </div>
@@ -106,14 +169,17 @@
                 <div class="modal-header modal-header-modern">
                     <div>
                         <h5 class="modal-title" id="staticBackdropLabel">
-                            <i class="bi me-2" [ngClass]="branchForm.get('branchId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                            <i class="bi me-2"
+                                [ngClass]="branchForm.get('branchId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
                             {{ branchForm.get('branchId')?.value ? 'Update' : 'Add New' }} Branch
                         </h5>
                         <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                            {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to create a new branch' }}
+                            {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to
+                            create a new branch' }}
                         </p>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="cancelEdit()">
                         <i class="bi bi-plus-lg"></i>
                     </button>
                 </div>
@@ -123,7 +189,8 @@
                             <label class="form-label"><i class="bi bi-briefcase-fill me-2"></i>Branch Name</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-briefcase-fill"></i></span>
-                                <input type="text" class="form-control" formControlName="branchName" placeholder="Enter branch name">
+                                <input type="text" class="form-control" formControlName="branchName"
+                                    placeholder="Enter branch name">
                             </div>
                             @if (branchForm.get('branchName')?.invalid && branchForm.get('branchName')?.touched) {
                             <small class="text-danger">Branch name is required</small>
@@ -134,7 +201,8 @@
                             <label class="form-label"><i class="bi bi-hash me-2"></i>Branch Code</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                <input type="text" class="form-control" formControlName="branchCode" placeholder="Enter code">
+                                <input type="text" class="form-control" formControlName="branchCode"
+                                    placeholder="Enter code">
                             </div>
                             @if (branchForm.get('branchCode')?.invalid && branchForm.get('branchCode')?.touched) {
                             <small class="text-danger">Branch code is required</small>
@@ -163,9 +231,11 @@
                             <label class="form-label"><i class="bi bi-telephone me-2"></i>Contact Number</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="text" class="form-control" formControlName="branchContactNo" placeholder="10 digit number">
+                                <input type="text" class="form-control" formControlName="branchContactNo"
+                                    placeholder="10 digit number">
                             </div>
-                            @if (branchForm.get('branchContactNo')?.invalid && branchForm.get('branchContactNo')?.touched) {
+                            @if (branchForm.get('branchContactNo')?.invalid &&
+                            branchForm.get('branchContactNo')?.touched) {
                             <small class="text-danger">
                                 @if (branchForm.get('branchContactNo')?.errors?.['required']) {
                                 Contact number is required
@@ -181,7 +251,8 @@
                             <label class="form-label"><i class="bi bi-envelope me-2"></i>Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" formControlName="branchEmail" placeholder="email@example.com">
+                                <input type="email" class="form-control" formControlName="branchEmail"
+                                    placeholder="email@example.com">
                             </div>
                             @if (branchForm.get('branchEmail')?.invalid && branchForm.get('branchEmail')?.touched) {
                             <small class="text-danger">
@@ -210,7 +281,8 @@
                             <label class="form-label"><i class="bi bi-map me-2"></i>State</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                <input type="text" class="form-control" formControlName="state" placeholder="Enter state">
+                                <input type="text" class="form-control" formControlName="state"
+                                    placeholder="Enter state">
                             </div>
                             @if (branchForm.get('state')?.invalid && branchForm.get('state')?.touched) {
                             <small class="text-danger">State is required</small>
@@ -221,14 +293,16 @@
                             <label class="form-label"><i class="bi bi-postcard me-2"></i>Pincode</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-postcard"></i></span>
-                                <input type="text" class="form-control" formControlName="pincode" placeholder="6 digits" maxlength="6">
+                                <input type="text" class="form-control" formControlName="pincode" placeholder="6 digits"
+                                    maxlength="6">
                             </div>
                             @if (branchForm.get('pincode')?.invalid && branchForm.get('pincode')?.touched) {
                             <small class="text-danger">
                                 @if (branchForm.get('pincode')?.errors?.['required']) {
                                 Pincode is required
                                 }
-                                @if (branchForm.get('pincode')?.errors?.['pattern'] || branchForm.get('pincode')?.errors?.['minlength']) {
+                                @if (branchForm.get('pincode')?.errors?.['pattern'] ||
+                                branchForm.get('pincode')?.errors?.['minlength']) {
                                 Must be exactly 6 digits
                                 }
                             </small>
@@ -238,8 +312,10 @@
                         <div class="col-md-8">
                             <label class="form-label"><i class="bi bi-pin-map me-2"></i>Full Address</label>
                             <div class="input-group">
-                                <span class="input-group-text align-self-start pt-3"><i class="bi bi-pin-map"></i></span>
-                                <textarea class="form-control" formControlName="location" rows="2" placeholder="Enter complete address"></textarea>
+                                <span class="input-group-text align-self-start pt-3"><i
+                                        class="bi bi-pin-map"></i></span>
+                                <textarea class="form-control" formControlName="location" rows="2"
+                                    placeholder="Enter complete address"></textarea>
                             </div>
                             @if (branchForm.get('location')?.invalid && branchForm.get('location')?.touched) {
                             <small class="text-danger">Location is required</small>
@@ -260,7 +336,8 @@
                     <button type="submit" class="btn d-flex align-items-center"
                         [ngClass]="branchForm.get('branchId')?.value ? 'btn-warning' : 'btn-success'"
                         [disabled]="branchForm.invalid || isAddEditBranchLoader()">
-                        <i class="bi me-2" [ngClass]="branchForm.get('branchId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+                        <i class="bi me-2"
+                            [ngClass]="branchForm.get('branchId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
                         <span>{{ branchForm.get('branchId')?.value ? 'Update Branch' : 'Create Branch' }}</span>
                     </button>
                 </div>
