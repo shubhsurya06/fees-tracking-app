@@ -34,7 +34,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
   padding: 5px 10px;
   border-bottom: none;
   position: relative;
@@ -57,7 +56,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   .header-title {
-    color: #ffffff;
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
@@ -77,37 +75,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 }
 
-.btn-add-package {
-  background: #ffffff;
-  color: $primary-color;
-  border: none;
-  padding: 0.625rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 1;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    background: #f8f9fa;
-    color: $primary-dark;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  i {
-    font-size: 1rem;
-  }
-}
-
 // ==========================================
 // CARD STYLES
 // ==========================================
@@ -121,7 +88,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   border-left: 4px solid $primary-color;
 
   &:hover {
-    transform: translateY(-8px);
+    transform: translateY(-2px);
     box-shadow: $card-shadow-hover;
     border-color: $primary-color;
     transition: 0.3s;
@@ -212,155 +179,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 
         + .input-group-text {
           border-color: $primary-color;
-        }
-      }
-    }
-  }
-}
-
-// ==========================================
-// ENROLLMENT CARDS (for student list)
-// ==========================================
-.enrollment-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: $card-shadow;
-  border: 1px solid $border-color;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-left: 4px solid $success-color;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $card-shadow-hover;
-    border-left-color: darken($success-color, 10%);
-    background: #fcfcfd;
-  }
-
-  .student-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    .student-name {
-      font-size: 1.125rem;
-      font-weight: 700;
-      color: $text-dark;
-      margin: 0;
-    }
-
-    .enrollment-status {
-      background: rgba(16, 185, 129, 0.1);
-      color: $success-color;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-
-      &.status-pending {
-        background: rgba(245, 158, 11, 0.1);
-        color: $warning-color;
-      }
-
-      &.status-inactive {
-        background: rgba(239, 68, 68, 0.1);
-        color: $danger-color;
-      }
-    }
-  }
-
-  .student-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-
-    .detail-item {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem;
-      background: $bg-light;
-      border-radius: 8px;
-
-      .detail-icon {
-        font-size: 1rem;
-        color: $primary-color;
-        margin-right: 0.75rem;
-        min-width: 20px;
-      }
-
-      .detail-content {
-        .detail-label {
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: $text-muted;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.125rem;
-        }
-
-        .detail-value {
-          font-size: 0.875rem;
-          color: $text-dark;
-          font-weight: 500;
-        }
-      }
-    }
-  }
-
-  .enrollment-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-
-    .btn-action {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-
-      &.btn-edit {
-        background: rgba(245, 158, 11, 0.1);
-        color: $warning-color;
-
-        &:hover {
-          background: $warning-color;
-          color: #ffffff;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-      }
-
-      &.btn-view {
-        background: rgba(59, 130, 246, 0.1);
-        color: #3b82f6;
-
-        &:hover {
-          background: #3b82f6;
-          color: #ffffff;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-      }
-
-      &.btn-delete {
-        background: rgba(239, 68, 68, 0.1);
-        color: $danger-color;
-
-        &:hover {
-          background: $danger-color;
-          color: #ffffff;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
       }
     }
@@ -466,12 +284,9 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // ==========================================
 // PACKAGE CARDS CONTAINER
 // ==========================================
-.packages-container {
-//   padding: 2rem;
-  background: $bg-light;
-}
 
 .list-viewport {
+  padding: 10px;
   overflow: auto;
   overflow-x: hidden;
 
@@ -503,7 +318,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .package-card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 0.5rem;
   text-align: center;
   position: relative;
@@ -527,11 +341,9 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   .package-name {
-    color: #ffffff;
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -541,10 +353,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .pricing-section {
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: center;
-  background: $primary-light;
   padding: 10px;
   border-radius: 10px;
   // margin-bottom: 0.75rem;
@@ -595,7 +403,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   // display: flex;
   align-items: center;
   padding: 0.75rem;
-  background: $bg-light;
   // border-radius: 10px;
   transition: all 0.2s ease;
 
@@ -648,7 +455,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 .package-card-footer {
   display: flex;
   gap: 0.75rem;
-  background: $bg-light;
 }
 
 .btn-action {

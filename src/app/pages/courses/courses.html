@@ -8,17 +8,16 @@
       <div class="card shadow-premium border-0 h-100">
         <div class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
-            <h5 class="mb-1 header-title"><i class="bi bi-book me-2"></i>Course Management</h5>
-            <p class="header-subtitle mb-0">Manage courses and their details</p>
+            <h5 class="mb-1"><i class="bi bi-book me-2"></i>Course Management</h5>
           </div>
-          <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#courseModal">
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#courseModal">
             <i class="bi bi-plus-lg me-2"></i>
             <span>Add Course</span>
           </button>
         </div>
 
         <div class="card-body packages-container">
-          <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+          <div class="list-viewport">
             @if (isCourseListLoading()) {
             <div class="loading-container">
               <div class="loading-spinner">
@@ -44,46 +43,37 @@
               @for (course of courseList(); track course.courseId) {
               <div class="col-xl-3 col-lg-4 col-md-6">
                 <div class="card package-card-modern h-100">
+                  <div class="card-header text-center">
+                    <h5 class="package-name">{{ course.courseName }}</h5>
+                  </div>
                   <div class="card-body d-flex flex-column">
-                    <div class="package-card-header">
-                      <div class="package-icon-wrapper">
-                        <i class="bi bi-book-fill"></i>
-                      </div>
-                      <h5 class="package-name">{{ course.courseName }}</h5>
-                    </div>
 
                     <div class="package-card-body flex-grow-1">
-                      <div class="pricing-section">
-                        <div class="price-item">
-                          <span class="price-label">Course Fee</span>
-                          <span class="price-value">₹{{ course.courseCost }}</span>
-                        </div>
-                      </div>
-
                       <div class="features-section">
+                        <div class="feature-item">
+                          <i class="bi bi-currency-rupee feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-value">{{ course.courseCost }}</span>
+                          </div>
+                        </div>
                         <div class="feature-item">
                           <i class="bi bi-clock feature-icon"></i>
                           <div class="feature-content">
-                            <!-- <span class="feature-label">Duration</span> -->
                             <span class="feature-value">{{ course.duration }}</span>
                           </div>
                         </div>
                         <div class="feature-item">
                           <i class="bi bi-info-circle feature-icon"></i>
                           <div class="feature-content">
-                            <!-- <span class="feature-label">Description</span> -->
                             <span class="feature-value">{{ course.courseDescription }}</span>
                           </div>
                         </div>
                         <div class="feature-item">
-                          <i class="bi bi-toggle-on feature-icon"></i>
+                          <i class="bi feature-icon"
+                            [ngClass]="{'bi-toggle-on': course.isActive, 'bi-toggle-off': !course.isActive}"></i>
                           <div class="feature-content">
-                            <span class="feature-label">Status</span>
-                            <span
-                              class="feature-badge"
-                              [class.badge-success]="course.isActive"
-                              [class.badge-danger]="!course.isActive"
-                            >
+                            <span class="feature-badge" [class.badge-success]="course.isActive"
+                              [class.badge-danger]="!course.isActive">
                               {{ course.isActive ? 'Active' : 'Inactive' }}
                             </span>
                           </div>
@@ -92,7 +82,8 @@
                     </div>
 
                     <div class="package-card-footer mt-auto">
-                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#courseModal" (click)="editCourse(course)">
+                      <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#courseModal"
+                        (click)="editCourse(course)">
                         <i class="bi bi-pencil-square"></i>
                         <span>Edit</span>
                       </button>
@@ -107,130 +98,136 @@
               }
             </div>
             } }
-                    </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Modal -->
+  <div class="modal fade modal-xl" id="courseModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="courseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form [formGroup]="courseForm" (ngSubmit)="addEditCourse()">
+          <div class="modal-header modal-header-modern">
+            <div>
+              <h5 class="modal-title" id="courseModalLabel">
+                <i class="bi me-2"
+                  [ngClass]="courseForm.get('courseId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                {{ courseForm.get('courseId')?.value ? 'Update' : 'Add New' }} Course
+              </h5>
+              <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
+                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new
+                course' }}
+              </p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-book me-2"></i>Course Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-book"></i></span>
+                  <input type="text" class="form-control" formControlName="courseName" placeholder="Enter course name">
                 </div>
+                @if (courseForm.get('courseName')?.invalid && courseForm.get('courseName')?.touched) {
+                <small class="text-danger">Course name is required</small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-currency-rupee me-2"></i>Course Cost</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
+                  <input type="text" class="form-control" formControlName="courseCost" placeholder="Enter amount">
+                </div>
+                @if (courseForm.get('courseCost')?.invalid && courseForm.get('courseCost')?.touched) {
+                <small class="text-danger">Course cost is required</small>
+                }
+              </div>
+
+              @if (userService.loggedInUser().role !== instituteAdminRole) {
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-building me-2"></i>Institute</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-building"></i></span>
+                  <select class="form-select" formControlName="instituteId" required>
+                    <option value="">Select Institute</option>
+                    @for (institute of instituteList(); track institute.instituteId) {
+                    <option [value]="institute.instituteId">{{ institute.name }}</option>
+                    }
+                  </select>
+                </div>
+                @if (courseForm.get('instituteId')?.invalid && courseForm.get('instituteId')?.touched) {
+                <small class="text-danger">Please select an institute</small>
+                }
+              </div>
+              }
+
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-hourglass-split me-2"></i>Course Duration</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-hourglass-split"></i></span>
+                  <input type="text" class="form-control" formControlName="duration" placeholder="e.g., 6 months">
+                </div>
+                @if (courseForm.get('duration')?.invalid && courseForm.get('duration')?.touched) {
+                <small class="text-danger">Duration is required</small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-toggle-on me-2"></i>Course Status</label>
+                <div class="d-flex align-items-center gap-3 mt-2">
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" id="isActiveYes" formControlName="isActive"
+                      [value]="true" />
+                    <label class="form-check-label" for="isActiveYes">Active</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" id="isActiveNo" formControlName="isActive"
+                      [value]="false" />
+                    <label class="form-check-label" for="isActiveNo">Inactive</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label"><i class="bi bi-info-circle me-2"></i>Course Description</label>
+                <div class="input-group">
+                  <span class="input-group-text align-self-start pt-3"><i class="bi bi-info-circle"></i></span>
+                  <textarea class="form-control" formControlName="courseDescription" rows="2"
+                    placeholder="Enter course details"></textarea>
+                </div>
+                @if (courseForm.get('courseDescription')?.invalid && courseForm.get('courseDescription')?.touched) {
+                <small class="text-danger">Course description is required</small>
+                }
+              </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Enhanced Modal -->
-    <div class="modal fade modal-xl" id="courseModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="courseModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form [formGroup]="courseForm" (ngSubmit)="addEditCourse()">
-                    <div class="modal-header modal-header-modern">
-                        <div>
-                            <h5 class="modal-title" id="courseModalLabel">
-                                <i class="bi me-2" [ngClass]="courseForm.get('courseId')?.value ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
-                                {{ courseForm.get('courseId')?.value ? 'Update' : 'Add New' }} Course
-                            </h5>
-                            <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new course' }}
-                            </p>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">
-                          <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-book me-2"></i>Course Name</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-book"></i></span>
-                                    <input type="text" class="form-control" formControlName="courseName" placeholder="Enter course name">
-                                </div>
-                                @if (courseForm.get('courseName')?.invalid && courseForm.get('courseName')?.touched) {
-                                <small class="text-danger">Course name is required</small>
-                                }
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-currency-rupee me-2"></i>Course Cost</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
-                                    <input type="text" class="form-control" formControlName="courseCost" placeholder="Enter amount">
-                                </div>
-                                @if (courseForm.get('courseCost')?.invalid && courseForm.get('courseCost')?.touched) {
-                                <small class="text-danger">Course cost is required</small>
-                                }
-                            </div>
-
-                            @if (userService.loggedInUser().role !== instituteAdminRole) {
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-building me-2"></i>Institute</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                    <select class="form-select" formControlName="instituteId" required>
-                                        <option value="">Select Institute</option>
-                                        @for (institute of instituteList(); track institute.instituteId) {
-                                        <option [value]="institute.instituteId">{{ institute.name }}</option>
-                                        }
-                                    </select>
-                                </div>
-                                @if (courseForm.get('instituteId')?.invalid && courseForm.get('instituteId')?.touched) {
-                                <small class="text-danger">Please select an institute</small>
-                                }
-                            </div>
-                            }
-
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-hourglass-split me-2"></i>Course Duration</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-hourglass-split"></i></span>
-                                    <input type="text" class="form-control" formControlName="duration" placeholder="e.g., 6 months">
-                                </div>
-                                @if (courseForm.get('duration')?.invalid && courseForm.get('duration')?.touched) {
-                                <small class="text-danger">Duration is required</small>
-                                }
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-toggle-on me-2"></i>Course Status</label>
-                                <div class="d-flex align-items-center gap-3 mt-2">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="isActiveYes" formControlName="isActive" [value]="true" />
-                                        <label class="form-check-label" for="isActiveYes">Active</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="isActiveNo" formControlName="isActive" [value]="false" />
-                                        <label class="form-check-label" for="isActiveNo">Inactive</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <label class="form-label"><i class="bi bi-info-circle me-2"></i>Course Description</label>
-                                <div class="input-group">
-                                    <span class="input-group-text align-self-start pt-3"><i class="bi bi-info-circle"></i></span>
-                                    <textarea class="form-control" formControlName="courseDescription" rows="2" placeholder="Enter course details"></textarea>
-                                </div>
-                                @if (courseForm.get('courseDescription')?.invalid && courseForm.get('courseDescription')?.touched) {
-                                <small class="text-danger">Course description is required</small>
-                                }
-                            </div>
-                        </div>
-
-                        @if (isAddEditCourseLoader()) {
-                        <div class="text-center my-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Processing...</span>
-                            </div>
-                            <p class="mt-2 mb-0 text-muted">Processing...</p>
-                        </div>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn d-flex align-items-center"
-                            [ngClass]="courseForm.get('courseId')?.value ? 'btn-warning' : 'btn-success'"
-                            [disabled]="courseForm.invalid || isAddEditCourseLoader()">
-                            <i class="bi me-2" [ngClass]="courseForm.get('courseId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
-                            <span>{{ courseForm.get('courseId')?.value ? 'Update Course' : 'Create Course' }}</span>
-                        </button>
-                    </div>
-                </form>
+            @if (isAddEditCourseLoader()) {
+            <div class="text-center my-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Processing...</span>
+              </div>
+              <p class="mt-2 mb-0 text-muted">Processing...</p>
             </div>
-        </div>
+            }
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn d-flex align-items-center"
+              [ngClass]="courseForm.get('courseId')?.value ? 'btn-warning' : 'btn-success'"
+              [disabled]="courseForm.invalid || isAddEditCourseLoader()">
+              <i class="bi me-2"
+                [ngClass]="courseForm.get('courseId')?.value ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+              <span>{{ courseForm.get('courseId')?.value ? 'Update Course' : 'Create Course' }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

@@ -5,13 +5,12 @@
 
   <div class="row">
     <div class="col">
-      <div class="shadow-premium border-0 h-100">
+      <div class="border-0 h-100">
         <div class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
             <h5 class="mb-1 header-title"><i class="bi bi-person-plus me-2"></i>Student Enrollment Management</h5>
-            <p class="header-subtitle mb-0">Manage student enrollments and course registrations</p>
           </div>
-          <ul class="nav nav-pills" style="background-color: #fff; padding: 5px;">
+          <ul class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link active" data-bs-toggle="pill" href="javascript:void(0)"
                 (click)="getInstituteEnrollments()">Confirmed</a>
@@ -22,13 +21,12 @@
             </li>
           </ul>
           <div style="display: flex; justify-content: space-between;">
-            <button class="btn btn-outline-light btn" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+            <button class="btn btn-outline-dark" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
               (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
               <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
             </button> &nbsp;&nbsp;
-            <button type="button" class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
-              <i class="bi bi-plus-lg me-2"></i>
-              <span>Add Enrollment</span>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+              <i class="bi bi-plus-lg me-2"></i> Add Enrollment
             </button>
           </div>
         </div>
@@ -105,9 +103,9 @@
             }
     
             @if (isShowCardView()) {
-            <div class="card-body packages-container">
-              <div class="list-viewport" style="max-height: calc(100vh - 150px); padding: 10px;">
-                <div class="row g-4">
+            <div class="packages-container">
+              <div class="list-viewport">
+                <div class="row g-3">
                   @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
                   <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="card">
@@ -119,27 +117,27 @@
                         <div class="package-card-body flex-grow-1">
                           <div class="pricing-section">
                             <p class="mb-0-2">
-                              <i class="bi bi-currency-rupee feature-icon"></i> <span class="price-label">Course Fee:</span>
-                              <span class="price-value"> {{ enrollment.courseCost || enrollment.finalAmount }}</span>
+                              <i class="bi bi-currency-rupee feature-icon"></i>Course Fee:
+                               {{ enrollment.courseCost || enrollment.finalAmount }}
                             </p>
                             <p class="mb-0-2">
-                              <i class="bi bi-book-fill feature-icon"></i> Course: {{ enrollment.courseName }}
+                              <i class="bi bi-book-fill feature-icon"></i> {{ enrollment.courseName }}
                             </p>
                             <p class="mb-0-2">
-                              <i class="bi bi-envelope-fill feature-icon"></i> Email: {{ enrollment.studentEmail ||
+                              <i class="bi bi-envelope-fill feature-icon"></i> {{ enrollment.studentEmail ||
                               enrollment.email}}
                             </p>
                             <p class="mb-0-2">
-                              <i class="bi bi-telephone-fill feature-icon"></i> Contact: {{ enrollment.studentContact ||
+                              <i class="bi bi-telephone-fill feature-icon"></i> {{ enrollment.studentContact ||
                               enrollment.contactNo }}
                             </p>
                             <p class="mb-0-2">
-                              <i class="bi bi-calendar-check feature-icon"></i> Enrolled: {{ enrollment.enrolledDate ||
+                              <i class="bi bi-calendar-check feature-icon"></i> {{ enrollment.enrolledDate ||
                               enrollment.enrollmentDate |
                               date:'dd MMM yyyy' }}
                             </p>
                             <p class="mb-0-2">
-                              <i class="bi bi-toggle-on feature-icon"></i> Status: <span class="feature-badge"
+                              <i class="bi feature-icon" [ngClass]="{'bi-toggle-on': enrollment.isActive, 'bi-toggle-off': !enrollment.isActive}"></i> <span class="feature-badge"
                                 [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
                                 [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
                                 {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
@@ -180,15 +178,7 @@
           }
         }
 
-        <div class="row">
-          <!-- <div class="col-3">
-            <select (change)="getEnrollmentNByFilter()">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-            </select>
-          </div> -->
+        <!-- <div class="row">
           <div class="col-7"></div>
           <div class="col-5">
             <ul class="pagination pagination-sm justify-content-end">
@@ -199,7 +189,7 @@
               }
             </ul>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
