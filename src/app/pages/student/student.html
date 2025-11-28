@@ -67,7 +67,7 @@
                                 <th>Qualification</th>
                                 <th>College Name, City</th>
                                 <th>Address</th>
-                                <th>Aadhar Card</th>
+                                <!-- <th>Aadhar Card</th> -->
                                 <th>Reference By</th>
                                 <th>Actions</th>
                             </tr>
@@ -82,7 +82,7 @@
                                 <td>{{stu.qualification}}</td>
                                 <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
                                 <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
-                                <td>{{stu.aadharCard}}</td>
+                                <!-- <td>{{stu.aadharCard}}</td> -->
                                 <td>
                                     @for (item of refByMasterList(); track item.masterId) {
                                     @if (item.masterId === stu.refrenceById) {

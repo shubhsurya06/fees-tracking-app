@@ -10,10 +10,24 @@
           <div class="header-content">
             <h3 class="mb-1"><i class="bi bi-book me-2"></i>Course Management</h3>
           </div>
-          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#courseModal">
-            <i class="bi bi-plus-lg me-2"></i>
-            <span>Add Course</span>
-          </button>
+          <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control" placeholder="Enter course name" [(ngModel)]="searchText"
+                (ngModelChange)="onSearchCourse()">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <button class="btn btn-outline-dark" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+              (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+              <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+            </button> &nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#courseModal">
+              <i class="bi bi-plus-lg me-2"></i>
+              <span>Add Course</span>
+            </button>
+          </div>
+
         </div>
 
         <div class="packages-container">
@@ -27,7 +41,8 @@
                 <p class="mt-3 text-muted">Loading courses...</p>
               </div>
             </div>
-            } @if (!isCourseListLoading()) { @if (courseList().length == 0) {
+            } @if (!isCourseListLoading()) {
+            @if (filteredCourseList().length == 0) {
             <div class="empty-state">
               <div class="empty-state-icon">
                 <i class="bi bi-book"></i>
@@ -38,9 +53,55 @@
                 <i class="bi bi-plus-circle me-2"></i>Create First Course
               </button>
             </div>
-            } @if (courseList().length) {
+            }
+            @if (filteredCourseList().length) {
+            @if (!isShowCardView()) {
+            <!-- <div class="pd-10"> -->
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th></th>
+                  <th>Course Name</th>
+                  <th>Course Cost</th>
+                  <th>Duration</th>
+                  <th>Description</th>
+                  <th>Created Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (course of filteredCourseList(); track course.courseId) {
+                <tr>
+                  <td>{{$index + 1}}</td>
+                  <td>{{course.courseName}}</td>
+                  <td>{{course.courseCost}}</td>
+                  <td>{{course.duration}}</td>
+                  <td>{{course.courseDescription}}</td>
+                  <td>{{course.creratedDate | date: 'dd-MM-yyyy'}}</td>
+                  <td >
+                    <span class="feature-content">
+                      <span class="feature-badge" [class.badge-success]="course.isActive"
+                        [class.badge-danger]="!course.isActive">
+                        {{ course.isActive ? 'Active' : 'Inactive' }}
+                      </span>
+                    </span>
+                  </td>
+                  <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
+                    <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#courseModal"
+                      (click)="editCourse(course)"> <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="btn-action btn-delete" (click)="deleteCourse(course.courseId)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } @else {
             <div class="row g-3">
-              @for (course of courseList(); track course.courseId) {
+              @for (course of filteredCourseList(); track course.courseId) {
               <div class="col-xl-3 col-lg-4 col-md-6">
                 <div class="card package-card-modern h-100">
                   <div class="card-header text-center">
@@ -97,7 +158,9 @@
               </div>
               }
             </div>
-            } }
+            }
+            }
+            }
           </div>
         </div>
       </div>
@@ -118,7 +181,8 @@
                 {{ courseForm.get('courseId')?.value ? 'Update' : 'Add New' }} Course
               </h5>
               <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new course' }}
+                {{ courseForm.get('courseId')?.value ? 'Modify course details' : 'Fill in the details to create a new
+                course' }}
               </p>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelEdit()">

@@ -352,7 +352,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 
 .package-card-body {
   padding: 10px 10px 0;
-  flex: 1;
+  flex: 1;                                                                                                                                                    
 }
 
 .features-section {
@@ -391,23 +391,23 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
     color: $text-dark;
   }
 
-  .feature-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.75rem;
-    border-radius: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+}
+.feature-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
-    &.badge-success {
-      background: rgba(16, 185, 129, 0.1);
-      color: $success-color;
-    }
+  &.badge-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: $success-color;
+  }
 
-    &.badge-danger {
-      background: rgba(239, 68, 68, 0.1);
-      color: $danger-color;
-    }
+  &.badge-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: $danger-color;
   }
 }
 

@@ -45,8 +45,6 @@ export class Branch implements OnInit, OnDestroy {
   filteredSearchText = signal<string>('');
 
   filteredBranchList = computed(() => {
-    // return this.branchList();
-    debugger;
     return this.branchList().filter(branch => {
       return branch.branchName.toLowerCase().includes(this.filteredSearchText().toLowerCase());
     })
