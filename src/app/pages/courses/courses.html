@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col">
       <div class="card shadow-premium border-0 h-100">
-        <div class="card-header-premium d-flex justify-content-between align-items-center">
+        <div #topCardHeader class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
             <h3 class="mb-1"><i class="bi bi-book me-2"></i>Course Management</h3>
           </div>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="packages-container">
-          <div class="list-viewport pd-10">
+          <div class="list-viewport pd-10" [ngStyle]="{height: heights}">
             @if (isCourseListLoading()) {
             <div class="loading-container">
               <div class="loading-spinner">
@@ -79,7 +79,7 @@
                   <td>{{course.duration}}</td>
                   <td>{{course.courseDescription}}</td>
                   <td>{{course.creratedDate | date: 'dd-MM-yyyy'}}</td>
-                  <td >
+                  <td>
                     <span class="feature-content">
                       <span class="feature-badge" [class.badge-success]="course.isActive"
                         [class.badge-danger]="!course.isActive">
@@ -162,6 +162,17 @@
             }
             }
           </div>
+        </div>
+
+        <div #paginationContainer style="padding: 0 10px;">
+          <!-- Right-aligned -->
+          <ul class="pagination justify-content-end" style="margin:10px 0">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
         </div>
       </div>
     </div>

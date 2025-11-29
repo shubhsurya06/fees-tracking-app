@@ -3,6 +3,8 @@ import { InstituteService } from '../institute/institute-service';
 import { IInstituteModel } from '../../model/institute-model';
 import { IStudent } from '../../model/student-model';
 import { StudentService } from '../student/student-service';
+import { APP_CONSTANT } from '../../constant/appConstant';
+import { IPagination } from '../../model/pagination-model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,43 @@ export class CommonService {
 
   instituteService = inject(InstituteService);
   studentService = inject(StudentService);
+
+  /**
+   heights of overall screen, navbar, top-header content on each component
+   * */ 
+  constantHeights = signal<any>(APP_CONSTANT.SCREEN_HEIGHTS);
+
+  /**
+   * this is pagination data, with pageSize = 8
+   */
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+
+  /**
+   * calculate remaining listViewPort height in which we will show list-card
+   * after subtracting navbar, each components inside header and pagination height
+   * @returns 
+   */
+  currentViewportHeight() {
+    const { VIEWPORT_HEIGHT, NAVBAR_HEIGHT, INSIDE_HEADER_HEIGHT, PAGINATION_HEIGHT } = this.constantHeights();
+    return `${VIEWPORT_HEIGHT - (NAVBAR_HEIGHT + INSIDE_HEADER_HEIGHT + PAGINATION_HEIGHT + 40)}px`;
+  }
+
+  /**
+   * Set pagination data for each component by taking list.length argument
+   * @param length 
+   * @returns 
+   */
+  setPaginationData(length: number) {
+    this.pagination.totalRecords = length;
+    this.pagination.totalPages = Math.ceil(this.pagination.totalRecords / APP_CONSTANT.PAGE_SIZE);
+    this.pagination.pageNumbers = Array.from({ length: this.pagination.totalPages }, (_, i) => i + 1);
+
+    return this.pagination;
+  }
 
   /**
    * return all instituteList if avaialble, else, fetch data from API, then return

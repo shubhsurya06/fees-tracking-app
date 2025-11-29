@@ -1,8 +1,8 @@
-import { Component, OnInit, Output, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Output, computed, inject, signal, ViewChild, ElementRef } from '@angular/core';
 import { ICourses } from '../../core/model/course-model';
 import { CourseService } from '../../core/services/course/course-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgStyle } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule } from '@angular/forms';
 import { IInstituteModel } from '../../core/model/institute-model';
@@ -13,11 +13,11 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
-  imports: [DatePipe, ReactiveFormsModule, NgClass, AlertBox, FormsModule],
+  imports: [DatePipe, ReactiveFormsModule, NgClass, AlertBox, FormsModule, NgStyle],
   templateUrl: './courses.html',
   styleUrl: './courses.scss'
 })
-export class Courses implements OnInit {
+export class Courses implements OnInit, AfterViewInit {
 
   courseService = inject(CourseService);
   userService = inject(UserService);
@@ -45,6 +45,9 @@ export class Courses implements OnInit {
       return course.courseName.toLowerCase().includes(this.finalSearchTerm().toLowerCase())
     })
   })
+
+  @ViewChild('topCardHeader') topCardHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef;
 
   constructor(private fb: FormBuilder) {
 
@@ -80,6 +83,16 @@ export class Courses implements OnInit {
     ).subscribe(search => {
       this.finalSearchTerm.set(search);
     })
+  }
+
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.topCardHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
+  get heights() {
+    return this.commonService.currentViewportHeight();
   }
 
   onSearchCourse() {
