@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, inject, signal, computed, effect, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, inject, signal, computed, effect, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
-import { DatePipe, NgClass, NgFor } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgStyle } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, FormControl } from '@angular/forms';
 import { IInstituteModel } from '../../core/model/institute-model';
@@ -12,14 +12,19 @@ import { StudentService } from '../../core/services/student/student-service';
 import { IMaster } from '../../core/model/master-model';
 import { MasterService } from '../../core/services/master/master-service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
 
 @Component({
   selector: 'app-student',
-  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor, FormsModule],
+  imports: [AlertBox, ReactiveFormsModule, NgClass, NgFor, FormsModule, NgStyle],
   templateUrl: './student.html',
   styleUrl: './student.scss'
 })
-export class Student implements OnInit, OnDestroy {
+export class Student implements OnInit, OnDestroy, AfterViewInit {
+
+  @ViewChild('insideHeader') insideHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef;
+
   isShowAlert = signal<boolean>(false);
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
@@ -32,9 +37,13 @@ export class Student implements OnInit, OnDestroy {
 
   studentList = signal<IStudent[]>([]);
   debouncedSearchText = signal<string>('');
+
   filteredStudentList = computed(() => {
-    return this.studentList().filter(student =>
-      student.name.toLowerCase().includes(this.debouncedSearchText().toLowerCase())
+    let searchTerm = this.debouncedSearchText().toLowerCase();
+    let endIndex = this.currentPageNo() * APP_CONSTANT.PAGE_SIZE;
+
+    return this.studentList().slice(0, endIndex).filter(student =>
+      student.name.toLowerCase().includes(searchTerm)
     );
   });
 
@@ -50,6 +59,14 @@ export class Student implements OnInit, OnDestroy {
   searchText: string = '';
   private searchSubject = new Subject<string>(); // Subject for debouncing
   private searchSubscription: any;
+
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -90,8 +107,18 @@ export class Student implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.insideHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
   ngOnDestroy(): void {
-    this.searchSubscription.destroy();
+    this.searchSubscription.unsubscribe();
+  }
+
+  get heights() {
+    return this.commonService.currentViewportHeight(55)
   }
 
   onSearchTextChange() {
@@ -123,18 +150,31 @@ export class Student implements OnInit, OnDestroy {
   async getStudentByInstitute() {
     let instituteId: number | undefined = this.userService.loggedInUser().instituteId;
 
-    let id = this.userService.loggedInUser().instituteId;
-
     this.isStudentListLoading.set(true);
-    this.studentService.getStudentByInstitute(id).subscribe({
+
+    this.studentService.getStudentByInstitute(instituteId).subscribe({
       next: (res: any) => {
         this.isStudentListLoading.set(false);
         this.studentList.set(res.data);
-        console.log('getting all studnet list:', res);
+
+        this.pagination = this.commonService.setPaginationData(res.data.length);
+        this.goToPage(this.currentPageNo());
+
       }, error: (error: any) => {
         console.log('Error  while  getting all student  enrollmentslist:', error);
       }
     })
+  }
+
+  /**
+   * Initial pageNo is 1
+   * Add paginationin get list
+   * @param page 
+   */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
   }
 
   /**

@@ -10,6 +10,7 @@ import { CommonService } from '../../core/services/common/common-service';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
 
 @Component({
   selector: 'app-courses',
@@ -40,9 +41,24 @@ export class Courses implements OnInit, AfterViewInit {
   finalSearchTerm = signal<string>('');
   searchSubscription: any;
 
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
+  /**
+   * added pagination with the help of currentPageNo() and PAGE_SIZE
+   * showing only 9 records at a time
+   */
   filteredCourseList = computed(() => {
-    return this.courseList().filter(course => {
-      return course.courseName.toLowerCase().includes(this.finalSearchTerm().toLowerCase())
+    let searchTerm = this.finalSearchTerm().toLowerCase();
+    let endIndex = this.currentPageNo() * APP_CONSTANT.PAGE_SIZE;
+
+    return this.courseList().slice(0, endIndex).filter(course => {
+      return course.courseName.toLowerCase().includes(searchTerm)
     })
   })
 
@@ -69,7 +85,6 @@ export class Courses implements OnInit, AfterViewInit {
     // set default loggedIn user's instituteId in the form if he is instituteAdmin
     if (this.userService.loggedInUser().role === this.instituteAdminRole) {
       this.courseForm.controls['instituteId'].setValue(this.userService.loggedInUser().instituteId);
-      console.log('this is institute role::', this.courseForm.value.instituteId, this.courseForm);
     }
   }
 
@@ -92,7 +107,7 @@ export class Courses implements OnInit, AfterViewInit {
   }
 
   get heights() {
-    return this.commonService.currentViewportHeight();
+    return this.commonService.currentViewportHeight(40);
   }
 
   onSearchCourse() {
@@ -120,11 +135,25 @@ export class Courses implements OnInit, AfterViewInit {
     this.courseService.getAllCourses().subscribe({
       next: (res: any) => {
         this.isCourseListLoading.set(false);
-        this.courseList.set(res)
+        this.courseList.set(res);
+
+        this.pagination = this.commonService.setPaginationData(res.length);
+        this.goToPage(this.currentPageNo());
       }, error: (err) => {
         this.showAlert(false, err);
       }
     })
+  }
+
+  /**
+   * Initial pageNo is 1
+   * Add paginationin get list
+   * @param page 
+   */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
   }
 
   /**

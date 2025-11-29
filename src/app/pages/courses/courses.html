@@ -1,4 +1,4 @@
-<div class="p-tb">
+<div>
   @if (isShowAlert()) {
   <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   }
@@ -23,8 +23,7 @@
               <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
             </button> &nbsp;&nbsp;
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#courseModal">
-              <i class="bi bi-plus-lg me-2"></i>
-              <span>Add Course</span>
+              <i class="bi bi-plus-lg me-2"></i> Add Course
             </button>
           </div>
 
@@ -166,12 +165,12 @@
 
         <div #paginationContainer style="padding: 0 10px;">
           <!-- Right-aligned -->
-          <ul class="pagination justify-content-end" style="margin:10px 0">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          <ul class="pagination justify-content-end">
+            @for (page of pagination.pageNumbers; track page) {
+            <li class="page-item" [class.disabled]="currentPageNo() === page || finalSearchTerm()">
+              <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
+            </li>
+            }
           </ul>
         </div>
       </div>
