@@ -28,8 +28,7 @@ export class CommonService {
   pagination: IPagination = {
     totalRecords: 0,
     totalPages: 0,
-    pageNumbers: [],
-    pageSize: 8
+    pageNumbers: []
   };
 
   /**
@@ -49,7 +48,7 @@ export class CommonService {
    */
   setPaginationData(length: number) {
     this.pagination.totalRecords = length;
-    this.pagination.totalPages = Math.ceil(this.pagination.totalRecords / this.pagination.pageSize);
+    this.pagination.totalPages = Math.ceil(this.pagination.totalRecords / APP_CONSTANT.PAGE_SIZE);
     this.pagination.pageNumbers = Array.from({ length: this.pagination.totalPages }, (_, i) => i + 1);
 
     return this.pagination;

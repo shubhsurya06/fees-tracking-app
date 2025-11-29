@@ -24,5 +24,6 @@ export const APP_CONSTANT = {
         INSIDE_HEADER_HEIGHT: 0,
         PAGINATION_HEIGHT: 0
     },
+    PAGE_SIZE: 9,
     TIMEOUT: 5000
 }

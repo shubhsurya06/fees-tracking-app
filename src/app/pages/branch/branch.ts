@@ -53,13 +53,12 @@ export class Branch implements OnInit, OnDestroy, AfterViewInit {
   pagination: IPagination = {
     totalRecords: 0,
     totalPages: 0,
-    pageNumbers: [],
-    pageSize: 8
+    pageNumbers: []
   };
 
   filteredBranchList = computed(() => {
     let searchText = this.filteredSearchText().toLowerCase();
-    let endIndex = this.pagination.pageSize * this.currentPageNo();
+    let endIndex = APP_CONSTANT.PAGE_SIZE * this.currentPageNo();
 
     return this.branchList().slice(0, endIndex).filter(branch => {
       return branch.branchName.toLowerCase().includes(searchText);
