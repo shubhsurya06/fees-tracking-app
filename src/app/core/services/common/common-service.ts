@@ -36,9 +36,9 @@ export class CommonService {
    * after subtracting navbar, each components inside header and pagination height
    * @returns 
    */
-  currentViewportHeight() {
+  currentViewportHeight(num: number = 0) {
     const { VIEWPORT_HEIGHT, NAVBAR_HEIGHT, INSIDE_HEADER_HEIGHT, PAGINATION_HEIGHT } = this.constantHeights();
-    return `${VIEWPORT_HEIGHT - (NAVBAR_HEIGHT + INSIDE_HEADER_HEIGHT + PAGINATION_HEIGHT + 40)}px`;
+    return `${VIEWPORT_HEIGHT - (NAVBAR_HEIGHT + INSIDE_HEADER_HEIGHT + PAGINATION_HEIGHT + num)}px`;
   }
 
   /**

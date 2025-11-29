@@ -47,14 +47,14 @@ export class Branch implements OnInit, OnDestroy, AfterViewInit {
   searchSubject = new Subject<string>();
   subscription!: Subscription;
   filteredSearchText = signal<string>('');
-  currentPageNo = signal<number>(1);
-
+  
   // pagination data
   pagination: IPagination = {
     totalRecords: 0,
     totalPages: 0,
     pageNumbers: []
   };
+  currentPageNo = signal<number>(1);
 
   filteredBranchList = computed(() => {
     let searchText = this.filteredSearchText().toLowerCase();
@@ -120,7 +120,7 @@ export class Branch implements OnInit, OnDestroy, AfterViewInit {
    * get height of listViewPost by calculating navbar height, top-header which is above data-list and pagination height
    */
   get heights() {
-    return this.commonService.currentViewportHeight();
+    return this.commonService.currentViewportHeight(40);
   }
 
   onSearchBranch() {

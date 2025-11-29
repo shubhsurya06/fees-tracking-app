@@ -1,4 +1,4 @@
-<div class="p-tb">
+<div>
 
     @if (isShowAlert()) {
     <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col">
             <div class="shadow-premium border-0">
-                <div class="card-header-premium d-flex justify-content-between align-items-center">
+                <div #insideHeader class="card-header-premium d-flex justify-content-between align-items-center">
                     <div class="header-content">
                         <h3 class="mb-1"><i class="bi bi-building me-2"></i>Student Management</h3>
                     </div>
@@ -28,87 +28,85 @@
                         </button> &nbsp;&nbsp;
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#studentModalId">
-                            <i class="bi bi-plus-lg me-2"></i>
-                            <span>Add Student</span>
+                            <i class="bi bi-plus-lg me-2"></i> Add Student
                         </button>
                     </div>
                 </div>
 
-                @if (isStudentListLoading()) {
-                <div class="loading-container">
-                    <div class="loading-spinner">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                <div class="packages-container">
+                    <div class="list-viewport pd-10" [ngStyle]="{height: heights}">
+                        @if (isStudentListLoading()) {
+                        <div class="loading-container">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-3 text-muted">Loading Students...</p>
+                            </div>
                         </div>
-                        <p class="mt-3 text-muted">Loading Students...</p>
-                    </div>
-                </div>
-                }
+                        }
 
-                @if (!isStudentListLoading() && studentList().length == 0) {
-                <div class="empty-state">
-                    <div class="empty-state-icon">
-                        <i class="bi bi-inbox"></i>
-                    </div>
-                    <h4 class="empty-state-title">No Students Added</h4>
-                </div>
-                }
+                        @if (!isStudentListLoading() && studentList().length == 0) {
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="bi bi-inbox"></i>
+                            </div>
+                            <h4 class="empty-state-title">No Students Added</h4>
+                        </div>
+                        }
 
-                @if (!isStudentListLoading() && studentList().length) {
-                @if (!isShowCardView()) {
-                <div class="pd-10">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-primary">
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Contact</th>
-                                <th>Qualification</th>
-                                <th>College Name, City</th>
-                                <th>Address</th>
-                                <!-- <th>Aadhar Card</th> -->
-                                <th>Reference By</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (stu of filteredStudentList(); track stu.studentId) {
-                            <tr>
-                                <td>{{$index + 1}}</td>
-                                <td>{{stu.name}}</td>
-                                <td>{{stu.email}}</td>
-                                <td>{{stu.contactNo}}</td>
-                                <td>{{stu.qualification}}</td>
-                                <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
-                                <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
-                                <!-- <td>{{stu.aadharCard}}</td> -->
-                                <td>
-                                    @for (item of refByMasterList(); track item.masterId) {
-                                    @if (item.masterId === stu.refrenceById) {
-                                    {{item.masterValue}}
-                                    }
-                                    }
-                                </td>
-                                <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
-                                    <button class="btn btn-action btn-edit" data-bs-toggle="modal"
-                                        data-bs-target="#studentModalId" (click)="editStudent(stu)">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                    <button class="btn btn-action btn-delete" (click)="deleteStudent(stu.studentId)">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                }
-
-                @if (isShowCardView()) {
-                <div class="card-body packages-container">
-                    <div class="list-viewport pd-10">
+                        @if (!isStudentListLoading() && studentList().length) {
+                        @if (!isShowCardView()) {
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Qualification</th>
+                                    <th>College Name, City</th>
+                                    <th>Address</th>
+                                    <!-- <th>Aadhar Card</th> -->
+                                    <th>Reference By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (stu of filteredStudentList(); track stu.studentId) {
+                                <tr>
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{stu.name}}</td>
+                                    <td>{{stu.email}}</td>
+                                    <td>{{stu.contactNo}}</td>
+                                    <td>{{stu.qualification}}</td>
+                                    <td>{{stu.collegeName}} {{stu.collegeCity}}</td>
+                                    <td>{{stu.city}}, {{stu.pincode}}, {{stu.state}}</td>
+                                    <!-- <td>{{stu.aadharCard}}</td> -->
+                                    <td>
+                                        @for (item of refByMasterList(); track item.masterId) {
+                                        @if (item.masterId === stu.refrenceById) {
+                                        {{item.masterValue}}
+                                        }
+                                        }
+                                    </td>
+                                    <td class="branch-card-footer"
+                                        style="display: flex; justify-content: space-between;">
+                                        <button class="btn btn-action btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#studentModalId" (click)="editStudent(stu)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-action btn-delete"
+                                            (click)="deleteStudent(stu.studentId)">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        }
+                        @else {
                         <div class="row g-3">
                             @for (student of filteredStudentList(); track student.studentId) {
                             <div class="col-xl-3 col-lg-4 col-md-6">
@@ -122,7 +120,8 @@
                                             {{ student.city }}, {{ student.state }}, {{student.pincode}}
                                         </p>
                                         <p>
-                                            <i class="bi bi-telephone-fill feature-icon"></i> {{ student.contactNo }}
+                                            <i class="bi bi-telephone-fill feature-icon"></i> {{ student.contactNo
+                                            }}
                                         </p>
                                         <p>
                                             <i class="bi bi-envelope-fill feature-icon"></i> {{ student.email }}
@@ -146,11 +145,21 @@
                             </div>
                             }
                         </div>
+                        }
+                        }
                     </div>
                 </div>
-                }
-                }
 
+                <div #paginationContainer style="padding: 0 10px;">
+                    <!-- Right-aligned -->
+                    <ul class="pagination justify-content-end">
+                        @for (page of pagination.pageNumbers; track page) {
+                        <li class="page-item" [class.disabled]="currentPageNo() === page || debouncedSearchText()">
+                            <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
+                        </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -284,7 +293,8 @@
                                 <input type="text" class="form-control" formControlName="qualification"
                                     placeholder="Enter Qualification">
                             </div>
-                            @if (studentForm.get('qualification')?.invalid && studentForm.get('qualification')?.touched)
+                            @if (studentForm.get('qualification')?.invalid &&
+                            studentForm.get('qualification')?.touched)
                             {
                             <small class="text-danger">Qualification is required</small>
                             }
@@ -297,7 +307,8 @@
                                 <input type="text" class="form-control" formControlName="collegeName"
                                     placeholder="Enter College Name">
                             </div>
-                            @if (studentForm.get('collegeName')?.invalid && studentForm.get('collegeName')?.touched) {
+                            @if (studentForm.get('collegeName')?.invalid && studentForm.get('collegeName')?.touched)
+                            {
                             <small class="text-danger">College Name is required</small>
                             }
                         </div>
@@ -308,7 +319,8 @@
                                 <span class="input-group-text"><i class="bi bi-postcard"></i></span>
                                 <input type="text" class="form-control" formControlName="collegeCity">
                             </div>
-                            @if (studentForm.get('collegeCity')?.invalid && studentForm.get('collegeCity')?.touched) {
+                            @if (studentForm.get('collegeCity')?.invalid && studentForm.get('collegeCity')?.touched)
+                            {
                             <small class="text-danger">
                                 @if (studentForm.get('collegeCity')?.errors?.['required']) {
                                 College City is required
@@ -326,7 +338,8 @@
                                 <input type="text" class="form-control" formControlName="familyDetails"
                                     placeholder="Enter Family Details">
                             </div>
-                            @if (studentForm.get('familyDetails')?.invalid && studentForm.get('familyDetails')?.touched)
+                            @if (studentForm.get('familyDetails')?.invalid &&
+                            studentForm.get('familyDetails')?.touched)
                             {
                             <small class="text-danger">Family Details is required</small>
                             }
@@ -369,7 +382,8 @@
                                 <option *ngFor="let r of refByMasterList()" [value]="r.masterId">{{r.masterValue}}
                                 </option>
                             </select>
-                            @if (studentForm.get('refrenceById')?.invalid && studentForm.get('refrenceById')?.touched) {
+                            @if (studentForm.get('refrenceById')?.invalid &&
+                            studentForm.get('refrenceById')?.touched) {
                             <small class="text-danger">Reference By is required</small>
                             }
                         </div>
