@@ -21,7 +21,7 @@ export class CourseService {
   getAllCourses() {
     let url = this.baseUrl + API_CONSTANT.CONTROLLER_TYPES.COURSE + API_CONSTANT.COURSE_APIS.GET_ALL_COURSES;
     return this.http.get(url).pipe(
-      delay(1000)
+      delay(500)
     );
   }
 

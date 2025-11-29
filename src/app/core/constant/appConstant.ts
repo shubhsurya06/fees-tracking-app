@@ -18,5 +18,11 @@ export const APP_CONSTANT = {
             DANGER: 'DANGER'
         }
     },
+    SCREEN_HEIGHTS: {
+        VIEWPORT_HEIGHT: 0,
+        NAVBAR_HEIGHT: 0,
+        INSIDE_HEADER_HEIGHT: 0,
+        PAGINATION_HEIGHT: 0
+    },
     TIMEOUT: 5000
 }
