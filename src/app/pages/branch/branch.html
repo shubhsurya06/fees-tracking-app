@@ -62,7 +62,6 @@
                         }
                         @if (branchList().length) {
                         @if (!isShowCardView()) {
-                        <!-- <div class="pd-10"> -->
                         <table class="table table-bordered table-hover">
                             <thead class="table-primary">
                                 <tr>
@@ -99,7 +98,6 @@
                                 }
                             </tbody>
                         </table>
-                        <!-- </div> -->
                         } @else {
                         <div class="row g-3">
                             @for (branch of filteredBranchList(); track branch.branchId) {
@@ -186,8 +184,7 @@
                             {{ branchForm.get('branchId')?.value ? 'Update' : 'Add New' }} Branch
                         </h5>
                         <p class="mb-0 mt-1" style="font-size: 0.875rem; color: rgba(255,255,255,0.85);">
-                            {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to
-                            create a new branch' }}
+                            {{ branchForm.get('branchId')?.value ? 'Modify branch details' : 'Fill in the details to create a new branch' }}
                         </p>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
