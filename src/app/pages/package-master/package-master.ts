@@ -1,20 +1,26 @@
-import { Component, inject, OnInit, Output, signal } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, inject, OnInit, Output, signal, ViewChild, AfterViewInit, computed } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { PackageMasterModel } from '../../core/model/package-master-model';
 import { PackageMasterService } from '../../core/services/package-master/package-master-service';
 import { NgClass } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
+import { CommonService } from '../../core/services/common/common-service';
+import { Subject, Subscription } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
 
 @Component({
   selector: 'app-package-master',
-  imports: [ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox, FormsModule],
   templateUrl: './package-master.html',
   styleUrl: './package-master.scss'
 })
-export class PackageMaster implements OnInit {
+export class PackageMaster implements OnInit, AfterViewInit {
   title = signal('Package Master Page');
+
+  @ViewChild('insideHeader') insideHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef;
 
   packageMasterService = inject(PackageMasterService);
   packageList = signal<PackageMasterModel[]>([]);
@@ -28,6 +34,30 @@ export class PackageMaster implements OnInit {
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
   isShowAlert = signal<boolean>(false);
+
+  commonService = inject(CommonService);
+  isShowCardView = signal<boolean>(false);
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription!: Subscription;
+  filteredSearchText = signal<string>('');
+
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
+  filterdPackageList = computed(() => {
+    let searchTerm = this.filteredSearchText().toLowerCase();
+    let endIndex = this.currentPageNo() * APP_CONSTANT.PAGE_SIZE;
+
+    return this.packageList().slice(0, endIndex).filter(pkg => {
+      return pkg.packageName.toLowerCase().includes(searchTerm);
+    })
+  });
 
   constructor() {
     this.packageForm = this.fb.group({
@@ -43,6 +73,27 @@ export class PackageMaster implements OnInit {
 
   ngOnInit(): void {
     this.getAllPackages();
+  }
+
+  /**
+   * set heights of navbar, insideHeader and pagination container height
+   */
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.insideHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
+  }
+
+  /**
+   * search master value and emit searchTerm in searchSubject
+   */
+  onSearch() {
+    this.searchSubject.next(this.searchText);
   }
 
   /**
@@ -70,6 +121,23 @@ export class PackageMaster implements OnInit {
     return this.packageForm.get('packageId')?.value;
   }
 
+  onGetPackageList(data: PackageMasterModel[]) {
+    this.packageList.set(data || []);
+
+    this.pagination = this.commonService.setPaginationData(data.length);
+    this.goToPage(this.currentPageNo());
+  }
+
+  /**
+  * go to next page
+  * @param page 
+  */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
+  }
+
   /**
    * Get all packages from server
    */
@@ -79,7 +147,7 @@ export class PackageMaster implements OnInit {
       next: (res: any) => {
         // this.showAlert(true, res);
         this.isPackageLoading.set(false);
-        this.packageList.set(res.data || []);
+        this.onGetPackageList(res.data || []);
       },
       error: (err: any) => {
         console.error('Error fetching packages:', err.message);
@@ -196,7 +264,7 @@ export class PackageMaster implements OnInit {
         console.log('Package deleted successfully:', res);
         this.showAlert(true, res);
         let updatedList: PackageMasterModel[] = this.packageList().filter(pkg => pkg.packageId !== id);
-        this.packageList.set(updatedList);
+        this.onGetPackageList(updatedList);
       },
       error: (err: any) => {
         console.error('Error deleting package:', err.message);

@@ -60,6 +60,28 @@ body {
   box-shadow: $shadow-lg;
   overflow: hidden;
   background: $bg-white;
+
+  .card-header {
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    border-bottom: none;
+  }
+
+  .card-body {
+    padding: 5px;
+    gap: 0.2rem;
+    padding: 0.5rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    border-color: $primary-color;
+    transition: 0.3s;
+  }
 }
 
 .shadow-premium {
@@ -71,8 +93,9 @@ body {
 // HEADER SYSTEM (Consistent across all pages)
 // ==========================================
 .pd-10 {
-  padding:  0 10px 10px;
+  padding: 0 10px 10px;
 }
+
 .card-header-premium {
   // background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
   padding: 10px;
@@ -557,6 +580,7 @@ textarea.form-control {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

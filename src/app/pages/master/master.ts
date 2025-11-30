@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, Output, signal, computed, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { MasterService } from '../../core/services/master/master-service';
 import { IMaster } from '../../core/model/master-model';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -6,14 +6,20 @@ import { NgClass, TitleCasePipe, NgStyle } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { IAlert } from '../../core/model/alert-model';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
+import { CommonService } from '../../core/services/common/common-service';
 
 @Component({
   selector: 'app-master',
-  imports: [ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, TitleCasePipe, FormsModule, AlertBox, NgStyle],
   templateUrl: './master.html',
   styleUrl: './master.scss'
 })
-export class Master implements OnInit {
+export class Master implements OnInit, AfterViewInit {
+
+  @ViewChild('insideHeader') insideHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef
 
   title = signal('Master Page');
   masterService = inject(MasterService);
@@ -30,6 +36,33 @@ export class Master implements OnInit {
   masterForList: string[] = ['Payment Mode', 'Reference By'];
   selectedFilter: string = '';
 
+  commonService = inject(CommonService);
+  isShowCardView = signal<boolean>(false);
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription!: Subscription;
+  filteredSearchText = signal<string>('');
+
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
+  /**
+   * set masterList data in new variable after search and pagination
+   */
+  filteredMasterList = computed(() => {
+    let endIndex = this.currentPageNo() * APP_CONSTANT.PAGE_SIZE;
+    let searchTerm = this.filteredSearchText().toLowerCase();
+
+    return this.masterList().slice(0, endIndex).filter(master => {
+      return master.masterValue.toLowerCase().includes(searchTerm);
+    })
+  })
+
   constructor(private readonly fb: FormBuilder) {
     this.masterForm = this.fb.group({
       masterId: [0],
@@ -40,6 +73,31 @@ export class Master implements OnInit {
 
   ngOnInit(): void {
     this.getAllMasters();
+
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe({
+      next: (searchText => {
+        this.filteredSearchText.set(searchText);
+      })
+    })
+  }
+
+  /**
+   * set heights of navbar, insideHeader and pagination container height
+   */
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.insideHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
+  /**
+   * return remaining height after substracting heights of navbar, insideHeader, pagination container height
+   */
+  get heights() {
+    return this.commonService.currentViewportHeight(40);
   }
 
   /**
@@ -50,6 +108,29 @@ export class Master implements OnInit {
   }
 
   /**
+   * after get mastetList data, initialize pagination data
+   * @param res 
+   */
+  onGetMasterSuccess(res: any) {
+    this.isMasterListLoading.set(false);
+    this.masterList.set(res?.data ?? []);
+
+    this.pagination = this.commonService.setPaginationData(res.data.length);
+    console.log('pagination data in master list:', this.pagination)
+    this.goToPage(this.currentPageNo());
+  }
+
+  /**
+   * go to next page
+   * @param page 
+   */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
+  }
+
+  /**
    * Get all masters from server
    */
   getAllMasters() {
@@ -57,14 +138,25 @@ export class Master implements OnInit {
     this.masterService.getAllMasters().subscribe({
       next: (res: any) => {
         // this.showAlert(true, res);
-        this.isMasterListLoading.set(false);
-        this.masterList.set(res?.data ?? []);
+        this.onGetMasterSuccess(res);
       },
       error: (error) => {
         console.log('Error while getting master data:', error);
         this.showAlert(true, error);
       }
     });
+  }
+
+  /**
+   * search master value and emit searchTerm in searchSubject
+   */
+  onSearchMaster() {
+    this.searchSubject.next(this.searchText);
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**
@@ -83,9 +175,8 @@ export class Master implements OnInit {
       this.isMasterListLoading.set(true);
       this.masterService.getMasterByType(this.selectedFilter).subscribe({
         next: (res: any) => {
-          this.isMasterListLoading.set(false);
           this.showAlert(true, res);
-          this.masterList.set(res?.data ?? []);
+          this.onGetMasterSuccess(res);
         },
         error: (error) => {
           console.log('Error while filtering master data:', error);

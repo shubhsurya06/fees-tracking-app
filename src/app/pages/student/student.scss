@@ -79,30 +79,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // ==========================================
 // CARD BODY STYLES
 // ==========================================
-.card {
-  .card-header {
-    text-align: center;
-    position: relative;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    background-color: #fff;
-    border-bottom: none;
-  }
-
-  .card-body {
-    padding: 5px;
-    gap: 0.2rem;
-    padding: 0.5rem;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $card-shadow-hover;
-    border-color: $primary-color;
-    transition: 0.3s;
-  }
-}
-
 
 .list-viewport {
   overflow: auto;
