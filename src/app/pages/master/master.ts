@@ -51,6 +51,9 @@ export class Master implements OnInit, AfterViewInit {
   };
   currentPageNo = signal<number>(1);
 
+  /**
+   * set masterList data in new variable after search and pagination
+   */
   filteredMasterList = computed(() => {
     let endIndex = this.currentPageNo() * APP_CONSTANT.PAGE_SIZE;
     let searchTerm = this.filteredSearchText().toLowerCase();
@@ -81,12 +84,18 @@ export class Master implements OnInit, AfterViewInit {
     })
   }
 
+  /**
+   * set heights of navbar, insideHeader and pagination container height
+   */
   ngAfterViewInit(): void {
     APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.insideHeader.nativeElement.offsetHeight;
     APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
     this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
   }
 
+  /**
+   * return remaining height after substracting heights of navbar, insideHeader, pagination container height
+   */
   get heights() {
     return this.commonService.currentViewportHeight(40);
   }
@@ -98,6 +107,10 @@ export class Master implements OnInit, AfterViewInit {
     return this.masterForm.get('masterId')?.value || 0;
   }
 
+  /**
+   * after get mastetList data, initialize pagination data
+   * @param res 
+   */
   onGetMasterSuccess(res: any) {
     this.isMasterListLoading.set(false);
     this.masterList.set(res?.data ?? []);
@@ -107,6 +120,10 @@ export class Master implements OnInit, AfterViewInit {
     this.goToPage(this.currentPageNo());
   }
 
+  /**
+   * go to next page
+   * @param page 
+   */
   goToPage(page: number) {
     if (page > 0 && page <= this.pagination.totalPages) {
       this.currentPageNo.set(page);
@@ -130,6 +147,9 @@ export class Master implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * search master value and emit searchTerm in searchSubject
+   */
   onSearchMaster() {
     this.searchSubject.next(this.searchText);
   }
