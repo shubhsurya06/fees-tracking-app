@@ -3,10 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { InstituteService } from '../../../core/services/institute/institute-service';
 import { IInstituteModel } from '../../../core/model/institute-model';
 import { DatePipe } from '@angular/common';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { IPagination } from '../../../core/model/pagination-model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-institute-list',
-  imports: [DatePipe],
+  imports: [DatePipe, FormsModule],
   templateUrl: './institute-list.html',
   styleUrl: './institute-list.scss'
 })
@@ -18,12 +21,37 @@ export class InstituteList implements OnInit {
   instituteList = signal<IInstituteModel[]>([]);
   isInstituteLoader = signal<boolean>(false);
 
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription!: Subscription;
+  filteredSearchText = signal<string>('');
+
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
   constructor() {
   }
 
   ngOnInit(): void {
-    console.log('hello, institute list loaded');
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe({
+      next: (search) => {
+        this.filteredSearchText.set(search);
+      }
+    })
+
     this.getAllInstitutes();
+  }
+
+  onSearch() {
+    this.searchSubject.next(this.searchText);
   }
 
   // navigate to add/edit institute form

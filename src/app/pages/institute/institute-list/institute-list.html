@@ -1,22 +1,25 @@
-<div class="p-tb">
+<div>
     <div class="row">
         <div class="col">
             <div class="card shadow-premium">
                 <div class="card-header-premium d-flex justify-content-between align-items-center">
                     <div class="header-content">
-                        <h5 class="mb-1 header-title">
-                            <i class="bi bi-building-fill me-2"></i>Institute Management
-                        </h5>
-                        <p class="header-subtitle mb-0">Manage institutes and their information</p>
+                        <h3><i class="bi bi-building me-2"></i>Institute Management</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter branch name"
+                                [(ngModel)]="searchText" (ngModelChange)="onSearch()">
+                        </div>
                     </div>
                     <button class="btn btn-add-package d-flex align-items-center" (click)="addEditInstitute(0)">
-                        <i class="bi bi-plus-lg me-2"></i>
-                        <span>Add Institute</span>
+                        <i class="bi bi-plus-lg me-2"></i> Add Institute
                     </button>
                 </div>
 
-                <div class="card-body packages-container">
-                    <div class="list-viewport" style="max-height: calc(100vh - 200px);">
+                <div class="packages-container">
+                    <div class="list-viewport">
                         @if (isInstituteLoader()) {
                         <div class="loading-container">
                             <div class="loading-spinner">
@@ -43,7 +46,7 @@
                         }
 
                         @if (instituteList().length > 0) {
-                        <div class="row g-4">
+                        <div class="row g-3">
                             @for (institute of instituteList(); track institute.instituteId) {
                             <div class="col-xl-3 col-lg-4 col-md-6">
                                 <div class="package-card-modern">
