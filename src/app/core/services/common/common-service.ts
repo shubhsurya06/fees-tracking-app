@@ -19,7 +19,7 @@ export class CommonService {
 
   /**
    heights of overall screen, navbar, top-header content on each component
-   * */ 
+   * */
   constantHeights = signal<any>(APP_CONSTANT.SCREEN_HEIGHTS);
 
   /**
@@ -111,5 +111,17 @@ export class CommonService {
       })
     })
   }
+
+  matchRoutePattern(pattern: string, url: string): boolean {
+    const patternParts = pattern.split('/');
+    const urlParts = url.split('/');
+
+    if (patternParts.length !== urlParts.length) return false;
+
+    return patternParts.every((part, i) => {
+      return part.startsWith(':') || part === urlParts[i];
+    });
+  }
+
 
 }
