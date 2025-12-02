@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, Output, signal } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, computed, ElementRef, inject, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { PackageMasterModel } from '../../core/model/package-master-model';
-import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
@@ -11,10 +11,12 @@ import { ActivationService } from '../../core/services/activation/activation-ser
 import { IActivation } from '../../core/model/activation-model';
 import { IInstituteModel } from '../../core/model/institute-model';
 import { UserService } from '../../core/services/user/user-service';
+import { Subject, Subscription } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
 
 @Component({
   selector: 'app-activation',
-  imports: [DatePipe, ReactiveFormsModule, NgClass, NgFor, NgIf],
+  imports: [DatePipe, NgStyle, ReactiveFormsModule, NgClass, NgFor, NgIf, FormsModule],
   templateUrl: './activation.html',
   styleUrl: './activation.scss'
 })
@@ -38,6 +40,32 @@ export class Activation implements OnInit {
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
   isShowAlert = signal<boolean>(false);
+
+  isShowCardView = signal<boolean>(false);
+  @ViewChild('topCardHeader') topCardHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef;
+
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription!: Subscription;
+  filteredSearchText = signal<string>('');
+
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
+  filteredActivationList = computed(() => {
+    let searchText = this.filteredSearchText().toLowerCase();
+    let endIndex = APP_CONSTANT.PAGE_SIZE * this.currentPageNo();
+
+    return this.activationList().slice(0, endIndex).filter(activation => {
+      return activation.packageName.toLowerCase().includes(searchText);
+    });
+  });
 
   constructor() {
     if (!Object.keys(this.userService.loggedInUser()).length) {
@@ -64,6 +92,39 @@ export class Activation implements OnInit {
     // setTimeout(() => {
     // }, 3000)
     this.getAllActivations();
+  }
+
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.topCardHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
+  /**
+   * get height of listViewPost by calculating navbar height, top-header which is above data-list and pagination height
+   */
+  get heights() {
+    return this.commonService.currentViewportHeight(60);
+  }
+
+  onSearchActivation() {
+    this.searchSubject.next(this.searchText);
+  }
+
+  /**
+  * Initial pageNo is 1
+  * Add paginationin get list
+  * @param page 
+  */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
+  }
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**
@@ -118,6 +179,8 @@ export class Activation implements OnInit {
     })
 
     this.activationList.set(res);
+    this.pagination = this.commonService.setPaginationData(res.length);
+    this.goToPage(this.currentPageNo());
   }
 
   /**
@@ -129,7 +192,6 @@ export class Activation implements OnInit {
       next: (res: any) => {
         this.isActivationLoading.set(false);
         this.onGetActivationList(res.data);
-        this.activationList.set(res.data || []);
       },
       error: (err: any) => {
         console.error('Error fetching packages:', err.message);

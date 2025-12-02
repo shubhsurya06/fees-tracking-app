@@ -7,7 +7,7 @@ import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
 import { IAlert } from '../../core/model/alert-model';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { CommonService } from '../../core/services/common/common-service';
-import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { IPagination } from '../../core/model/pagination-model';
 
 @Component({
@@ -73,6 +73,15 @@ export class PackageMaster implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllPackages();
+
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe({
+      next: (search) => {
+        this.filteredSearchText.set(search);
+      }
+    })
   }
 
   /**
