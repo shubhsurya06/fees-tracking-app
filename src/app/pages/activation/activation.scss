@@ -25,87 +25,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   overflow: hidden;
 }
 
-.card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-  padding: 1rem 2rem;
-  border-bottom: none;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-  }
-
-  .header-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .header-title {
-    color: #ffffff;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    display: flex;
-    align-items: center;
-
-    i {
-      color: rgba(255, 255, 255, 0.9);
-    }
-  }
-
-  .header-subtitle {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.875rem;
-    font-weight: 400;
-    margin-top: 0.25rem;
-  }
-}
-
-.btn-add-package {
-  background: #ffffff;
-  color: $primary-color;
-  border: none;
-  padding: 0.625rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 1;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    background: #f8f9fa;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  i {
-    font-size: 1rem;
-  }
-}
-
-// ==========================================
-// PACKAGE CARDS CONTAINER
-// ==========================================
-.packages-container {
-  // padding: 2rem;
-  background: $bg-light;
-}
 
 .list-viewport {
   overflow-y: auto;
@@ -133,104 +52,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // ==========================================
 // MODERN PACKAGE CARDS
 // ==========================================
-.package-card-modern {
-  background: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: $card-shadow;
-  border: 1px solid $border-color;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: $card-shadow-hover;
-    border-color: $primary-color;
-
-    .package-card-header {
-      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-    }
-  }
-}
-
-.package-card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1rem;
-  text-align: center;
-  position: relative;
-  transition: all 0.3s ease;
-
-  .package-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    backdrop-filter: blur(10px);
-
-    i {
-      font-size: 1.75rem;
-      color: #ffffff;
-    }
-  }
-
-  .package-name {
-    color: #ffffff;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.package-card-body {
-  padding: 10px;
-  flex: 1;
-}
-
-.pricing-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: $primary-light;
-  padding: 10px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-
-  .price-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
-
-  .price-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: $text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
-  }
-
-  .price-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $primary-color;
-  }
-
-  .price-divider {
-    width: 1px;
-    height: 40px;
-    background: rgba(30, 96, 212, 0.2);
-    margin: 0 1rem;
-  }
-}
 
 .features-section {
   display: flex;
@@ -241,15 +63,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 .feature-item {
   display: flex;
   align-items: center;
-  padding:5px 20px;
-  background: $bg-light;
-  border-radius: 10px;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: #f3f4f6;
-    transform: translateX(4px);
-  }
 
   .feature-icon {
     font-size: 1.25rem;
@@ -299,10 +113,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 
 .package-card-footer {
   display: flex;
-  padding: 10px;
   gap: 0.75rem;
-  border-top: 1px solid $border-color;
-  background: $bg-light;
 }
 
 .btn-action {
