@@ -47,6 +47,8 @@ export class Branch implements OnInit, OnDestroy, AfterViewInit {
   searchSubject = new Subject<string>();
   subscription!: Subscription;
   filteredSearchText = signal<string>('');
+  isAscSortContactNo = signal<boolean>(true);
+  isAscSortBranchName = signal<boolean>(true);
   
   // pagination data
   pagination: IPagination = {
@@ -343,5 +345,34 @@ export class Branch implements OnInit, OnDestroy, AfterViewInit {
     console.error('Error saving branch:', error);
     this.isAddEditBranchLoader.set(false);
     this.showAlert(false, error);
+  }
+
+  /**
+   * Sort based on contact no and branch name
+   * @param type 
+   * @returns 
+   */
+  sortByContactNo(type: string) {
+    let isAsc = false;
+    if (type === 'branchName') {
+      isAsc = this.isAscSortBranchName();
+    } else {
+      isAsc = this.isAscSortContactNo();
+    }
+    const sortedList = [...this.branchList()].sort((a, b) => {
+      const contactA = type === 'branchContactNo' ? a.branchContactNo || '' : a.branchName || '';
+      const contactB = type === 'branchContactNo' ? b.branchContactNo || '' : b.branchName || '';
+      if (isAsc) {
+        return contactA.localeCompare(contactB);
+      } else {
+        return contactB.localeCompare(contactA);
+      }
+    });
+    this.branchList.set(sortedList);
+    if (type === 'branchName') {
+      this.isAscSortBranchName.set(!isAsc);
+      return;
+    }
+    this.isAscSortContactNo.set(!isAsc);
   }
 }

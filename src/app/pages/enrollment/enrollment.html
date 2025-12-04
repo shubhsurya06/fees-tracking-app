@@ -1,184 +1,186 @@
-<div class="p-tb">
-  @if (isShowAlert()) {
-  <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
-  }
+@if (isShowAlert()) {
+<app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+}
 
-  <div class="row">
-    <div class="col">
-      <div class="border-0 h-100">
-        <div class="card-header-premium d-flex justify-content-between align-items-center">
-          <div class="header-content">
-            <h5 class="mb-1 header-title"><i class="bi bi-person-plus me-2"></i>Student Enrollment Management</h5>
-          </div>
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link active" data-bs-toggle="pill" href="javascript:void(0)"
-                (click)="getInstituteEnrollments()">Confirmed</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="pill" href="javascript:void(0)"
-                (click)="getPendingEnrollments()">Pending</a>
-            </li>
-          </ul>
-          <div style="display: flex; justify-content: space-between;">
-            <button class="btn btn-outline-dark" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
-              (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
-              <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
-            </button> &nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
-              <i class="bi bi-plus-lg me-2"></i> Add Enrollment
-            </button>
-          </div>
+<div class="row">
+  <div class="col">
+    <div class="border-0 h-100">
+      <div class="card-header-premium d-flex justify-content-between align-items-center">
+        <div class="header-content">
+          <h5 class="mb-1 header-title"><i class="bi bi-person-plus me-2"></i>Student Enrollment Management</h5>
         </div>
-
-        @if (isEnrollmentListLoading()) {
-        <div class="loading-container">
-          <div class="loading-spinner text-center">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-3 text-muted">Loading enrollments...</p>
-          </div>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="pill" href="javascript:void(0)"
+              (click)="getInstituteEnrollments()">Confirmed</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="javascript:void(0)"
+              (click)="getPendingEnrollments()">Pending</a>
+          </li>
+        </ul>
+        <div style="display: flex; justify-content: space-between;">
+          <button class="btn btn-outline-dark" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+            (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+            <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+          </button> &nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+            data-bs-target="#enrollmentModal">
+            <i class="bi bi-plus-lg me-2"></i> Add Enrollment
+          </button>
         </div>
-        }
+      </div>
 
-        @if (!isEnrollmentListLoading()) {
-          @if (enrollmentList().length == 0) {
-            <div class="empty-state">
-              <div class="empty-state-icon">
-                <i class="bi bi-inbox"></i>
-              </div>
-              <h4 class="empty-state-title">No Enrollments Added</h4>
-            </div>
-          } @else {
-            
-            @if (!isShowCardView()) {
-            <table class="table table-bordered table-hover">
-              <thead class="table-primary">
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Contact</th>
-                  <th>Course Name</th>
-                  <th>Course Cost</th>
-                  <th>Final Amount</th>
-                  <th>Discount</th>
-                  <th>Enrolled Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
-                <tr>
-                  <td>{{enrollment.studentName}}</td>
-                  <td>{{enrollment.studentEmail}}</td>
-                  <td>{{enrollment.studentContact}}</td>
-                  <td>{{enrollment.courseName}}</td>
-                  <td>{{enrollment.courseCost}}</td>
-                  <td>{{enrollment.finalAmount}}</td>
-                  <td>{{enrollment.discountGiven}}</td>
-                  <td>{{enrollment.enrollmentDate | date: 'dd MMM yyyy'}}</td>
-                  <td class="feature-item">
-                    <span class="feature-content">
-                      <span class="feature-badge" [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
-                        [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
-                        {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
-                      </span>
-                    </span>
-                  </td>
-                  <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
-                    <button class="btn btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
-                      (click)="editEnrollment(enrollment)">
-                      <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button class="btn btn-action btn-delete" (click)="deleteEnrollment(enrollment.enrollmentId)">
-                      <i class="bi bi-trash-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-                }
-              </tbody>
-            </table>
-            }
-    
-            @if (isShowCardView()) {
-            <div class="packages-container">
-              <div class="list-viewport pd-10">
-                <div class="row g-3">
-                  @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
-                  <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card">
-                      <div class="card-body d-flex flex-column">
-                        <div class="package-card-header">
-                          <h5 class="package-name">{{ enrollment.studentName || enrollment.name }}</h5>
-                        </div>
-    
-                        <div class="package-card-body flex-grow-1">
-                          <div class="pricing-section">
-                            <p class="mb-0-2">
-                              <i class="bi bi-currency-rupee feature-icon"></i>Course Fee:
-                               {{ enrollment.courseCost || enrollment.finalAmount }}
-                            </p>
-                            <p class="mb-0-2">
-                              <i class="bi bi-book-fill feature-icon"></i> {{ enrollment.courseName }}
-                            </p>
-                            <p class="mb-0-2">
-                              <i class="bi bi-envelope-fill feature-icon"></i> {{ enrollment.studentEmail ||
-                              enrollment.email}}
-                            </p>
-                            <p class="mb-0-2">
-                              <i class="bi bi-telephone-fill feature-icon"></i> {{ enrollment.studentContact ||
-                              enrollment.contactNo }}
-                            </p>
-                            <p class="mb-0-2">
-                              <i class="bi bi-calendar-check feature-icon"></i> {{ enrollment.enrolledDate ||
-                              enrollment.enrollmentDate |
-                              date:'dd MMM yyyy' }}
-                            </p>
-                            <p class="mb-0-2">
-                              <i class="bi feature-icon" [ngClass]="{'bi-toggle-on': enrollment.isActive, 'bi-toggle-off': !enrollment.isActive}"></i> <span class="feature-badge"
-                                [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
-                                [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
-                                {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-    
-                        <div class="package-card-footer mt-auto">
-                          <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
-                            (click)="editEnrollment(enrollment)">
-                            <i class="bi bi-pencil-square"></i>
-                            <span>Edit</span>
-                          </button>
-                          <button class="btn-action btn-delete" (click)="deleteEnrollment(enrollment.enrollmentId)">
-                            <i class="bi bi-trash-fill"></i>
-                            <span>Delete</span>
-                          </button>
-                        </div>
-                      </div>
+      @if (isEnrollmentListLoading()) {
+      <div class="loading-container">
+        <div class="loading-spinner text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">Loading enrollments...</p>
+        </div>
+      </div>
+      }
+
+      @if (!isEnrollmentListLoading()) {
+      @if (enrollmentList().length == 0) {
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="bi bi-inbox"></i>
+        </div>
+        <h4 class="empty-state-title">No Enrollments Added</h4>
+      </div>
+      } @else {
+
+      @if (!isShowCardView()) {
+      <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Course Name</th>
+            <th>Course Cost</th>
+            <th>Final Amount</th>
+            <th>Discount</th>
+            <th>Enrolled Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
+          <tr>
+            <td>{{enrollment.studentName}}</td>
+            <td>{{enrollment.studentEmail}}</td>
+            <td>{{enrollment.studentContact}}</td>
+            <td>{{enrollment.courseName}}</td>
+            <td>{{enrollment.courseCost}}</td>
+            <td>{{enrollment.finalAmount}}</td>
+            <td>{{enrollment.discountGiven}}</td>
+            <td>{{enrollment.enrollmentDate | date: 'dd MMM yyyy'}}</td>
+            <td class="feature-item">
+              <span class="feature-content">
+                <span class="feature-badge" [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
+                  [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
+                  {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
+                </span>
+              </span>
+            </td>
+            <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
+              <button class="btn btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
+                (click)="editEnrollment(enrollment)">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn btn-action btn-delete" (click)="deleteEnrollment(enrollment.enrollmentId)">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+
+      @if (isShowCardView()) {
+      <div class="packages-container">
+        <div class="list-viewport pd-10">
+          <div class="row g-3">
+            @for (enrollment of enrollmentList(); track enrollment.enrollmentId) {
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <div class="card">
+                <div class="card-body d-flex flex-column">
+                  <div class="package-card-header">
+                    <h5 class="package-name">{{ enrollment.studentName || enrollment.name }}</h5>
+                  </div>
+
+                  <div class="package-card-body flex-grow-1">
+                    <div class="pricing-section">
+                      <p class="mb-0-2">
+                        <i class="bi bi-currency-rupee feature-icon"></i>Course Fee:
+                        {{ enrollment.courseCost || enrollment.finalAmount }}
+                      </p>
+                      <p class="mb-0-2">
+                        <i class="bi bi-book-fill feature-icon"></i> {{ enrollment.courseName }}
+                      </p>
+                      <p class="mb-0-2">
+                        <i class="bi bi-envelope-fill feature-icon"></i> {{ enrollment.studentEmail ||
+                        enrollment.email}}
+                      </p>
+                      <p class="mb-0-2">
+                        <i class="bi bi-telephone-fill feature-icon"></i> {{ enrollment.studentContact ||
+                        enrollment.contactNo }}
+                      </p>
+                      <p class="mb-0-2">
+                        <i class="bi bi-calendar-check feature-icon"></i> {{ enrollment.enrolledDate ||
+                        enrollment.enrollmentDate |
+                        date:'dd MMM yyyy' }}
+                      </p>
+                      <p class="mb-0-2">
+                        <i class="bi feature-icon"
+                          [ngClass]="{'bi-toggle-on': enrollment.isActive, 'bi-toggle-off': !enrollment.isActive}"></i>
+                        <span class="feature-badge"
+                          [class.badge-success]="enrollment.isActive || enrollment.isFeesCompleted"
+                          [class.badge-danger]="!enrollment.isActive && !enrollment.isFeesCompleted">
+                          {{ (enrollment.isActive || enrollment.isFeesCompleted) ? 'Active' : 'Inactive' }}
+                        </span>
+                      </p>
                     </div>
                   </div>
-                  }
+
+                  <div class="package-card-footer mt-auto">
+                    <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editEnrollmentModal"
+                      (click)="editEnrollment(enrollment)">
+                      <i class="bi bi-pencil-square"></i>
+                      <span>Edit</span>
+                    </button>
+                    <button class="btn-action btn-delete" (click)="deleteEnrollment(enrollment.enrollmentId)">
+                      <i class="bi bi-trash-fill"></i>
+                      <span>Delete</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
             }
-    
-            @if (isPaginationLoader()) {
-            <div class="loading-spinner text-center">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="mt-3 text-muted">Loading more enrollments...</p>
-            </div>
-            }
-            
-          }
-        }
+          </div>
+        </div>
+      </div>
+      }
 
-        <!-- <div class="row">
+      @if (isPaginationLoader()) {
+      <div class="loading-spinner text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading more enrollments...</p>
+      </div>
+      }
+
+      }
+      }
+
+      <!-- <div class="row">
           <div class="col-7"></div>
           <div class="col-5">
             <ul class="pagination pagination-sm justify-content-end">
@@ -190,7 +192,6 @@
             </ul>
           </div>
         </div> -->
-      </div>
     </div>
   </div>
 </div>
