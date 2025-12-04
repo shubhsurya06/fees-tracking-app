@@ -1,174 +1,177 @@
-<div>
+@if (isShowAlert()) {
+<app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
+}
 
-    @if (isShowAlert()) {
-    <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
-    }
-
-    <div class="row">
-        <div class="col">
-            <div class="card shadow-premium border-0 h-100">
-                <div #topCardHeader class="card-header-premium d-flex justify-content-between align-items-center">
-                    <div class="header-content">
-                        <h3><i class="bi bi-building me-2"></i>Branch Management</h3>
+<div class="row">
+    <div class="col">
+        <div class="shadow-premium border-0 h-100">
+            <div #topCardHeader class="card-header-premium d-flex justify-content-between align-items-center">
+                <div class="header-content">
+                    <h3><i class="bi bi-building me-2"></i>Branch Management</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Enter branch name" [(ngModel)]="searchText"
+                            (ngModelChange)="onSearchBranch()">
                     </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Enter branch name"
-                                [(ngModel)]="searchText" (ngModelChange)="onSearchBranch()">
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <button class="btn btn-outline-dark"
-                            [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
-                            (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
-                            <i class="bi"
-                                [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
-                        </button> &nbsp;&nbsp;
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                            <i class="bi bi-plus-lg me-2"></i>
-                            <span>Add Branch</span>
-                        </button>
-                    </div>
-
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="btn btn-outline-dark"
+                        [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+                        (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+                        <i class="bi"
+                            [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+                    </button> &nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        <span>Add Branch</span>
+                    </button>
                 </div>
 
-                <div class="packages-container">
-                    <div class="list-viewport pd-10" [ngStyle]="{height: heights}">
-                        @if (isBranchLoading()) {
-                        <div class="loading-container">
-                            <div class="loading-spinner">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <p class="mt-3 text-muted">Loading branches...</p>
+            </div>
+
+            <div class="packages-container">
+                <div class="list-viewport pd-10" [ngStyle]="{height: heights}">
+                    @if (isBranchLoading()) {
+                    <div class="loading-container">
+                        <div class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
+                            <p class="mt-3 text-muted">Loading branches...</p>
                         </div>
-                        }
-                        @if (!isBranchLoading()) {
-                        @if (branchList().length == 0) {
-                        <div class="empty-state">
-                            <div class="empty-state-icon">
-                                <i class="bi bi-building"></i>
-                            </div>
-                            <h4 class="empty-state-title">No Branches Yet</h4>
-                            <p class="empty-state-text">Get started by creating your first branch</p>
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">
-                                <i class="bi bi-plus-circle me-2"></i>Create First Branch
-                            </button>
+                    </div>
+                    }
+                    @if (!isBranchLoading()) {
+                    @if (branchList().length == 0) {
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="bi bi-building"></i>
                         </div>
-                        }
-                        @if (branchList().length) {
-                        @if (!isShowCardView()) {
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th></th>
-                                    <th>Branch Name</th>
-                                    <th>Branch Code</th>
-                                    <th>Email</th>
-                                    <th>Contact</th>
-                                    <th>Address</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (branch of filteredBranchList(); track branch.branchId) {
-                                <tr>
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{branch.branchName}}</td>
-                                    <td>{{branch.branchCode}}</td>
-                                    <td>{{branch.branchEmail}}</td>
-                                    <td>{{branch.branchContactNo}}</td>
-                                    <td>{{branch.location}}, {{branch.city}}-{{branch.pincode}}, {{branch.state}}</td>
-                                    <td class="branch-card-footer"
-                                        style="display: flex; justify-content: space-between;">
-                                        <button class="btn btn-action btn-edit" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-action btn-delete"
-                                            (click)="deleteBranch(branch.branchId)">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                }
-                            </tbody>
-                        </table>
-                        } @else {
-                        <div class="row g-3">
+                        <h4 class="empty-state-title">No Branches Yet</h4>
+                        <p class="empty-state-text">Get started by creating your first branch</p>
+                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <i class="bi bi-plus-circle me-2"></i>Create First Branch
+                        </button>
+                    </div>
+                    }
+                    @if (branchList().length) {
+                    @if (!isShowCardView()) {
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th></th>
+                                <th>Branch Name
+                                    <span style="cursor: pointer;" class="text-muted" [title]="isAscSortContactNo() ? 'Sort Ascending' : 'Sort Descending'" (click)="sortByContactNo('branchName')">
+                                        <i class="bi" [ngClass]="{'bi-sort-up': isAscSortBranchName(), 'bi-sort-down': !isAscSortBranchName()}"></i>
+                                    </span>
+                                </th>
+                                <th>Branch Code</th>
+                                <th>Email</th>
+                                <th>Contact 
+                                    <span style="cursor: pointer;" class="text-muted" [title]="isAscSortContactNo() ? 'Sort Ascending' : 'Sort Descending'" (click)="sortByContactNo('branchContactNo')">
+                                        <i class="bi" [ngClass]="{'bi-sort-up': isAscSortContactNo(), 'bi-sort-down': !isAscSortContactNo()}"></i>
+                                    </span>
+                                </th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             @for (branch of filteredBranchList(); track branch.branchId) {
-                            <div class="col-xl-3 col-lg-4 col-md-6">
-                                <div class="card package-card-modern h-100">
-                                    <div class="card-header text-center">
-                                        <h5 class="package-name">{{ branch.branchName }}</h5>
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="package-card-body flex-grow-1">
-                                            <div class="features-section">
-                                                <div class="feature-item">
-                                                    <i class="bi bi-geo-alt-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <span class="feature-value">{{ branch.city }}, {{ branch.state
-                                                            }}</span>
-                                                    </div>
+                            <tr>
+                                <td>{{$index + 1}}</td>
+                                <td>{{branch.branchName}}</td>
+                                <td>{{branch.branchCode}}</td>
+                                <td>{{branch.branchEmail}}</td>
+                                <td>{{branch.branchContactNo}}</td>
+                                <td>{{branch.location}}, {{branch.city}}-{{branch.pincode}}, {{branch.state}}</td>
+                                <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
+                                    <button class="btn btn-action btn-edit" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-action btn-delete" (click)="deleteBranch(branch.branchId)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    } @else {
+                    <div class="row g-3">
+                        @for (branch of filteredBranchList(); track branch.branchId) {
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card package-card-modern h-100">
+                                <div class="card-header text-center">
+                                    <h5 class="package-name">{{ branch.branchName }}</h5>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="package-card-body flex-grow-1">
+                                        <div class="features-section">
+                                            <div class="feature-item">
+                                                <i class="bi bi-geo-alt-fill feature-icon"></i>
+                                                <div class="feature-content">
+                                                    <span class="feature-value">{{ branch.city }}, {{ branch.state
+                                                        }}</span>
                                                 </div>
-                                                <div class="feature-item">
-                                                    <i class="bi bi-telephone-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <span class="feature-value">{{ branch.branchContactNo }}</span>
-                                                    </div>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="bi bi-telephone-fill feature-icon"></i>
+                                                <div class="feature-content">
+                                                    <span class="feature-value">{{ branch.branchContactNo }}</span>
                                                 </div>
-                                                <div class="feature-item">
-                                                    <i class="bi bi-envelope-fill feature-icon"></i>
-                                                    <div class="feature-content">
-                                                        <span class="feature-value text-truncate">{{ branch.branchEmail
-                                                            }}</span>
-                                                    </div>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="bi bi-envelope-fill feature-icon"></i>
+                                                <div class="feature-content">
+                                                    <span class="feature-value text-truncate">{{ branch.branchEmail
+                                                        }}</span>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="package-card-footer mt-auto">
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal"
-                                                data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
-                                                <i class="bi bi-pencil-square"></i>
-                                                <span>Edit</span>
-                                            </button>
-                                            <button class="btn-action btn-delete"
-                                                (click)="deleteBranch(branch.branchId)">
-                                                <i class="bi bi-trash-fill"></i>
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
+                                    <div class="package-card-footer mt-auto">
+                                        <button class="btn-action btn-edit" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop" (click)="editBranch(branch)">
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span>Edit</span>
+                                        </button>
+                                        <button class="btn-action btn-delete" (click)="deleteBranch(branch.branchId)">
+                                            <i class="bi bi-trash-fill"></i>
+                                            <span>Delete</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            }
                         </div>
                         }
-                        }
-                        }
                     </div>
+                    }
+                    }
+                    }
                 </div>
+            </div>
 
-                <div #paginationContainer style="padding: 0 10px;">
-                    <!-- Right-aligned -->
-                    <ul class="pagination justify-content-end">
-                        @for (page of pagination.pageNumbers; track page) {
-                        <li class="page-item" [class.disabled]="currentPageNo() === page || filteredSearchText()">
-                            <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
-                        </li>
-                        }
-                    </ul>
-                </div>
+            <div #paginationContainer style="padding: 0 10px;">
+                <!-- Right-aligned -->
+                <ul class="pagination justify-content-end">
+                    @for (page of pagination.pageNumbers; track page) {
+                    <li class="page-item" [class.disabled]="currentPageNo() === page || filteredSearchText()">
+                        <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
+                    </li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Enhanced Modal -->
 <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" role="dialog"
