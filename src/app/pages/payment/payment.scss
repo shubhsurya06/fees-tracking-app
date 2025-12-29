@@ -20,14 +20,13 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // MAIN CARD STYLES
 // ==========================================
 .shadow-premium {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 5px 10px -3px rgba(0, 0, 0, 0.04);
-  border-radius: 16px;
+  // box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 5px 10px -3px rgba(0, 0, 0, 0.04);
+  // border-radius: 16px;
   overflow: hidden;
 }
 
 .card-header-premium {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-  padding: 1rem 2rem;
+  padding: 10px;
   border-bottom: none;
   position: relative;
   overflow: hidden;
@@ -49,8 +48,7 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   }
 
   .header-title {
-    color: #ffffff;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
     display: flex;
@@ -102,10 +100,6 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 // ==========================================
 // PACKAGE CARDS CONTAINER
 // ==========================================
-.packages-container {
-  // padding: 2rem;
-  background: $bg-light;
-}
 
 .list-viewport {
   overflow-y: auto;
@@ -145,21 +139,17 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
   flex-direction: column;
 
   &:hover {
-    transform: translateY(-8px);
+    transform: translateY(-2px);
     box-shadow: $card-shadow-hover;
     border-color: $primary-color;
 
-    .package-card-header {
-      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-    }
   }
 }
 
 .package-card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1.5rem;
   text-align: center;
   position: relative;
+  padding: 10px;
   transition: all 0.3s ease;
 
   .package-icon-wrapper {
@@ -175,62 +165,59 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 
     i {
       font-size: 1.75rem;
-      color: #ffffff;
     }
   }
 
   .package-name {
-    color: #ffffff;
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
 .package-card-body {
-  padding: 1.5rem;
+  padding: 1rem;
   flex: 1;
 }
 
-.pricing-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: $primary-light;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1.25rem;
+// .pricing-section {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   background: $primary-light;
+//   padding: 1rem;
+//   border-radius: 12px;
+//   margin-bottom: 1.25rem;
 
-  .price-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
+//   .price-item {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     flex: 1;
+//   }
 
-  .price-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: $text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
-  }
+//   .price-label {
+//     font-size: 0.75rem;
+//     font-weight: 600;
+//     color: $text-muted;
+//     text-transform: uppercase;
+//     letter-spacing: 0.5px;
+//     margin-bottom: 0.25rem;
+//   }
 
-  .price-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $primary-color;
-  }
+//   .price-value {
+//     font-size: 1.25rem;
+//     font-weight: 700;
+//     color: $primary-color;
+//   }
 
-  .price-divider {
-    width: 1px;
-    height: 40px;
-    background: rgba(30, 96, 212, 0.2);
-    margin: 0 1rem;
-  }
-}
+//   .price-divider {
+//     width: 1px;
+//     height: 40px;
+//     background: rgba(30, 96, 212, 0.2);
+//     margin: 0 1rem;
+//   }
+// }
 
 .features-section {
   display: flex;
@@ -241,18 +228,9 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 .feature-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
-  background: $bg-light;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #f3f4f6;
-    transform: translateX(4px);
-  }
 
   .feature-icon {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: $primary-color;
     margin-right: 0.875rem;
     min-width: 24px;
@@ -298,11 +276,9 @@ $card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0
 }
 
 .package-card-footer {
+  padding: 0 10px 10px;
   display: flex;
-  padding: 1rem 1.5rem;
   gap: 0.75rem;
-  border-top: 1px solid $border-color;
-  background: $bg-light;
 }
 
 .btn-action {

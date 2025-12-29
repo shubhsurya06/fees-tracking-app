@@ -1,24 +1,26 @@
-import { Component, OnInit, signal, inject, Output } from '@angular/core';
+import { Component, OnInit, signal, inject, Output, computed, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { IBranch } from '../../core/model/branch-model';
 import { BranchService } from '../../core/services/branch/branch-service';
 import { InstituteService } from '../../core/services/institute/institute-service';
 import { IInstituteModel } from '../../core/model/institute-model';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule } from '@angular/forms';
+import { NgClass, NgStyle } from '@angular/common';
 import { UserService } from '../../core/services/user/user-service';
 import { APP_CONSTANT } from '../../core/constant/appConstant';
 import { CommonService } from '../../core/services/common/common-service';
 import { IAlert } from '../../core/model/alert-model';
 import { AlertBox } from '../../shared/reusableComponent/alert-box/alert-box';
+import { debounceTime, distinctUntilChanged, Observable, Subject, Subscribable, Subscription } from 'rxjs';
+import { IPagination } from '../../core/model/pagination-model';
 
 
 @Component({
   selector: 'app-branch',
-  imports: [ReactiveFormsModule, NgClass, AlertBox],
+  imports: [ReactiveFormsModule, NgClass, AlertBox, FormsModule, NgStyle],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
-export class Branch implements OnInit {
+export class Branch implements OnInit, OnDestroy, AfterViewInit {
 
   branchService = inject(BranchService);
   userService = inject(UserService);
@@ -36,6 +38,34 @@ export class Branch implements OnInit {
   @Output() isSuccessAlert = signal<boolean>(false);
   @Output() alertObj = signal<IAlert | any>({});
   isShowAlert = signal<boolean>(false);
+  isShowCardView = signal<boolean>(false);
+
+  @ViewChild('topCardHeader') topCardHeader!: ElementRef;
+  @ViewChild('paginationContainer') paginationContainer!: ElementRef;
+
+  searchText: string = '';
+  searchSubject = new Subject<string>();
+  subscription!: Subscription;
+  filteredSearchText = signal<string>('');
+  isAscSortContactNo = signal<boolean>(true);
+  isAscSortBranchName = signal<boolean>(true);
+  
+  // pagination data
+  pagination: IPagination = {
+    totalRecords: 0,
+    totalPages: 0,
+    pageNumbers: []
+  };
+  currentPageNo = signal<number>(1);
+
+  filteredBranchList = computed(() => {
+    let searchText = this.filteredSearchText().toLowerCase();
+    let endIndex = APP_CONSTANT.PAGE_SIZE * this.currentPageNo();
+
+    return this.branchList().slice(0, endIndex).filter(branch => {
+      return branch.branchName.toLowerCase().includes(searchText);
+    });
+  });
 
   constructor(private fb: FormBuilder) {
     this.branchForm = this.fb.group({
@@ -69,6 +99,34 @@ export class Branch implements OnInit {
     // }
     this.getAllInstitutes();
     this.getAllBranches();
+
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe((searchText) => {
+      this.filteredSearchText.set(searchText);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    APP_CONSTANT.SCREEN_HEIGHTS.INSIDE_HEADER_HEIGHT = this.topCardHeader.nativeElement.offsetHeight;
+    APP_CONSTANT.SCREEN_HEIGHTS.PAGINATION_HEIGHT = this.paginationContainer.nativeElement.offsetHeight;
+    this.commonService.constantHeights.set(APP_CONSTANT.SCREEN_HEIGHTS);
+  }
+
+  /**
+   * get height of listViewPost by calculating navbar height, top-header which is above data-list and pagination height
+   */
+  get heights() {
+    return this.commonService.currentViewportHeight(40);
+  }
+
+  onSearchBranch() {
+    this.searchSubject.next(this.searchText);
   }
 
   /**
@@ -88,8 +146,29 @@ export class Branch implements OnInit {
       const institute = this.instituteList().find((inst: IInstituteModel) => inst.instituteId === branch.instituteId);
       branch.instituteName = institute ? institute.name : 'N/A';
       return branch;
-    })
+    });
+
     this.branchList.set(res);
+
+    this.pagination = this.commonService.setPaginationData(res.length);
+    this.goToPage(this.currentPageNo());
+  }
+
+  /**
+   * Initial pageNo is 1
+   * Add paginationin get list
+   * @param page 
+   */
+  goToPage(page: number) {
+    if (page > 0 && page <= this.pagination.totalPages) {
+      this.currentPageNo.set(page);
+    }
+  }
+
+
+  // toggle between card and table view
+  toggleView(flag: boolean) {
+    this.isShowCardView.set(flag);
   }
 
   /**
@@ -100,7 +179,6 @@ export class Branch implements OnInit {
     this.branchService.getAllBranches().subscribe({
       next: (res: any) => {
         this.isBranchLoading.set(false);
-        console.log('Institute List for mapping:', this.instituteList(), res.data);
         this.onGetAllBranchSuccess(res.data);
       },
       error: (err: any) => {
@@ -267,5 +345,34 @@ export class Branch implements OnInit {
     console.error('Error saving branch:', error);
     this.isAddEditBranchLoader.set(false);
     this.showAlert(false, error);
+  }
+
+  /**
+   * Sort based on contact no and branch name
+   * @param type 
+   * @returns 
+   */
+  sortByContactNo(type: string) {
+    let isAsc = false;
+    if (type === 'branchName') {
+      isAsc = this.isAscSortBranchName();
+    } else {
+      isAsc = this.isAscSortContactNo();
+    }
+    const sortedList = [...this.branchList()].sort((a, b) => {
+      const contactA = type === 'branchContactNo' ? a.branchContactNo || '' : a.branchName || '';
+      const contactB = type === 'branchContactNo' ? b.branchContactNo || '' : b.branchName || '';
+      if (isAsc) {
+        return contactA.localeCompare(contactB);
+      } else {
+        return contactB.localeCompare(contactA);
+      }
+    });
+    this.branchList.set(sortedList);
+    if (type === 'branchName') {
+      this.isAscSortBranchName.set(!isAsc);
+      return;
+    }
+    this.isAscSortContactNo.set(!isAsc);
   }
 }

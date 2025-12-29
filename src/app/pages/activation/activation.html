@@ -1,4 +1,4 @@
-<div class="p-tb">
+<div>
   <!-- @if (isShowAlert()) {
   <app-alert-box [isShowSuccess]="isSuccessAlert()" [alertReq]="alertObj()"></app-alert-box>
   } -->
@@ -6,19 +6,31 @@
   <div class="row">
     <div class="col">
       <div class="card shadow-premium border-0 h-100">
-        <div class="card-header-premium d-flex justify-content-between align-items-center">
+        <div #topCardHeader class="card-header-premium d-flex justify-content-between align-items-center">
           <div class="header-content">
-            <h5 class="mb-1 header-title"><i class="bi bi-box-seam me-2"></i>Activation Management</h5>
-            <p class="header-subtitle mb-0">Create and manage subscription packages</p>
+            <h3><i class="bi bi-building me-2"></i>Activation Management</h3>
           </div>
-          <button class="btn btn-add-package" data-bs-toggle="modal" data-bs-target="#addActivationModal">
-            <i class="bi bi-plus-lg me-2"></i>
-            <span>Add Activation</span>
-          </button>
+          <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control" placeholder="Enter package name" [(ngModel)]="searchText"
+                (ngModelChange)="onSearchActivation()">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <button class="btn btn-outline-dark" [title]="isShowCardView() ? 'Show Table View' : 'Show Card View'"
+              (click)="isShowCardView() ? toggleView(false) : toggleView(true)">
+              <i class="bi" [ngClass]="{'bi-toggles2': isShowCardView(), 'bi-toggles' :!isShowCardView()}"></i>
+            </button> &nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+              data-bs-target="#addActivationModal">
+              <i class="bi bi-plus-lg me-2"></i> Add Activation
+            </button>
+          </div>
         </div>
 
         <div class="card-body packages-container">
-          <div class="list-viewport" style="max-height: calc(100vh - 200px)">
+          <div class="list-viewport" [ngStyle]="{height: heights}">
             @if (isActivationLoading()) {
             <div class="loading-container">
               <div class="loading-spinner">
@@ -28,7 +40,8 @@
                 <p class="mt-3 text-muted">Loading Activations...</p>
               </div>
             </div>
-            } @if (!isActivationLoading()) { @if (activationList().length == 0) {
+            } @if (!isActivationLoading())
+            { @if (filteredActivationList().length == 0) {
             <div class="empty-state">
               <div class="empty-state-icon">
                 <i class="bi bi-inbox"></i>
@@ -39,62 +52,97 @@
                 <i class="bi bi-plus-circle me-2"></i>Add Activation
               </button>
             </div>
-            } @if (activationList().length) {
-            <div class="row g-4">
-              @for (act of activationList(); track act.activationId) {
+            }
+            @if (filteredActivationList().length) {
+            @if (!isShowCardView()) {
+            <table class="table table-bordered table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th></th>
+                  <th>Package Name</th>
+                  <th>Institute Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (act of filteredActivationList(); track act.activationId) {
+                <tr>
+                  <td>{{$index + 1}}</td>
+                  <td>{{act.packageName}}</td>
+                  <td>{{act.instituteName}}</td>
+                  <td>{{act.startDate | date:'dd MMM yyyy'}}</td>
+                  <td>{{act.endDate | date:'dd MMM yyyy'}}</td>
+                  <td>
+                    <span class="feature-content">
+                      <span class="feature-badge" [class.badge-success]="act.isActive"
+                        [class.badge-danger]="!act.isActive">
+                        {{ act.isActive ? 'Active' : 'Not Active' }}
+                      </span>
+                    </span>
+                  </td>
+                  <td class="branch-card-footer" style="display: flex; justify-content: space-between;">
+                    <button class="btn btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                      (click)="editActivation(act)">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="btn btn-action btn-delete" (click)="deleteActivation(act.activationId)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } @else {
+            <div class="row g-3">
+              @for (act of filteredActivationList(); track act.activationId) {
               <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="package-card-modern">
-                  <div class="package-card-header">
-                    <div class="package-icon-wrapper">
-                      <i class="bi bi-box-seam"></i>
-                    </div>
-                    <h5 class="package-name">{{ act.packageName }}</h5>
+                <div class="card package-card-modern h-100">
+                  <div class="card-header text-center">
+                    <h5 class="package-name">{{ act.packageName}}</h5>
                   </div>
 
-                  <div class="package-card-body">
-                    <div class="pricing-section">
-                      <div class="price-item">
-                        <span class="price-label">Institute</span>
-                        <span class="price-value">{{ act.instituteName }}</span>
-                      </div>
-                      <!-- <div class="price-divider"></div>
-                                            <div class="price-item">
-                                                <span class="price-label">EMI</span>
-                                                <span class="price-value">₹{{ act.emiTotalCost }}</span>
-                                            </div> -->
-                    </div>
+                  <div class="card-body d-flex flex-column">
+                    <div class="package-card-body flex-grow-1">
 
-                    <div class="features-section">
-                      <div class="feature-item">
-                        <i class="bi bi-calendar-check feature-icon"></i>
-                        <div class="feature-content">
-                          <span class="feature-label">Start Date</span>
-                          <span class="feature-value">{{ act.startDate | date:'dd MMM yyyy'
-                            }}</span>
+                      <div class="features-section">
+                        <div class="feature-item">
+                          <i class="bi bi-building feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-value">{{ act.instituteName }}</span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="feature-item">
-                        <i class="bi bi-calendar-check feature-icon"></i>
-                        <div class="feature-content">
-                          <span class="feature-label">End Date</span>
-                          <span class="feature-value">{{ act.endDate | date:'dd MMM yyyy'
-                            }}</span>
+                        <div class="feature-item">
+                          <i class="bi bi-calendar-check feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-value">{{ act.startDate | date:'dd MMM yyyy'
+                              }}</span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="feature-item">
-                        <i class="bi bi-chat-dots-fill feature-icon"></i>
-                        <div class="feature-content">
-                          <span class="feature-label">Status</span>
-                          <span class="feature-badge" [class.badge-success]="act.isActive"
-                            [class.badge-danger]="!act.isActive">
-                            {{ act.isActive ? 'Active' : 'Not Active' }}
-                          </span>
+                        <div class="feature-item">
+                          <i class="bi bi-calendar-check feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-value">{{ act.endDate | date:'dd MMM yyyy'
+                              }}</span>
+                          </div>
+                        </div>
+                        <div class="feature-item">
+                          <i class="bi bi-chat-dots-fill feature-icon"></i>
+                          <div class="feature-content">
+                            <span class="feature-badge" [class.badge-success]="act.isActive"
+                              [class.badge-danger]="!act.isActive">
+                              {{ act.isActive ? 'Active' : 'Not Active' }}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="package-card-footer">
+                  <div class="package-card-footer" style="padding: 0 10px 10px;">
                     <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#addActivationModal"
                       (click)="editActivation(act)">
                       <i class="bi bi-pencil-square"></i>
@@ -109,8 +157,20 @@
               </div>
               }
             </div>
+            }
             } }
           </div>
+        </div>
+
+        <div #paginationContainer style="padding: 0 10px;">
+          <!-- Right-aligned -->
+          <ul class="pagination justify-content-end">
+            @for (page of pagination.pageNumbers; track page) {
+            <li class="page-item" [class.disabled]="currentPageNo() === page || filteredSearchText()">
+              <a class="page-link" style="cursor: pointer;" (click)="goToPage(page)">{{ page }}</a>
+            </li>
+            }
+          </ul>
         </div>
       </div>
     </div>

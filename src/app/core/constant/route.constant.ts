@@ -1,6 +1,6 @@
 export const role_allowed_routes = [
     { path: 'institute/list', rolesAllowed: ['InstituteAdmin','SuperAdmin'] },
-    { path: 'institute/form/:id', rolesAllowed: ['InstituteAdmin','SuperAdmin'] },
+    { path: 'institute/form/:id', rolesAllowed: ['SuperAdmin'] },
     { path: 'institute/branch', rolesAllowed: ['InstituteAdmin'] },
     { path: 'institute/course', rolesAllowed: ['InstituteAdmin'] },
     { path: 'institute/enrollment', rolesAllowed: ['InstituteAdmin'] },

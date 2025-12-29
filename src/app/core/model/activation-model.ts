@@ -6,6 +6,6 @@ export interface IActivation {
     isActive: number;
     startDate: Date;
     endDate: Date;
-    packageName?: string;
+    packageName: string;
     instituteName?: string;
 }

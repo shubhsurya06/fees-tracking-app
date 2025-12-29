@@ -1,6 +1,6 @@
 // ==========================================
 // GLOBAL ADMIN THEME VARIABLES
- 
+
 // Color Palette
 $primary-color: #1e60d4;
 $primary-dark: #164ba8;
@@ -41,8 +41,11 @@ body {
   overflow-x: hidden;
 }
 
+.packages-container {
+  background: #fff;
+}
+
 .p-tb {
-  padding: 0 !important;
   margin: 0;
   width: 100%;
 }
@@ -57,20 +60,45 @@ body {
   box-shadow: $shadow-lg;
   overflow: hidden;
   background: $bg-white;
+
+  .card-header {
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    border-bottom: none;
+  }
+
+  .card-body {
+    padding: 5px;
+    gap: 0.2rem;
+    padding: 0.5rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    border-color: $primary-color;
+    transition: 0.3s;
+  }
 }
 
 .shadow-premium {
-  box-shadow: $shadow-xl;
+  overflow: hidden;
+  border: none;
 }
 
 // ==========================================
 // HEADER SYSTEM (Consistent across all pages)
 // ==========================================
+.pd-10 {
+  padding: 0 10px 10px;
+}
 
 .card-header-premium {
-  //background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-  padding: 1.75rem 2rem;
-  box-shadow:#6b7280;
+  // background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+  padding: 10px;
   border-bottom: none;
   position: relative;
   overflow: hidden;
@@ -80,8 +108,8 @@ body {
     position: absolute;
     top: -50%;
     right: -10%;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     background: rgba(255, 255, 255, 0.05);
    // border-radius: 50%;
   }
@@ -92,8 +120,8 @@ body {
   }
 
   .header-title {
-    color: #2a5298;
-    font-size: 1.5rem;
+    // color: #ffffff;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
     display: flex;
@@ -105,7 +133,6 @@ body {
   }
 
   .header-subtitle {
-    color: rgba(255, 255, 255, 0.85);
     font-size: 0.875rem;
     font-weight: 400;
     margin-top: 0.25rem;
@@ -114,19 +141,8 @@ body {
 
 // Alternative header style for simpler pages
 .card-header {
-  &.bg-light {
-    background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%) !important;
-    border-bottom: none;
-
-    h5 {
-      color: #ffffff !important;
-    }
-
-    .btn {
-      position: relative;
-      z-index: 1;
-    }
-  }
+  background-color: transparent;
+  border-bottom: none;
 }
 
 // ==========================================
@@ -135,8 +151,7 @@ body {
 
 .btn-add-package,
 .btn-success {
-  background: #ffffff;
-  color: $primary-color;
+  // color: $primary-color;
   border: none;
   padding: 0.625rem 1.5rem;
   border-radius: 10px;
@@ -145,7 +160,7 @@ body {
   display: flex;
   align-items: center;
   transition: $transition-normal;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: relative;
   z-index: 1;
 
@@ -174,15 +189,6 @@ body {
   }
 }
 
-// ==========================================
-// CARD CONTAINER
-// ==========================================
-
-.card-body {
-  // padding: 2rem;
-  background: $bg-light;
-}
-
 .list-viewport {
   overflow: auto;
   overflow-x: hidden;
@@ -206,62 +212,6 @@ body {
   }
 }
 
-// ==========================================
-// DATA CARDS (Branch, Institute, Course, etc.)
-// ==========================================
-
-.branch-card {
-  background: #ffffff;
-  border-radius: $radius-md;
-  overflow: hidden;
-  transition: $transition-normal;
-  box-shadow: $shadow-md;
-  border-left: 4px solid $primary-color;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: $shadow-xl;
-    border-left-width: 6px;
-  }
-
-  .card-body {
-    padding: 1.5rem;
-    background: #ffffff;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .card-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: $primary-color;
-    margin-bottom: 0.5rem;
-  }
-
-  .text-muted {
-    font-size: 0.875rem;
-    color: $text-muted;
-  }
-
-  .btn-outline-warning,
-  .btn-outline-danger {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-width: 2px;
-    border-radius: 8px;
-    transition: $transition-fast;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
-}
 
 // ==========================================
 // LOADING STATES
@@ -271,8 +221,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
   min-height: 300px;
-  padding: 3rem;
+
+  .text-center {
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      border-width: 0.3rem;
+      color: $primary-color;
+    }
+
+    p {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $text-muted;
+      margin-top: 1rem;
+    }
+  }
 }
 
 .spinner-border {
@@ -614,15 +580,84 @@ textarea.form-control {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.branch-card,
 .package-card-modern {
-  animation: fadeIn 0.3s ease-out;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-color;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+    border-color: $primary-color;
+
+    .package-card-header {
+      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+    }
+  }
+}
+
+.package-card-body {
+  padding: 10px;
+  flex: 1;
+}
+
+
+.features-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.btn-action {
+  flex: 1;
+  padding: 0.425rem 0.85rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &.btn-edit {
+    background: rgba(245, 158, 11, 0.1);
+    color: $warning-color;
+
+    &:hover {
+      background: $warning-color;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+  }
+
+  &.btn-delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: $danger-color;
+
+    &:hover {
+      background: $danger-color;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+  }
 }
 
 // ==========================================
